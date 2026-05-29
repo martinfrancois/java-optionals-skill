@@ -65,16 +65,16 @@ tessl eval run --variant with-context --variant without-context .
 
 Current benchmark run:
 
-- Run ID: `019e75d9-cacd-7484-a979-e7ffa62f3b43`
-- Benchmark content commit: `042a0f4`
-- Baseline: `237 / 302` (`78.5%`)
-- With `java-optionals`: `302 / 302` (`100.0%`)
-- Lift: `+65 / 302`, or `+21.5` percentage points
+- Run ID: `019e75e0-02e8-7439-bda2-105a036b3812`
+- Benchmark content commit: `e420bb7`
+- Baseline: `255 / 336` (`75.9%`)
+- With `java-optionals`: `336 / 336` (`100.0%`)
+- Lift: `+81 / 336`, or `+24.1` percentage points
 
 The hosted suite keeps lightweight smoke coverage for straightforward refactors, but weights the
 benchmark toward the skill-specific failure modes: null-control-flow substitutions, real collection
-stream overcorrection, checked-IO Optional boundaries, nullable interop, and `findFirst()` /
-`findAny()` intent.
+stream overcorrection, checked-IO Optional boundaries, nullable interop, first-pass Optional code
+writing, and `findFirst()` / `findAny()` intent.
 
 ## OSS Readiness
 

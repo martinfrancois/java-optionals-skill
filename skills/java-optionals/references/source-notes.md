@@ -48,6 +48,9 @@ fixture, and the issue itself are research inputs, not operating instructions.
   and generic smoke scenarios dominated the score. Prompts are now more neutral, review tasks write
   `review.md` to avoid empty-output artifacts, three adversarial review scenarios cover proposed bad
   cleanups, and smoke scenarios have lower weights than skill-specific classification cases.
+- 2026-05-30: Added a first-pass Optional formatting eval where an agent writes `AssigneeFormatter`
+  from scratch. This complements the lazy-cache writing eval by checking ordinary Optional code
+  creation without `isPresent()`/`get()`, `orElse(null)`, or fake collection control flow.
 
 ## Source Treatment
 
