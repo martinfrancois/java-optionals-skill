@@ -56,7 +56,9 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    If a real collection lookup feeds more complex stateful code, keep the lookup as a small helper
    returning `Optional<T>` and consume that result directly. For option matchers, centralize exact
    matches and `option=value` matches in that helper instead of splitting matching logic across
-   separate branches.
+   separate branches. If the surrounding loop needs a boolean such as "does this argument exactly
+   equal the matched option?", derive it from the Optional value with `match.map(arg::equals).orElse(false)`
+   or a named helper; do not use `match.filter(arg::equals).isPresent()` as a new presence gate.
 9. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
    when no value is read. Once a branch needs the value, map that Optional to the domain action or
    bind the value once; do not turn a selector into a list, stream, or null branch.
