@@ -1,7 +1,7 @@
 # Review real collection Optional stream
 
 Use `$java-optionals` to review this already-good real collection lookup. Should it be rewritten to
-a manual loop?
+a manual loop? Answer with a short review comment even if no code change is needed.
 
 ```java
 import java.util.Optional;

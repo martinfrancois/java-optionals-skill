@@ -1,6 +1,7 @@
 # Refactor order-independent findFirst
 
-Use `$java-optionals` to refactor this order-independent lookup:
+Use `$java-optionals` to refactor this order-independent lookup and include a one-sentence
+rationale:
 
 ```java
 import java.util.Optional;

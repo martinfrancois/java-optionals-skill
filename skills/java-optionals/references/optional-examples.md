@@ -428,6 +428,8 @@ A good eval output:
 - keeps `findFirst()` only where order matters and uses `findAny()` when all matches are equivalent;
 - explains non-obvious choices for checked exceptions, nullable interop, and ordering when the
   requested output format allows prose.
+- for review-only tasks, gives an explicit no-change decision and rationale instead of producing an
+  empty answer.
 
 ## Eval Cases
 
@@ -514,7 +516,8 @@ final class CommandRedactor {
 }
 ```
 
-Expected: keep the stream. Do not rewrite it to a manual loop only because it returns Optional.
+Expected: keep the stream and answer with a short review comment. Do not rewrite it to a manual loop
+only because it returns Optional.
 
 ### Eval 4: Keep `findFirst()` When Order Matters
 
@@ -550,7 +553,7 @@ final class FlagMatcher {
 }
 ```
 
-Expected: use `findAny()`.
+Expected: use `findAny()` and include a one-sentence rationale that all matches are equivalent.
 
 Explain briefly that a `Set` has no first-match priority contract here and any matching flag is
 equivalent.
@@ -579,7 +582,8 @@ final class WorkspaceSelector {
 }
 ```
 
-Expected: use an explicit `isEmpty()` branch and preserve `throws IOException`. Do not introduce
+Expected: use an explicit `isEmpty()` branch, preserve `throws IOException`, and include a
+one-sentence rationale for keeping plain branching at this checked-IO boundary. Do not introduce
 unchecked wrappers or a checked-Optional helper.
 
 ### Eval 7: Recognize Absence-As-Error
@@ -795,6 +799,6 @@ final class ReportCommand {
 }
 ```
 
-Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))`, unless
-checked exceptions in the target code make explicit branching clearer. Reject null and fake
+Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))` and include
+a short checked-exception caveat unless the requested output is code-only. Reject null and fake
 collection workarounds.

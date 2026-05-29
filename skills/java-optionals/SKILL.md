@@ -46,13 +46,15 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    Optional expression.
 6. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch, not `orElse(...)`.
-7. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
+7. For review-only tasks, always return an explicit review decision. If no code change is needed,
+   say that and give the Optional-shape rationale; do not return an empty answer.
+8. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
    Use `findAny()` when any matching value is equivalent. When changing or intentionally keeping
    either method, include a short rationale unless the target output format is code-only.
-8. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
+9. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
    when no value is read. Once a branch needs the value, map that Optional to the domain action or
    bind the value once; do not turn a selector into a list, stream, or null branch.
-9. For checked-exception or prompting fallbacks, plain branching is acceptable:
+10. For checked-exception or prompting fallbacks, plain branching is acceptable:
 
    ```java
    Optional<String> configured = options.workspaceId();
@@ -92,8 +94,9 @@ Before finishing an Optional-related Java change, verify:
 - no single Optional was converted to a collection or stream just to branch;
 - real collection streams remain streams when clearer than manual loop state;
 - `findFirst()` is used only where order matters, otherwise `findAny()` is used;
-- non-obvious ordering, checked-exception, and nullable-interop decisions are briefly explained when
-  the output format allows prose;
+- non-obvious ordering, checked-exception, side-effect-boundary, and nullable-interop decisions are
+  briefly explained when the output format allows prose;
+- review-only no-op findings still include a short rationale;
 - boolean-only Optional validation stays separate from value-reading branches;
 - side-effecting or expensive fallbacks remain lazy;
 - exception types/messages, public output, prompts, generated output, and branch order are

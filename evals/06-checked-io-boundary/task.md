@@ -1,7 +1,7 @@
 # Refactor checked Optional prompting boundary
 
 Use `$java-optionals` to remove Optional antipatterns from this prompting method without hiding
-checked IO:
+checked IO. Include a one-sentence rationale for the checked-IO boundary:
 
 ```java
 import java.io.IOException;

@@ -1,6 +1,7 @@
 # Review order-dependent findFirst
 
-Use `$java-optionals` to review this method. Should `findFirst()` become `findAny()`?
+Use `$java-optionals` to review this method. Should `findFirst()` become `findAny()`? Answer with a
+short review comment.
 
 ```java
 import java.util.List;

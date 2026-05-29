@@ -27,7 +27,7 @@
     },
     {
       "id": 3,
-      "prompt": "Use $java-optionals to review this already-good real collection lookup. Should it be rewritten to a manual loop?\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandRedactor {\n    private static final Set<String> SECRET_OPTIONS = Set.of(\"--token\", \"--api-key\");\n\n    Optional<String> secretOption(String arg) {\n        return SECRET_OPTIONS.stream()\n                .filter(option -> arg.equals(option) || arg.startsWith(option + \"=\"))\n                .findAny();\n    }\n}\n```",
+      "prompt": "Use $java-optionals to review this already-good real collection lookup. Should it be rewritten to a manual loop? Answer with a short review comment even if no code change is needed.\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandRedactor {\n    private static final Set<String> SECRET_OPTIONS = Set.of(\"--token\", \"--api-key\");\n\n    Optional<String> secretOption(String arg) {\n        return SECRET_OPTIONS.stream()\n                .filter(option -> arg.equals(option) || arg.startsWith(option + \"=\"))\n                .findAny();\n    }\n}\n```",
       "expected_output": "Keep the real collection stream and explain that it is not a single Optional workaround.",
       "files": [],
       "expectations": [
@@ -39,7 +39,7 @@
     },
     {
       "id": 4,
-      "prompt": "Use $java-optionals to review this method. Should findFirst become findAny?\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class RouteSelector {\n    Optional<Route> firstEnabledRoute(List<Route> routes) {\n        return routes.stream()\n                .filter(Route::enabled)\n                .findFirst();\n    }\n\n    record Route(String name, boolean enabled) {}\n}\n```",
+      "prompt": "Use $java-optionals to review this method. Should findFirst become findAny? Answer with a short review comment.\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class RouteSelector {\n    Optional<Route> firstEnabledRoute(List<Route> routes) {\n        return routes.stream()\n                .filter(Route::enabled)\n                .findFirst();\n    }\n\n    record Route(String name, boolean enabled) {}\n}\n```",
       "expected_output": "Keep findFirst because firstEnabledRoute implies encounter-order priority.",
       "files": [],
       "expectations": [
@@ -51,7 +51,7 @@
     },
     {
       "id": 5,
-      "prompt": "Use $java-optionals to refactor this order-independent lookup:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
+      "prompt": "Use $java-optionals to refactor this order-independent lookup and include a one-sentence rationale:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
       "expected_output": "Use findAny because the Set lookup has no first-match priority contract.",
       "files": [],
       "expectations": [
@@ -63,7 +63,7 @@
     },
     {
       "id": 6,
-      "prompt": "Use $java-optionals to remove Optional antipatterns from this prompting method without hiding checked IO:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
+      "prompt": "Use $java-optionals to remove Optional antipatterns from this prompting method without hiding checked IO. Include a one-sentence rationale for the checked-IO boundary:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
       "expected_output": "Use a narrow explicit isEmpty branch and preserve throws IOException.",
       "files": [],
       "expectations": [
@@ -148,7 +148,7 @@
     },
     {
       "id": 13,
-      "prompt": "Use $java-optionals to refactor this Optional output path code:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
+      "prompt": "Use $java-optionals to refactor this Optional output path code and include a one-sentence checked-exception caveat:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
       "expected_output": "Use output.ifPresentOrElse(path -> write(path, report), () -> print(report)) or an equivalent side-effect boundary.",
       "files": [],
       "expectations": [
