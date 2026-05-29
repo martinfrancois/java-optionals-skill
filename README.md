@@ -65,16 +65,23 @@ tessl eval run --variant with-context --variant without-context .
 
 Current benchmark run:
 
-- Run ID: `019e75e0-02e8-7439-bda2-105a036b3812`
-- Benchmark content commit: `e420bb7`
-- Baseline: `255 / 336` (`75.9%`)
-- With `java-optionals`: `336 / 336` (`100.0%`)
-- Lift: `+81 / 336`, or `+24.1` percentage points
+- Run ID: `019e75ef-251c-713f-8562-013af9c3fef3`
+- Benchmark content commit: `24542ab`
+- Baseline: `773 / 888` (`87.0%`)
+- With `java-optionals`: `887 / 888` (`99.9%`)
+- Lift: `+114 / 888`, or `+12.8` percentage points
+- Error reduction: `114 / 115` baseline missed points (`99.1%`)
 
 The hosted suite keeps lightweight smoke coverage for straightforward refactors, but weights the
 benchmark toward the skill-specific failure modes: null-control-flow substitutions, real collection
 stream overcorrection, checked-IO Optional boundaries, nullable interop, first-pass Optional code
-writing, and `findFirst()` / `findAny()` intent.
+writing, selector value binding, laziness regressions, dependency overreach, and `findFirst()` /
+`findAny()` intent.
+
+A 2x raw-score ratio is not currently a defensible target for this benchmark: the baseline already
+scores `87.0%`, so reaching 2x would require suppressing or removing broad Java competence coverage
+rather than measuring the skill's real incremental value. The useful signal is that the skill moves
+the suite from 115 missed points to 1 missed point without prompt leakage.
 
 ## OSS Readiness
 
