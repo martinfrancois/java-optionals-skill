@@ -192,6 +192,19 @@
         "Suggests an explicit isEmpty branch with configured.orElseThrow() or equivalent",
         "Does not suggest adding Vavr or another functional dependency for this local cleanup"
       ]
+    },
+    {
+      "id": 17,
+      "prompt": "Use $java-optionals to create AssigneeFormatter.java.\n\nImplement a small Java class AssigneeFormatter with:\n\n```java\nString label(Optional<User> assignee)\n```\n\nRules:\n\n- If an assignee is present and handle() is not blank, return \"@\" + handle.\n- If an assignee is present but handle() is blank, return the user's displayName().\n- If no assignee is present, return \"unassigned\".\n\nInclude this nested record:\n\n```java\nrecord User(String handle, String displayName) {}\n```",
+      "expected_output": "Create AssigneeFormatter.java using assignee.map(...).orElse(\"unassigned\") or an equivalent direct Optional boundary, with no isPresent()+get(), null, or fake collection workaround.",
+      "files": [],
+      "expectations": [
+        "Creates AssigneeFormatter.java with AssigneeFormatter, label(Optional<User>), and nested User record",
+        "Uses assignee.map(...).orElse(\"unassigned\") or an equivalent direct Optional boundary",
+        "Does not use isPresent()/isEmpty() plus get() or orElseThrow() for ordinary control flow",
+        "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional",
+        "Returns @handle for present nonblank handles, displayName for present blank handles, and unassigned when absent"
+      ]
     }
   ]
 }

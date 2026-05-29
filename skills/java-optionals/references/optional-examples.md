@@ -799,9 +799,8 @@ final class ReportCommand {
 }
 ```
 
-Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))` and include
-a short checked-exception caveat unless the requested output is code-only. Reject null and fake
-collection workarounds.
+Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))`. Reject
+null and fake collection workarounds.
 
 ### Eval 14: Reject `orElse(null)` As A Proposed Cleanup
 
@@ -826,3 +825,12 @@ Review a proposed `CheckedOptionals.mapOrElseGet(...)` helper that adapts `IOExc
 
 Expected: reject the helper-based local cleanup. Keep a narrow explicit branch at the checked-IO
 boundary and do not add Vavr or another functional dependency for this case.
+
+### Eval 17: Write First-Pass Optional Formatting Code
+
+Ask the agent to create an `AssigneeFormatter` class with `label(Optional<User> assignee)`.
+
+Expected: use a direct Optional boundary such as `assignee.map(...).orElse("unassigned")`, return
+`"@" + handle` when the present user's handle is not blank, return `displayName()` for a present
+user with a blank handle, and return `"unassigned"` when absent. Reject `isPresent()` plus `get()`,
+`orElse(null)` plus null branching, and fake single-Optional collection/loop workarounds.
