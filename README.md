@@ -5,7 +5,7 @@ Tessl-compatible agent skill for writing, reviewing, and refactoring Java `Optio
 The installable plugin name is:
 
 ```text
-fmartin/java-optionals
+martinfrancois/java-optionals
 ```
 
 The repository name is intentionally neutral:
@@ -57,8 +57,8 @@ exists so older pack/info paths can still package the repository.
 Run evals when authenticated with Tessl:
 
 ```bash
-tessl project create --workspace fmartin java-optionals-skill
-tessl eval run --workspace fmartin --variant with-context --variant without-context .
+tessl project create --workspace martinfrancois java-optionals-skill
+tessl eval run --workspace martinfrancois --variant with-context --variant without-context .
 ```
 
 ## OSS Readiness

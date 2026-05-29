@@ -2,3 +2,6 @@
 *.tgz
 .tessl/cache/
 .tessl/tmp/
+.codex/
+.mcp.json
+.vscode/

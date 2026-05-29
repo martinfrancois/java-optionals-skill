@@ -1,5 +1,5 @@
 {
-  "name": "fmartin/java-optionals",
+  "name": "martinfrancois/java-optionals",
   "version": "0.1.0",
   "summary": "Java Optional best practices, readability, and antipattern prevention.",
   "private": true,
