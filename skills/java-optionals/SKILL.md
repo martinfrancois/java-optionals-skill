@@ -47,7 +47,8 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
 6. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch, not `orElse(...)`.
 7. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
-   Use `findAny()` when any matching value is equivalent.
+   Use `findAny()` when any matching value is equivalent. When changing or intentionally keeping
+   either method, include a short rationale unless the target output format is code-only.
 8. For checked-exception or prompting fallbacks, plain branching is acceptable:
 
    ```java
@@ -59,7 +60,13 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    ```
 
    Keep this exception narrow. The absent branch must genuinely perform checked IO, prompting, or
-   another checked operation, and the enclosing method should honestly expose that boundary.
+   another checked operation, and the enclosing method should honestly expose that boundary. When
+   using this exception, say why plain branching is clearer than hiding checked exceptions in an
+   unchecked wrapper or local helper unless the target output format is code-only.
+9. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
+   absence. Do not add local null branching around it. If changing that boundary would require
+   altering records, DTOs, serialization, or external APIs, call that out as a separate API/design
+   decision rather than bundling it into an Optional cleanup.
 
 ## What Not To Do
 
@@ -82,6 +89,8 @@ Before finishing an Optional-related Java change, verify:
 - no single Optional was converted to a collection or stream just to branch;
 - real collection streams remain streams when clearer than manual loop state;
 - `findFirst()` is used only where order matters, otherwise `findAny()` is used;
+- non-obvious ordering, checked-exception, and nullable-interop decisions are briefly explained when
+  the output format allows prose;
 - side-effecting or expensive fallbacks remain lazy;
 - exception types/messages, public output, prompts, generated output, and branch order are
   preserved;

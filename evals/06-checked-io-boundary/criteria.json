@@ -1,0 +1,26 @@
+{
+  "context": "The absent branch performs checked IO. The skill should allow a narrow explicit branch instead of hiding checked exceptions in fluent Optional syntax.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Preserves checked exception contract",
+      "max_score": 10,
+      "description": "Keeps throws IOException and does not change the checked exception boundary."
+    },
+    {
+      "name": "No unchecked wrapper",
+      "max_score": 10,
+      "description": "Does not wrap IOException in RuntimeException, UncheckedIOException, or similar solely to keep Optional fluent syntax."
+    },
+    {
+      "name": "No new helper or dependency",
+      "max_score": 8,
+      "description": "Does not introduce CheckedOptionals, Vavr, or another helper/dependency for this narrow case."
+    },
+    {
+      "name": "Explains narrow branch exception",
+      "max_score": 6,
+      "description": "Explains that plain branching is acceptable at a checked-IO prompting boundary."
+    }
+  ]
+}

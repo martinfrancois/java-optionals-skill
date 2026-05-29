@@ -335,7 +335,8 @@ A good eval output:
 - stays readable to normal Java maintainers;
 - does not introduce unnecessary helpers, dependencies, labels, or sentinel state;
 - keeps `findFirst()` only where order matters and uses `findAny()` when all matches are equivalent;
-- explains non-obvious choices for checked exceptions, nullable interop, and ordering.
+- explains non-obvious choices for checked exceptions, nullable interop, and ordering when the
+  requested output format allows prose.
 
 ## Eval Cases
 
@@ -460,6 +461,9 @@ final class FlagMatcher {
 
 Expected: use `findAny()`.
 
+Explain briefly that a `Set` has no first-match priority contract here and any matching flag is
+equivalent.
+
 ### Eval 6: Allow Plain Branching At Checked Boundaries
 
 ```java
@@ -529,6 +533,10 @@ final class LegacyAdapter {
 
 Expected: this can be acceptable if the legacy API genuinely uses `null` for absent. Do not create
 extra null-control-flow branches around it.
+
+If the surrounding API could be changed to avoid nullable interop, treat that as a separate
+API/design decision. Do not bundle a record, DTO, serialization, or external contract change into a
+local Optional cleanup without explicit scope.
 
 ### Eval 9: Avoid Repeated Reads After One Presence Check
 
