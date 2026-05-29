@@ -4,44 +4,43 @@
   "checklist": [
     {
       "name": "Creates revised sanitizer",
-      "max_score": 6,
+      "max_score": 4,
       "description": "Creates CommandSanitizer.java with sanitize(List<String>) and the required secret option set."
     },
     {
       "name": "Centralizes real collection lookup",
-      "max_score": 24,
+      "max_score": 44,
       "description": "Uses a small Optional-returning helper over SECRET_OPTIONS.stream().filter(...) for both exact matches and option=value matches."
     },
     {
       "name": "Uses findAny for equivalent matches",
-      "max_score": 12,
+      "max_score": 24,
       "description": "Uses findAny() because any matching secret option is equivalent."
     },
     {
       "name": "Consumes Optional directly",
-      "max_score": 18,
+      "max_score": 36,
       "description": "Uses map/orElse or another direct Optional boundary for the match result rather than isPresent()/get() or orElseThrow() value reads."
     },
     {
       "name": "Keeps loop only for sequence state",
-      "max_score": 12,
+      "max_score": 22,
       "description": "Avoids nested loops, labels, duplicated exact/prefix matching branches, or sentinel state beyond the necessary redactNext flag."
     },
     {
       "name": "Preserves exact-option behavior",
-      "max_score": 10,
+      "max_score": 8,
       "description": "Keeps exact options and redacts the following argument."
     },
     {
       "name": "Adds option-value behavior",
-      "max_score": 10,
+      "max_score": 8,
       "description": "Rewrites option=value arguments to option=<redacted>."
     },
     {
       "name": "Preserves non-secret output",
-      "max_score": 8,
+      "max_score": 6,
       "description": "Preserves non-secret arguments and joins sanitized arguments with spaces."
     }
   ]
 }
-
