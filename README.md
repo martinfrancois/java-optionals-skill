@@ -58,7 +58,7 @@ Run evals when authenticated with Tessl:
 
 ```bash
 tessl project create --workspace martinfrancois java-optionals-skill
-tessl eval run --workspace martinfrancois --variant with-context --variant without-context .
+tessl eval run --variant with-context --variant without-context .
 ```
 
 Current benchmark run:
