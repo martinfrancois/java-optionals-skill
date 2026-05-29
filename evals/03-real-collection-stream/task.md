@@ -1,7 +1,7 @@
 # Review command option lookup
 
-Use `$java-optionals` to review this lookup. Should the Optional usage be changed? Answer with a
-short review comment even if no code change is needed.
+Use `$java-optionals` to review this lookup. Create `review.md` with a short review decision and
+rationale. Do not modify the Java code.
 
 ```java
 import java.util.Optional;

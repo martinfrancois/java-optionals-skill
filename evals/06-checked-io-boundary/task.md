@@ -1,7 +1,7 @@
 # Refactor workspace selection
 
 Use `$java-optionals` to improve this method's Optional handling without changing its exception
-contract. Include a concise rationale:
+contract:
 
 ```java
 import java.io.IOException;

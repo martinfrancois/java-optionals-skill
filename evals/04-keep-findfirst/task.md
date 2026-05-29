@@ -1,7 +1,7 @@
 # Review route lookup
 
-Use `$java-optionals` to review whether this Optional-returning lookup should change. Answer with a
-short review comment.
+Use `$java-optionals` to review whether this Optional-returning lookup should change. Create
+`review.md` with a short review decision and rationale. Do not modify the Java code.
 
 ```java
 import java.util.List;

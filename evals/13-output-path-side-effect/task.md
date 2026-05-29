@@ -1,6 +1,6 @@
 # Refactor report output
 
-Use `$java-optionals` to improve this output handling and include a concise rationale:
+Use `$java-optionals` to improve this output handling:
 
 ```java
 import java.nio.file.Path;

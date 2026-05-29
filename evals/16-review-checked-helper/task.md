@@ -1,7 +1,7 @@
 # Review proposed checked Optional helper
 
-Use `$java-optionals` to review this proposed helper-based refactor. Should it be accepted as a
-local cleanup?
+Use `$java-optionals` to review this proposed helper-based refactor. Create `review.md` with a short
+review decision and rationale.
 
 Before:
 

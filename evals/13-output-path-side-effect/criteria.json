@@ -21,11 +21,6 @@
       "name": "No workaround",
       "max_score": 6,
       "description": "Does not introduce null-control-flow or a fake collection/list workaround."
-    },
-    {
-      "name": "Checked-exception awareness",
-      "max_score": 4,
-      "description": "Mentions that explicit branching may be clearer if checked exceptions are involved."
     }
   ]
 }

@@ -1,6 +1,7 @@
 # Review proposed Optional cleanup
 
-Use `$java-optionals` to review this proposed cleanup. Should it be accepted?
+Use `$java-optionals` to review this proposed cleanup. Create `review.md` with a short review
+decision and rationale.
 
 Before:
 

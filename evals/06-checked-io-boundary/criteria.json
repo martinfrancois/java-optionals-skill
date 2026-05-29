@@ -16,11 +16,6 @@
       "name": "No new helper or dependency",
       "max_score": 8,
       "description": "Does not introduce CheckedOptionals, Vavr, or another helper/dependency for this narrow case."
-    },
-    {
-      "name": "Explains narrow branch exception",
-      "max_score": 6,
-      "description": "Explains that plain branching is acceptable at a checked-IO prompting boundary."
     }
   ]
 }

@@ -8,11 +8,6 @@
       "description": "Changes findFirst to findAny or clearly states findAny is the intended shape."
     },
     {
-      "name": "Explains order irrelevance",
-      "max_score": 6,
-      "description": "Mentions that Set order is not the domain contract and all matching flags are equivalent."
-    },
-    {
       "name": "Preserves real collection stream",
       "max_score": 6,
       "description": "Recognizes the stream is over a real collection and does not replace it with a manual loop or null-control-flow."

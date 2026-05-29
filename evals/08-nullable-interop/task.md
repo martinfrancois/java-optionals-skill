@@ -1,6 +1,7 @@
 # Review legacy adapter
 
-Use `$java-optionals` to review this adapter. Should this local Optional handling be changed?
+Use `$java-optionals` to review this adapter. Create `review.md` with a short review decision and
+rationale. Do not modify the Java code.
 
 ```java
 import java.util.Optional;

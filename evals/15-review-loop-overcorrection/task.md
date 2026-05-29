@@ -1,6 +1,7 @@
 # Review proposed lookup rewrite
 
-Use `$java-optionals` to review this proposed rewrite. Should it be accepted?
+Use `$java-optionals` to review this proposed rewrite. Create `review.md` with a short review
+decision and rationale.
 
 Before:
 
