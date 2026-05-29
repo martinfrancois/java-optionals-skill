@@ -61,6 +61,14 @@ tessl project create --workspace martinfrancois java-optionals-skill
 tessl eval run --workspace martinfrancois --variant with-context --variant without-context .
 ```
 
+Current benchmark run:
+
+- Run ID: `019e759f-9c13-7260-89dc-476093ad6424`
+- Commit: `978ec33`
+- Baseline: `240 / 306` (`78.4%`)
+- With `java-optionals`: `294 / 306` (`96.1%`)
+- Lift: `+54 / 306`, or `+17.7` percentage points
+
 ## OSS Readiness
 
 Before making this repository public:
