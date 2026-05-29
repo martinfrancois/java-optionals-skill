@@ -1,0 +1,41 @@
+{
+  "context": "Representative checked-IO fallback with an added Optional priority source: compose available values, but keep the checked prompt boundary explicit.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates revised resolver",
+      "max_score": 6,
+      "description": "Creates WorkspaceResolver.java with workspaceId(Options, Terminal) throws IOException and the requested interfaces."
+    },
+    {
+      "name": "Uses Optional priority for configured values",
+      "max_score": 18,
+      "description": "Uses options.workspaceId().or(options::environmentWorkspaceId) or an equivalent direct Optional priority boundary for non-IO values."
+    },
+    {
+      "name": "Keeps checked prompt explicit",
+      "max_score": 18,
+      "description": "Uses a narrow explicit branch for the absent prompting path and preserves throws IOException."
+    },
+    {
+      "name": "No unchecked wrapper or helper",
+      "max_score": 16,
+      "description": "Does not introduce RuntimeException, UncheckedIOException, CheckedSupplier, CheckedOptionals, Vavr, or another helper/dependency to force fluent Optional syntax."
+    },
+    {
+      "name": "Avoids ordinary value-read antipattern",
+      "max_score": 12,
+      "description": "Does not keep isPresent()/get() for the ordinary configured/environment Optional priority selection."
+    },
+    {
+      "name": "Avoids null/list workaround",
+      "max_score": 10,
+      "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional."
+    },
+    {
+      "name": "Preserves resolution behavior",
+      "max_score": 20,
+      "description": "Returns configured workspace first, environment workspace second, and prompts only when both are absent."
+    }
+  ]
+}

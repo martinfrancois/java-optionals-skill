@@ -1,0 +1,47 @@
+{
+  "context": "Representative implementation cleanup from the issue: add behavior while replacing AI-written isPresent/get upsert flow with a lazy Optional boundary.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates revised class",
+      "max_score": 6,
+      "description": "Creates WorkpadService.java with the requested class, imports, methods, and records."
+    },
+    {
+      "name": "Uses Optional as update/create boundary",
+      "max_score": 22,
+      "description": "Refactors the existing lookup into a direct update-or-create Optional boundary such as findFirst().map(...).orElseGet(...), with helper methods if useful."
+    },
+    {
+      "name": "Keeps create lazy",
+      "max_score": 16,
+      "description": "Does not execute comment-window checks or create logic when an existing workpad comment is present."
+    },
+    {
+      "name": "Removes presence-check value read",
+      "max_score": 16,
+      "description": "Does not keep isPresent()/isEmpty() followed by get() or orElseThrow() for ordinary workpad value reads."
+    },
+    {
+      "name": "Avoids null/list workaround",
+      "max_score": 14,
+      "description": "Does not replace the Optional with orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional."
+    },
+    {
+      "name": "Adds missing-id safeguard",
+      "max_score": 12,
+      "description": "Returns Result.failure(\"missing_action_id\") for existing workpad comments whose id is null or blank."
+    },
+    {
+      "name": "Adds window safeguard",
+      "max_score": 12,
+      "description": "Returns Result.failure(\"comment_window_incomplete\") when no workpad exists and the comment window has at least 1000 comments."
+    },
+    {
+      "name": "Preserves success statuses",
+      "max_score": 8,
+      "description": "Preserves updated:id:text and created:cardId:text status formats."
+    }
+  ]
+}
+

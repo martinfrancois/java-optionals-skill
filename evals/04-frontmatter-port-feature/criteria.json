@@ -1,0 +1,42 @@
+{
+  "context": "Representative front-matter cleanup: add parsing behavior while moving repeated Optional value reads into a helper/Optional boundary.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates revised lookup",
+      "max_score": 6,
+      "description": "Creates WorkflowPortLookup.java with workflowServerPortReservation(Optional<Map<String,Object>>, Path)."
+    },
+    {
+      "name": "Uses Optional map boundary",
+      "max_score": 24,
+      "description": "Uses frontMatter.flatMap/map plus a parsing helper or equivalent direct Optional boundary instead of guarding then reading frontMatter.get()."
+    },
+    {
+      "name": "Removes Optional reopening",
+      "max_score": 16,
+      "description": "Does not keep frontMatter.get() or frontMatter.orElseThrow() after an isPresent()/isEmpty() guard."
+    },
+    {
+      "name": "Avoids null/list workaround",
+      "max_score": 12,
+      "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional."
+    },
+    {
+      "name": "Preserves Number support",
+      "max_score": 10,
+      "description": "Returns Optional.of(number.intValue()) for Number values."
+    },
+    {
+      "name": "Adds String support",
+      "max_score": 16,
+      "description": "Returns Optional.of(parsed) for trimmed numeric String values."
+    },
+    {
+      "name": "Handles empty and malformed values",
+      "max_score": 16,
+      "description": "Returns Optional.empty() for absent front matter, missing key, blank string, malformed string, and unsupported types without throwing."
+    }
+  ]
+}
+
