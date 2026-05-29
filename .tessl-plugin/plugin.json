@@ -1,0 +1,6 @@
+{
+  "name": "fmartin/java-optionals",
+  "version": "0.1.0",
+  "description": "Java Optional best practices, readability, and antipattern prevention.",
+  "private": true
+}

@@ -1,0 +1,11 @@
+{
+  "name": "fmartin/java-optionals",
+  "version": "0.1.0",
+  "summary": "Java Optional best practices, readability, and antipattern prevention.",
+  "private": true,
+  "skills": {
+    "java-optionals": {
+      "path": "skills/java-optionals/SKILL.md"
+    }
+  }
+}

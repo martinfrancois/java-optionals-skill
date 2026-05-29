@@ -1,0 +1,137 @@
+{
+  "skill_name": "java-optionals",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use $java-optionals to refactor this Java code without changing behavior:\n\n```java\nimport java.util.Optional;\n\nfinal class UserService {\n    String displayName(Optional<User> user) {\n        if (user.isPresent()) {\n            return user.get().displayName();\n        }\n        return \"Anonymous\";\n    }\n\n    record User(String displayName) {}\n}\n```",
+      "expected_output": "Use Optional.map(...).orElse(...) to return the display name or Anonymous.",
+      "files": [],
+      "expectations": [
+        "Replaces isPresent() plus get() with user.map(User::displayName).orElse(\"Anonymous\") or equivalent",
+        "Does not introduce orElse(null) or a null check",
+        "Does not convert the single Optional into a stream, list, loop, or collection",
+        "Preserves the fallback value Anonymous"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use $java-optionals to refactor this upsert method while preserving laziness:\n\n```java\nimport java.util.Optional;\n\nfinal class WorkpadService {\n    Result upsert(Optional<Comment> existing, String text) {\n        if (existing.isPresent()) {\n            return update(existing.get(), text);\n        }\n        return create(text);\n    }\n\n    Result update(Comment comment, String text) { return new Result(\"updated\"); }\n    Result create(String text) { return new Result(\"created\"); }\n\n    record Comment(String id) {}\n    record Result(String status) {}\n}\n```",
+      "expected_output": "Use existing.map(...).orElseGet(...) so create(text) remains lazy.",
+      "files": [],
+      "expectations": [
+        "Uses map to handle the present Comment",
+        "Uses orElseGet or another lazy branch for create(text)",
+        "Does not use orElse(create(text))",
+        "Does not introduce null-control-flow or a single-Optional collection workaround"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use $java-optionals to review this already-good real collection lookup. Should it be rewritten to a manual loop?\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandRedactor {\n    private static final Set<String> SECRET_OPTIONS = Set.of(\"--token\", \"--api-key\");\n\n    Optional<String> secretOption(String arg) {\n        return SECRET_OPTIONS.stream()\n                .filter(option -> arg.equals(option) || arg.startsWith(option + \"=\"))\n                .findAny();\n    }\n}\n```",
+      "expected_output": "Keep the real collection stream and explain that it is not a single Optional workaround.",
+      "files": [],
+      "expectations": [
+        "Recognizes SECRET_OPTIONS is a real collection source",
+        "Keeps the stream lookup or explicitly says no refactor is needed",
+        "Does not rewrite to a manual loop just to avoid an Optional terminal result",
+        "Mentions findAny is appropriate because all matching options are equivalent"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use $java-optionals to review this method. Should findFirst become findAny?\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class RouteSelector {\n    Optional<Route> firstEnabledRoute(List<Route> routes) {\n        return routes.stream()\n                .filter(Route::enabled)\n                .findFirst();\n    }\n\n    record Route(String name, boolean enabled) {}\n}\n```",
+      "expected_output": "Keep findFirst because firstEnabledRoute implies encounter-order priority.",
+      "files": [],
+      "expectations": [
+        "Does not mechanically replace findFirst with findAny",
+        "Identifies the method name and list order as an order-dependent contract",
+        "Suggests testing two enabled routes if adding coverage",
+        "Does not introduce a manual loop"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Use $java-optionals to refactor this order-independent lookup:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
+      "expected_output": "Use findAny because the Set lookup has no first-match priority contract.",
+      "files": [],
+      "expectations": [
+        "Changes findFirst to findAny or explains why findAny is the intended shape",
+        "Mentions that all matching flags are equivalent",
+        "Recognizes the source is a real collection stream",
+        "Does not introduce a manual loop or null-control-flow"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Use $java-optionals to remove Optional antipatterns from this prompting method without hiding checked IO:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
+      "expected_output": "Use a narrow explicit isEmpty branch and preserve throws IOException.",
+      "files": [],
+      "expectations": [
+        "Preserves the checked IOException contract",
+        "Does not wrap IOException in RuntimeException or UncheckedIOException",
+        "Does not introduce a CheckedOptionals helper or Vavr dependency",
+        "Explains that plain branching is acceptable at a checked-IO prompting boundary"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Use $java-optionals to refactor this required config lookup:\n\n```java\nimport java.util.Map;\nimport java.util.Optional;\n\nfinal class ConfigLookup {\n    String required(Map<String, String> values, String key) {\n        Optional<String> value = Optional.ofNullable(values.get(key));\n        if (value.isPresent()) {\n            return value.get();\n        }\n        throw new IllegalArgumentException(\"Missing config: \" + key);\n    }\n}\n```",
+      "expected_output": "Use Optional.ofNullable(...).orElseThrow(...) and preserve the exception message.",
+      "files": [],
+      "expectations": [
+        "Uses orElseThrow for true absence-as-error",
+        "Preserves IllegalArgumentException",
+        "Preserves the message Missing config: plus key",
+        "Does not ban orElseThrow globally"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Use $java-optionals to review this nullable interop boundary:\n\n```java\nimport java.util.Optional;\n\nfinal class LegacyAdapter {\n    LegacyRequest toLegacy(Optional<String> comment) {\n        return new LegacyRequest(comment.orElse(null));\n    }\n\n    record LegacyRequest(String nullableComment) {}\n}\n```",
+      "expected_output": "Allow isolated nullable interop if LegacyRequest genuinely uses null for absent, and do not add extra null-control-flow.",
+      "files": [],
+      "expectations": [
+        "Distinguishes API-boundary nullable interop from local null-control-flow",
+        "Does not blindly rewrite the boundary if the legacy API requires null",
+        "Does not add a value != null branch around the nullable value",
+        "Mentions that surrounding API changes would be a separate decision"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Use $java-optionals to refactor this method so it does not repeatedly read the same Optional:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isEmpty()) {\n            return card;\n        }\n        if (card.listId().equals(target.get().id())) {\n            return card;\n        }\n        return new Card(card.id(), target.get().id());\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```",
+      "expected_output": "Bind or map the selected value once; do not keep repeated target.get() calls.",
+      "files": [],
+      "expectations": [
+        "Removes repeated target.get() calls after the guard",
+        "Uses map plus a helper, or binds the value once after a narrow guard",
+        "Preserves the no-op behavior when target is empty or already current",
+        "Does not introduce null-control-flow"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Use $java-optionals to refactor this fake collection control flow:\n\n```java\nimport java.util.Optional;\n\nfinal class GreetingService {\n    String greeting(Optional<String> name) {\n        for (String value : name.stream().toList()) {\n            return \"Hello \" + value;\n        }\n        return \"Hello guest\";\n    }\n}\n```",
+      "expected_output": "Use name.map(...).orElse(...) and remove the loop over optional.stream().toList().",
+      "files": [],
+      "expectations": [
+        "Recognizes the source is one Optional, not a real collection",
+        "Uses map plus orElse or equivalent direct Optional boundary",
+        "Removes stream().toList() and the loop",
+        "Preserves both greeting strings"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Use $java-optionals to write first-pass Java code for this requirement: return an existing cached document if present. If it is absent, create a document, store it in the cache, and return it.",
+      "expected_output": "Use cache.find(key).orElseGet(() -> createAndStore(key)) or an equivalent lazy branch.",
+      "files": [],
+      "expectations": [
+        "Chooses the Optional boundary before writing presence-check branches",
+        "Keeps document creation and cache mutation lazy with orElseGet or an explicit absent branch",
+        "Does not use orElse(createAndStore(key))",
+        "Does not use isPresent() plus get() or an Optional-to-list workaround"
+      ]
+    }
+  ]
+}
