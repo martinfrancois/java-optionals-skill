@@ -1,0 +1,27 @@
+{
+  "context": "The skill should reject adding a broader functional dependency for a narrow checked-IO Optional cleanup.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Rejects dependency overreach",
+      "max_score": 12,
+      "description": "Says the proposed Vavr Option change should not be accepted as a local cleanup."
+    },
+    {
+      "name": "Preserves checked IO boundary",
+      "max_score": 10,
+      "description": "Explains that prompting is checked IO and the boundary should stay visible in plain Java."
+    },
+    {
+      "name": "Frames dependency as design decision",
+      "max_score": 10,
+      "description": "Notes that adding Vavr or an Option style is a repository-wide design/dependency decision, not a narrow Optional refactor."
+    },
+    {
+      "name": "Keeps narrow branch",
+      "max_score": 8,
+      "description": "Recommends keeping the explicit isEmpty branch with configured.orElseThrow(), or an equivalent plain Java checked-IO branch."
+    }
+  ]
+}
+

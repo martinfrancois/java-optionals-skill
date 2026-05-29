@@ -878,3 +878,63 @@ Ask the agent to create a router that sends to an optional webhook or enqueues l
 
 Expected: use `ifPresentOrElse` or an equivalent side-effect boundary, not `isPresent()` plus a value
 read, null, or fake collection control flow.
+
+### Eval 24: Write Priority Fallback Code
+
+Ask the agent to create code that chooses an optional CLI workspace, then an optional environment
+workspace, then a default workspace.
+
+Expected: use `cli.or(() -> environment).orElse(defaultWorkspace)` or an equivalent direct Optional
+priority boundary. Reject `isPresent()` plus `get()`, null sentinels, and fake collection loops.
+
+### Eval 25: Review Single Optional Stream Loop
+
+Review a proposed cleanup that turns a single `Optional<User>` into `assignee.stream().toList()` and
+loops over it.
+
+Expected: reject the proposal because it is a fake collection workaround. Suggest a direct
+`assignee.map(...).orElse(...)` shape.
+
+### Eval 26: Review Eager Fallback Regression
+
+Review a proposed cleanup that changes a lazy creation branch to `orElse(createAndStore(key))`.
+
+Expected: reject the proposal because creation and cache mutation would run eagerly. Suggest
+`orElseGet(...)` or a named lazy helper.
+
+### Eval 27: Review Null Error Workaround
+
+Review a proposed cleanup that changes absence-as-error Optional code to `orElse(null)` plus a local
+null check.
+
+Expected: reject the proposal and keep `orElseThrow(...)` for the error boundary.
+
+### Eval 28: Write Card Move Plan
+
+Ask the agent to create code that returns the original card when an optional target list is absent
+or already current, otherwise returns a moved card.
+
+Expected: bind the target list once through `map` plus a helper, or another direct value-binding
+boundary. Reject repeated `get()`, null, and fake collection control flow.
+
+### Eval 29: Review Vavr Local Overreach
+
+Review a proposed cleanup that adds Vavr `Option` to handle a single checked-IO Optional fallback.
+
+Expected: reject the dependency/style change as broader than a local Optional cleanup; keep the
+checked boundary explicit.
+
+### Eval 30: Write Clean Label Code
+
+Ask the agent to create a label from an optional raw string by trimming, filtering blanks, and using
+a fallback.
+
+Expected: use `map(String::trim).filter(...).orElse(...)` or equivalent. Reject `isPresent()` plus
+`get()` and `orElse(null)` plus null branching.
+
+### Eval 31: Review Repeated Get Cleanup
+
+Review a proposed cleanup that preserves a guard followed by repeated `target.get()` calls.
+
+Expected: request a direct value-binding shape or bind the selected value once; reject repeated
+Optional reopening after the guard.

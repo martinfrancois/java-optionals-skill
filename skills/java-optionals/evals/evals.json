@@ -280,6 +280,105 @@
         "Does not use null or fake collection/list/loop workarounds",
         "Calls sendWebhook only when webhook is present and enqueueLocal only when absent"
       ]
+    },
+    {
+      "id": 24,
+      "prompt": "Use $java-optionals to create WorkspaceResolver.java.\n\nImplement:\n\n```java\nString resolve(Optional<String> cliWorkspace, Optional<String> environmentWorkspace, String defaultWorkspace)\n```\n\nRules:\n\n- Return the CLI workspace when it is present.\n- Otherwise return the environment workspace when it is present.\n- Otherwise return defaultWorkspace.",
+      "expected_output": "Use cliWorkspace.or(() -> environmentWorkspace).orElse(defaultWorkspace) or an equivalent direct Optional priority boundary.",
+      "files": [],
+      "expectations": [
+        "Creates WorkspaceResolver.java with resolve(Optional<String>, Optional<String>, String)",
+        "Uses cliWorkspace.or(() -> environmentWorkspace).orElse(defaultWorkspace), map/orElseGet, or an equivalent direct Optional priority boundary",
+        "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() for ordinary fallback",
+        "Does not use orElse(null), local null branching, Optional.stream().toList(), lists, or loops to unwrap either Optional",
+        "Returns CLI before environment before default"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.Optional;\n\nfinal class AssigneeFormatter {\n    String label(Optional<User> assignee) {\n        if (assignee.isPresent()) {\n            return assignee.get().displayName();\n        }\n        return \"unassigned\";\n    }\n\n    record User(String displayName) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\n\nfinal class AssigneeFormatter {\n    String label(Optional<User> assignee) {\n        for (User user : assignee.stream().toList()) {\n            return user.displayName();\n        }\n        return \"unassigned\";\n    }\n\n    record User(String displayName) {}\n}\n```",
+      "expected_output": "Reject the single-Optional stream/list loop and suggest assignee.map(User::displayName).orElse(\"unassigned\").",
+      "files": [],
+      "expectations": [
+        "Says the proposed stream().toList() loop should not be accepted",
+        "Explains that assignee is a single Optional, not a real collection source",
+        "Suggests assignee.map(User::displayName).orElse(\"unassigned\") or an equivalent direct Optional boundary",
+        "Does not suggest orElse(null) plus local null branching as the alternative"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.Optional;\n\nfinal class DocumentCache {\n    Document document(String key) {\n        Optional<Document> cached = find(key);\n        if (cached.isPresent()) {\n            return cached.get();\n        }\n        return createAndStore(key);\n    }\n\n    Optional<Document> find(String key) { return Optional.empty(); }\n    Document createAndStore(String key) { return new Document(key); }\n    record Document(String key) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\n\nfinal class DocumentCache {\n    Document document(String key) {\n        return find(key).orElse(createAndStore(key));\n    }\n\n    Optional<Document> find(String key) { return Optional.empty(); }\n    Document createAndStore(String key) { return new Document(key); }\n    record Document(String key) {}\n}\n```",
+      "expected_output": "Reject orElse(createAndStore(key)) because it eagerly runs the side-effecting fallback; suggest orElseGet.",
+      "files": [],
+      "expectations": [
+        "Says the proposed orElse(createAndStore(key)) cleanup should not be accepted",
+        "Explains that orElse evaluates createAndStore(key) even when find(key) is present",
+        "Notes that createAndStore likely mutates cache state or performs creation work, so it must remain lazy",
+        "Suggests find(key).orElseGet(() -> createAndStore(key)) or an equivalent lazy branch"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.Map;\nimport java.util.Optional;\n\nfinal class ConfigLookup {\n    String required(Map<String, String> values, String key) {\n        return Optional.ofNullable(values.get(key))\n                .orElseThrow(() -> new IllegalArgumentException(\"Missing config: \" + key));\n    }\n}\n```\n\nProposed:\n\n```java\nimport java.util.Map;\nimport java.util.Optional;\n\nfinal class ConfigLookup {\n    String required(Map<String, String> values, String key) {\n        String value = Optional.ofNullable(values.get(key)).orElse(null);\n        if (value == null) {\n            throw new IllegalArgumentException(\"Missing config: \" + key);\n        }\n        return value;\n    }\n}\n```",
+      "expected_output": "Reject the orElse(null) plus null-check workaround and keep orElseThrow for the absence-as-error boundary.",
+      "files": [],
+      "expectations": [
+        "Says the proposed change should not be accepted",
+        "Explains that orElse(null) plus value == null is null-style control flow, not an Optional cleanup",
+        "Recommends keeping orElseThrow for the true absence-as-error boundary",
+        "Preserves IllegalArgumentException and the Missing config message"
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "Use $java-optionals to create CardMovePlanner.java.\n\nImplement:\n\n```java\nCard moveIfNeeded(Optional<ListRef> target, Card card)\n```\n\nRules:\n\n- If target is absent, return card.\n- If the target list id equals card.listId(), return card.\n- Otherwise return new Card(card.id(), targetList.id()).\n\nInclude these nested records:\n\n```java\nrecord Card(String id, String listId) {}\nrecord ListRef(String id) {}\n```",
+      "expected_output": "Bind the target ListRef once with target.map(...) plus a helper, or another direct value-binding Optional shape.",
+      "files": [],
+      "expectations": [
+        "Creates CardMovePlanner.java with moveIfNeeded(Optional<ListRef>, Card) and the requested records",
+        "Uses target.map(...).orElse(card), a helper, or another direct shape that binds the ListRef once",
+        "Does not use target.get() or target.orElseThrow() repeatedly after an isPresent()/isEmpty() guard",
+        "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional",
+        "Returns the original card when target is absent or already current, and returns a new Card with the target id otherwise"
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isEmpty()) {\n            return promptForWorkspace(terminal);\n        }\n        return configured.orElseThrow();\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```\n\nProposed:\n\n```java\nimport io.vavr.control.Option;\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        return Option.ofOptional(options.workspaceId())\n                .getOrElseTry(() -> promptForWorkspace(terminal));\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
+      "expected_output": "Reject the Vavr dependency/style change as broader than a local Optional cleanup; keep the checked-IO boundary explicit.",
+      "files": [],
+      "expectations": [
+        "Says the proposed Vavr Option change should not be accepted as a local cleanup",
+        "Explains that prompting is checked IO and the boundary should stay visible in plain Java",
+        "Notes that adding Vavr or an Option style is a repository-wide design/dependency decision",
+        "Recommends keeping the explicit isEmpty branch with configured.orElseThrow(), or an equivalent plain Java checked-IO branch"
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "Use $java-optionals to create LabelFormatter.java.\n\nImplement:\n\n```java\nString label(Optional<String> rawLabel)\n```\n\nRules:\n\n- Trim a present label.\n- If the trimmed label is not blank, return it.\n- If the Optional is absent or the trimmed label is blank, return \"untitled\".",
+      "expected_output": "Use rawLabel.map(String::trim).filter(...).orElse(\"untitled\") or an equivalent direct Optional boundary.",
+      "files": [],
+      "expectations": [
+        "Creates LabelFormatter.java with label(Optional<String>)",
+        "Uses rawLabel.map(String::trim).filter(...).orElse(\"untitled\") or an equivalent direct Optional transform/filter/fallback boundary",
+        "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() for ordinary fallback",
+        "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional",
+        "Returns the trimmed nonblank label when present and untitled for absent or blank labels"
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isEmpty()) {\n            return card;\n        }\n        if (card.listId().equals(target.get().id())) {\n            return card;\n        }\n        return new Card(card.id(), target.get().id());\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isPresent()) {\n            if (!card.listId().equals(target.get().id())) {\n                return new Card(card.id(), target.get().id());\n            }\n        }\n        return card;\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```",
+      "expected_output": "Reject the cleanup because it preserves presence-check/value-read control flow and repeated target.get() calls; suggest binding once.",
+      "files": [],
+      "expectations": [
+        "Says the proposed change should not be accepted as an Optional cleanup",
+        "Explains that the proposed code still uses target.get() for ordinary value reads after a presence check, including repeated reopening",
+        "Suggests target.map(list -> ...).orElse(card), a named helper, or binding ListRef once after a narrow guard",
+        "Does not suggest replacing repeated get() with orElse(null), null checks, Optional.stream().toList(), or a loop over one Optional"
+      ]
     }
   ]
 }

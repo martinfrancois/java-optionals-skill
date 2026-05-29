@@ -56,6 +56,18 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
 9. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
    when no value is read. Once a branch needs the value, map that Optional to the domain action or
    bind the value once; do not turn a selector into a list, stream, or null branch.
+   For priority selectors, prefer a shape like:
+
+   ```java
+   return primary
+           .map(value -> selectedFromPrimary(value))
+           .orElseGet(() -> secondary
+                   .map(value -> selectedFromSecondary(value))
+                   .orElseGet(this::defaultSelection));
+   ```
+
+   If the selected domain object stores the chosen value as an `Optional`, wrap the mapped value
+   with `Optional.of(value)` inside the mapping lambda rather than reopening the original Optional.
 10. For checked-exception or prompting fallbacks, plain branching is acceptable:
 
    ```java
