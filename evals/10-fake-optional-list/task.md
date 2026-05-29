@@ -1,6 +1,6 @@
-# Refactor fake Optional collection control flow
+# Refactor greeting fallback
 
-Use `$java-optionals` to refactor this fake collection control flow:
+Use `$java-optionals` to improve this Optional-based fallback:
 
 ```java
 import java.util.Optional;

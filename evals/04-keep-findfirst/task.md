@@ -1,6 +1,6 @@
-# Review order-dependent findFirst
+# Review route lookup
 
-Use `$java-optionals` to review this method. Should `findFirst()` become `findAny()`? Answer with a
+Use `$java-optionals` to review whether this Optional-returning lookup should change. Answer with a
 short review comment.
 
 ```java

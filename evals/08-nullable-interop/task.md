@@ -1,6 +1,6 @@
-# Review nullable Optional interop
+# Review legacy adapter
 
-Use `$java-optionals` to review this nullable interop boundary:
+Use `$java-optionals` to review this adapter. Should this local Optional handling be changed?
 
 ```java
 import java.util.Optional;

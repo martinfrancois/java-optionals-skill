@@ -1,6 +1,7 @@
-# Refactor lazy Optional upsert
+# Refactor comment upsert
 
-Use `$java-optionals` to refactor this upsert method while preserving laziness:
+Use `$java-optionals` to make this upsert method easier to maintain without changing when
+`update(...)` or `create(...)` are called:
 
 ```java
 import java.util.Optional;

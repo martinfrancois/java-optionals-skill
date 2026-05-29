@@ -802,3 +802,27 @@ final class ReportCommand {
 Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))` and include
 a short checked-exception caveat unless the requested output is code-only. Reject null and fake
 collection workarounds.
+
+### Eval 14: Reject `orElse(null)` As A Proposed Cleanup
+
+Review a proposed change from `isPresent()` plus `get()` to `orElse(null)` plus `value != null`.
+
+Expected: reject the proposal as nullable control flow in another form and suggest
+`user.map(User::displayName).orElse("Anonymous")` or an equivalent direct Optional boundary.
+
+### Eval 15: Reject Loop Overcorrection For A Real Collection Stream
+
+Review a proposed rewrite from a readable `REDACTED_VALUE_OPTIONS.stream().filter(...).findAny()`
+lookup to a manual loop.
+
+Expected: reject the rewrite as unnecessary for this cleanup. The source is a real `Set`, not a
+single Optional being forced through stream syntax, and `findAny()` is appropriate because any
+matching redacted option is equivalent.
+
+### Eval 16: Reject Local Checked-Optional Helper
+
+Review a proposed `CheckedOptionals.mapOrElseGet(...)` helper that adapts `IOException` through
+`UncheckedIOException` only to preserve fluent Optional syntax around a prompting fallback.
+
+Expected: reject the helper-based local cleanup. Keep a narrow explicit branch at the checked-IO
+boundary and do not add Vavr or another functional dependency for this case.

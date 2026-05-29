@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Use $java-optionals to refactor this Java code without changing behavior:\n\n```java\nimport java.util.Optional;\n\nfinal class UserService {\n    String displayName(Optional<User> user) {\n        if (user.isPresent()) {\n            return user.get().displayName();\n        }\n        return \"Anonymous\";\n    }\n\n    record User(String displayName) {}\n}\n```",
+      "prompt": "Use $java-optionals to improve this Java code without changing behavior:\n\n```java\nimport java.util.Optional;\n\nfinal class UserService {\n    String displayName(Optional<User> user) {\n        if (user.isPresent()) {\n            return user.get().displayName();\n        }\n        return \"Anonymous\";\n    }\n\n    record User(String displayName) {}\n}\n```",
       "expected_output": "Use Optional.map(...).orElse(...) to return the display name or Anonymous.",
       "files": [],
       "expectations": [
@@ -15,7 +15,7 @@
     },
     {
       "id": 2,
-      "prompt": "Use $java-optionals to refactor this upsert method while preserving laziness:\n\n```java\nimport java.util.Optional;\n\nfinal class WorkpadService {\n    Result upsert(Optional<Comment> existing, String text) {\n        if (existing.isPresent()) {\n            return update(existing.get(), text);\n        }\n        return create(text);\n    }\n\n    Result update(Comment comment, String text) { return new Result(\"updated\"); }\n    Result create(String text) { return new Result(\"created\"); }\n\n    record Comment(String id) {}\n    record Result(String status) {}\n}\n```",
+      "prompt": "Use $java-optionals to make this upsert method easier to maintain without changing when update(...) or create(...) are called:\n\n```java\nimport java.util.Optional;\n\nfinal class WorkpadService {\n    Result upsert(Optional<Comment> existing, String text) {\n        if (existing.isPresent()) {\n            return update(existing.get(), text);\n        }\n        return create(text);\n    }\n\n    Result update(Comment comment, String text) { return new Result(\"updated\"); }\n    Result create(String text) { return new Result(\"created\"); }\n\n    record Comment(String id) {}\n    record Result(String status) {}\n}\n```",
       "expected_output": "Use existing.map(...).orElseGet(...) so create(text) remains lazy.",
       "files": [],
       "expectations": [
@@ -27,7 +27,7 @@
     },
     {
       "id": 3,
-      "prompt": "Use $java-optionals to review this already-good real collection lookup. Should it be rewritten to a manual loop? Answer with a short review comment even if no code change is needed.\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandRedactor {\n    private static final Set<String> SECRET_OPTIONS = Set.of(\"--token\", \"--api-key\");\n\n    Optional<String> secretOption(String arg) {\n        return SECRET_OPTIONS.stream()\n                .filter(option -> arg.equals(option) || arg.startsWith(option + \"=\"))\n                .findAny();\n    }\n}\n```",
+      "prompt": "Use $java-optionals to review this lookup. Should the Optional usage be changed? Answer with a short review comment even if no code change is needed.\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandRedactor {\n    private static final Set<String> SECRET_OPTIONS = Set.of(\"--token\", \"--api-key\");\n\n    Optional<String> secretOption(String arg) {\n        return SECRET_OPTIONS.stream()\n                .filter(option -> arg.equals(option) || arg.startsWith(option + \"=\"))\n                .findAny();\n    }\n}\n```",
       "expected_output": "Keep the real collection stream and explain that it is not a single Optional workaround.",
       "files": [],
       "expectations": [
@@ -39,7 +39,7 @@
     },
     {
       "id": 4,
-      "prompt": "Use $java-optionals to review this method. Should findFirst become findAny? Answer with a short review comment.\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class RouteSelector {\n    Optional<Route> firstEnabledRoute(List<Route> routes) {\n        return routes.stream()\n                .filter(Route::enabled)\n                .findFirst();\n    }\n\n    record Route(String name, boolean enabled) {}\n}\n```",
+      "prompt": "Use $java-optionals to review whether this Optional-returning lookup should change. Answer with a short review comment.\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class RouteSelector {\n    Optional<Route> firstEnabledRoute(List<Route> routes) {\n        return routes.stream()\n                .filter(Route::enabled)\n                .findFirst();\n    }\n\n    record Route(String name, boolean enabled) {}\n}\n```",
       "expected_output": "Keep findFirst because firstEnabledRoute implies encounter-order priority.",
       "files": [],
       "expectations": [
@@ -51,7 +51,7 @@
     },
     {
       "id": 5,
-      "prompt": "Use $java-optionals to refactor this order-independent lookup and include a one-sentence rationale:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
+      "prompt": "Use $java-optionals to improve this lookup while preserving behavior, and include a concise rationale:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
       "expected_output": "Use findAny because the Set lookup has no first-match priority contract.",
       "files": [],
       "expectations": [
@@ -63,7 +63,7 @@
     },
     {
       "id": 6,
-      "prompt": "Use $java-optionals to remove Optional antipatterns from this prompting method without hiding checked IO. Include a one-sentence rationale for the checked-IO boundary:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
+      "prompt": "Use $java-optionals to improve this method's Optional handling without changing its exception contract. Include a concise rationale:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
       "expected_output": "Use a narrow explicit isEmpty branch and preserve throws IOException.",
       "files": [],
       "expectations": [
@@ -75,7 +75,7 @@
     },
     {
       "id": 7,
-      "prompt": "Use $java-optionals to refactor this required config lookup:\n\n```java\nimport java.util.Map;\nimport java.util.Optional;\n\nfinal class ConfigLookup {\n    String required(Map<String, String> values, String key) {\n        Optional<String> value = Optional.ofNullable(values.get(key));\n        if (value.isPresent()) {\n            return value.get();\n        }\n        throw new IllegalArgumentException(\"Missing config: \" + key);\n    }\n}\n```",
+      "prompt": "Use $java-optionals to improve this lookup without changing its error behavior:\n\n```java\nimport java.util.Map;\nimport java.util.Optional;\n\nfinal class ConfigLookup {\n    String required(Map<String, String> values, String key) {\n        Optional<String> value = Optional.ofNullable(values.get(key));\n        if (value.isPresent()) {\n            return value.get();\n        }\n        throw new IllegalArgumentException(\"Missing config: \" + key);\n    }\n}\n```",
       "expected_output": "Use Optional.ofNullable(...).orElseThrow(...) and preserve the exception message.",
       "files": [],
       "expectations": [
@@ -87,7 +87,7 @@
     },
     {
       "id": 8,
-      "prompt": "Use $java-optionals to review this nullable interop boundary:\n\n```java\nimport java.util.Optional;\n\nfinal class LegacyAdapter {\n    LegacyRequest toLegacy(Optional<String> comment) {\n        return new LegacyRequest(comment.orElse(null));\n    }\n\n    record LegacyRequest(String nullableComment) {}\n}\n```",
+      "prompt": "Use $java-optionals to review this adapter. Should this local Optional handling be changed?\n\n```java\nimport java.util.Optional;\n\nfinal class LegacyAdapter {\n    LegacyRequest toLegacy(Optional<String> comment) {\n        return new LegacyRequest(comment.orElse(null));\n    }\n\n    record LegacyRequest(String nullableComment) {}\n}\n```",
       "expected_output": "Allow isolated nullable interop if LegacyRequest genuinely uses null for absent, and do not add extra null-control-flow.",
       "files": [],
       "expectations": [
@@ -99,7 +99,7 @@
     },
     {
       "id": 9,
-      "prompt": "Use $java-optionals to refactor this method so it does not repeatedly read the same Optional:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isEmpty()) {\n            return card;\n        }\n        if (card.listId().equals(target.get().id())) {\n            return card;\n        }\n        return new Card(card.id(), target.get().id());\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```",
+      "prompt": "Use $java-optionals to improve this method without changing behavior:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isEmpty()) {\n            return card;\n        }\n        if (card.listId().equals(target.get().id())) {\n            return card;\n        }\n        return new Card(card.id(), target.get().id());\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```",
       "expected_output": "Bind or map the selected value once; do not keep repeated target.get() calls.",
       "files": [],
       "expectations": [
@@ -111,7 +111,7 @@
     },
     {
       "id": 10,
-      "prompt": "Use $java-optionals to refactor this fake collection control flow:\n\n```java\nimport java.util.Optional;\n\nfinal class GreetingService {\n    String greeting(Optional<String> name) {\n        for (String value : name.stream().toList()) {\n            return \"Hello \" + value;\n        }\n        return \"Hello guest\";\n    }\n}\n```",
+      "prompt": "Use $java-optionals to improve this Optional-based fallback:\n\n```java\nimport java.util.Optional;\n\nfinal class GreetingService {\n    String greeting(Optional<String> name) {\n        for (String value : name.stream().toList()) {\n            return \"Hello \" + value;\n        }\n        return \"Hello guest\";\n    }\n}\n```",
       "expected_output": "Use name.map(...).orElse(...) and remove the loop over optional.stream().toList().",
       "files": [],
       "expectations": [
@@ -135,7 +135,7 @@
     },
     {
       "id": 12,
-      "prompt": "Use $java-optionals to refactor this selector Optional code without changing behavior:\n\n```java\nimport java.nio.file.Path;\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class DiagnosticSelector {\n    Selection select(Manifest manifest, Optional<String> board, Optional<Path> workflow, Path configDir) {\n        if (board.isPresent() && workflow.isPresent()) {\n            throw new IllegalArgumentException(\"--board and --workflow cannot be used together.\");\n        }\n        if (board.isPresent()) {\n            return byBoard(manifest, board.orElseThrow());\n        }\n        if (workflow.isPresent()) {\n            return byWorkflow(manifest, workflow.orElseThrow(), configDir);\n        }\n        return new Selection(\"none\", manifest.boards(), Optional.empty());\n    }\n\n    Selection byBoard(Manifest manifest, String board) { return new Selection(\"board\", List.of(), Optional.empty()); }\n    Selection byWorkflow(Manifest manifest, Path workflow, Path configDir) { return new Selection(\"workflow\", List.of(), Optional.of(workflow)); }\n    record Manifest(List<String> boards) {}\n    record Selection(String kind, List<String> boards, Optional<Path> workflow) {}\n}\n```",
+      "prompt": "Use $java-optionals to improve this selection code without changing behavior:\n\n```java\nimport java.nio.file.Path;\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class DiagnosticSelector {\n    Selection select(Manifest manifest, Optional<String> board, Optional<Path> workflow, Path configDir) {\n        if (board.isPresent() && workflow.isPresent()) {\n            throw new IllegalArgumentException(\"--board and --workflow cannot be used together.\");\n        }\n        if (board.isPresent()) {\n            return byBoard(manifest, board.orElseThrow());\n        }\n        if (workflow.isPresent()) {\n            return byWorkflow(manifest, workflow.orElseThrow(), configDir);\n        }\n        return new Selection(\"none\", manifest.boards(), Optional.empty());\n    }\n\n    Selection byBoard(Manifest manifest, String board) { return new Selection(\"board\", List.of(), Optional.empty()); }\n    Selection byWorkflow(Manifest manifest, Path workflow, Path configDir) { return new Selection(\"workflow\", List.of(), Optional.of(workflow)); }\n    record Manifest(List<String> boards) {}\n    record Selection(String kind, List<String> boards, Optional<Path> workflow) {}\n}\n```",
       "expected_output": "Keep the boolean-only conflict check, then use board.map(...).orElseGet(...) with a nested workflow Optional boundary.",
       "files": [],
       "expectations": [
@@ -148,7 +148,7 @@
     },
     {
       "id": 13,
-      "prompt": "Use $java-optionals to refactor this Optional output path code and include a one-sentence checked-exception caveat:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
+      "prompt": "Use $java-optionals to improve this output handling and include a concise rationale:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
       "expected_output": "Use output.ifPresentOrElse(path -> write(path, report), () -> print(report)) or an equivalent side-effect boundary.",
       "files": [],
       "expectations": [
@@ -157,6 +157,43 @@
         "Preserves both write and print branches",
         "Does not introduce null-control-flow or a fake collection workaround",
         "Mentions that explicit branching may be clearer if checked exceptions are involved"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Should it be accepted?\n\nBefore:\n\n```java\nimport java.util.Optional;\n\nfinal class UserService {\n    String displayName(Optional<User> user) {\n        if (user.isPresent()) {\n            return user.get().displayName();\n        }\n        return \"Anonymous\";\n    }\n\n    record User(String displayName) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\n\nfinal class UserService {\n    String displayName(Optional<User> user) {\n        User value = user.orElse(null);\n        if (value != null) {\n            return value.displayName();\n        }\n        return \"Anonymous\";\n    }\n\n    record User(String displayName) {}\n}\n```",
+      "expected_output": "Reject the proposed cleanup because it replaces isPresent()+get() with orElse(null)+null branching; suggest user.map(User::displayName).orElse(\"Anonymous\").",
+      "files": [],
+      "expectations": [
+        "Clearly says the proposed change should not be accepted",
+        "Explains that orElse(null) plus value != null is nullable control flow in another form",
+        "Suggests user.map(User::displayName).orElse(\"Anonymous\") or an equivalent Optional boundary",
+        "Preserves the Anonymous fallback"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Use $java-optionals to review this proposed rewrite. Should it be accepted?\n\nBefore:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandOptionMatcher {\n    private static final Set<String> REDACTED_VALUE_OPTIONS = Set.of(\n            \"--token\", \"--key\", \"--workflow\", \"--config-dir\", \"--state-home\", \"--output\");\n\n    static Optional<String> redactedCommandValueOption(String arg) {\n        return REDACTED_VALUE_OPTIONS.stream()\n                .filter(option -> arg.equals(option) || arg.startsWith(option + \"=\"))\n                .findAny();\n    }\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class CommandOptionMatcher {\n    private static final Set<String> REDACTED_VALUE_OPTIONS = Set.of(\n            \"--token\", \"--key\", \"--workflow\", \"--config-dir\", \"--state-home\", \"--output\");\n\n    static Optional<String> redactedCommandValueOption(String arg) {\n        for (String option : REDACTED_VALUE_OPTIONS) {\n            if (arg.equals(option) || arg.startsWith(option + \"=\")) {\n                return Optional.of(option);\n            }\n        }\n        return Optional.empty();\n    }\n}\n```",
+      "expected_output": "Reject the proposed loop rewrite; keep the stream over the real Set and findAny because any matching redacted option is equivalent.",
+      "files": [],
+      "expectations": [
+        "Says the proposed loop rewrite is unnecessary or should not be accepted",
+        "Recognizes REDACTED_VALUE_OPTIONS is a real collection source",
+        "Keeps or recommends the stream with findAny",
+        "Does not claim Optional-returning streams should generally become loops"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Use $java-optionals to review this proposed helper-based refactor. Should it be accepted as a local cleanup?\n\nBefore:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```\n\nProposed:\n\n```java\nimport java.io.IOException;\nimport java.io.UncheckedIOException;\nimport java.util.Optional;\nimport java.util.function.Function;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        return CheckedOptionals.mapOrElseGet(\n                options.workspaceId(),\n                id -> id,\n                () -> promptForWorkspace(terminal));\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n\nfinal class CheckedOptionals {\n    static <T, R> R mapOrElseGet(Optional<T> value, Function<T, R> present, CheckedSupplier<R> absent)\n            throws IOException {\n        try {\n            return value.map(present).orElseGet(() -> unchecked(absent));\n        } catch (UncheckedIOException e) {\n            throw e.getCause();\n        }\n    }\n\n    private static <R> R unchecked(CheckedSupplier<R> supplier) {\n        try {\n            return supplier.get();\n        } catch (IOException e) {\n            throw new UncheckedIOException(e);\n        }\n    }\n\n    @FunctionalInterface\n    interface CheckedSupplier<T> {\n        T get() throws IOException;\n    }\n}\n```",
+      "expected_output": "Reject the helper-based local cleanup; keep a narrow explicit checked-IO branch and do not add unchecked wrappers or Vavr-style dependencies for this case.",
+      "files": [],
+      "expectations": [
+        "Says the helper-based refactor should not be accepted as a narrow local cleanup",
+        "Explains that prompting is checked IO and should remain visible",
+        "Rejects UncheckedIOException adaptation solely to keep fluent Optional syntax",
+        "Suggests an explicit isEmpty branch with configured.orElseThrow() or equivalent",
+        "Does not suggest adding Vavr or another functional dependency for this local cleanup"
       ]
     }
   ]

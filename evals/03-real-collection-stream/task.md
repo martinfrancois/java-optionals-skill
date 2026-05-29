@@ -1,7 +1,7 @@
-# Review real collection Optional stream
+# Review command option lookup
 
-Use `$java-optionals` to review this already-good real collection lookup. Should it be rewritten to
-a manual loop? Answer with a short review comment even if no code change is needed.
+Use `$java-optionals` to review this lookup. Should the Optional usage be changed? Answer with a
+short review comment even if no code change is needed.
 
 ```java
 import java.util.Optional;

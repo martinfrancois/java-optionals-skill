@@ -1,6 +1,6 @@
-# Refactor required config Optional
+# Refactor required config lookup
 
-Use `$java-optionals` to refactor this required config lookup:
+Use `$java-optionals` to improve this lookup without changing its error behavior:
 
 ```java
 import java.util.Map;

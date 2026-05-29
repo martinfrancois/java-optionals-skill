@@ -1,7 +1,6 @@
-# Refactor Optional output side effects
+# Refactor report output
 
-Use `$java-optionals` to refactor this Optional output path code and include a one-sentence
-checked-exception caveat:
+Use `$java-optionals` to improve this output handling and include a concise rationale:
 
 ```java
 import java.nio.file.Path;

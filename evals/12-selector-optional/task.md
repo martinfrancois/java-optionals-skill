@@ -1,6 +1,6 @@
-# Refactor selector Optional boundaries
+# Refactor diagnostic selection
 
-Use `$java-optionals` to refactor this selector Optional code without changing behavior:
+Use `$java-optionals` to improve this selection code without changing behavior:
 
 ```java
 import java.nio.file.Path;

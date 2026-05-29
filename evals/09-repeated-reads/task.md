@@ -1,6 +1,6 @@
-# Refactor repeated Optional value reads
+# Refactor card move
 
-Use `$java-optionals` to refactor this method so it does not repeatedly read the same Optional:
+Use `$java-optionals` to improve this method without changing behavior:
 
 ```java
 import java.util.Optional;

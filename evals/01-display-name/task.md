@@ -1,6 +1,6 @@
-# Refactor Optional display name
+# Refactor display name
 
-Use `$java-optionals` to refactor this Java code without changing behavior:
+Use `$java-optionals` to improve this Java code without changing behavior:
 
 ```java
 import java.util.Optional;
