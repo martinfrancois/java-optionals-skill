@@ -27,6 +27,8 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    - nullable interop with an API that genuinely requires `null`.
 2. When writing new code, choose the Optional boundary before writing branches. Decide whether
    absence means fallback, error, side effect, prompt/IO, or nullable interop.
+   Do not start with an `isPresent()` skeleton and clean it up later; write the boundary directly
+   when the intent is ordinary fallback, transformation, or side-effect dispatch.
 3. Reject ordinary-control-flow workarounds:
    - `optional.isPresent()` or `optional.isEmpty()` followed by `get()` or `orElseThrow()`;
    - `optional.orElse(null)` followed by local `value != null` branching;
@@ -68,7 +70,7 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    another checked operation, and the enclosing method should honestly expose that boundary. When
    using this exception, say why plain branching is clearer than hiding checked exceptions in an
    unchecked wrapper or local helper unless the target output format is code-only.
-9. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
+11. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
    absence. Do not add local null branching around it. If changing that boundary would require
    altering records, DTOs, serialization, or external APIs, call that out as a separate API/design
    decision rather than bundling it into an Optional cleanup.

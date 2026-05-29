@@ -205,6 +205,81 @@
         "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional",
         "Returns @handle for present nonblank handles, displayName for present blank handles, and unassigned when absent"
       ]
+    },
+    {
+      "id": 18,
+      "prompt": "Use $java-optionals to create DiagnosticSelector.java.\n\nImplement:\n\n```java\nSelection select(Optional<String> board, Optional<Path> workflow, List<String> allBoards)\n```\n\nRules:\n\n- If both selectors are present, throw IllegalArgumentException(\"--board and --workflow cannot be used together.\").\n- If board is present, return new Selection(\"board\", board, Optional.empty()).\n- If workflow is present, return new Selection(\"workflow\", Optional.empty(), workflow).\n- If neither selector is present, return new Selection(\"all\", Optional.empty(), Optional.empty()).\n\nInclude imports and this nested record:\n\n```java\nrecord Selection(String kind, Optional<String> board, Optional<Path> workflow) {}\n```",
+      "expected_output": "Create DiagnosticSelector.java with a boolean-only conflict check and direct Optional boundaries for board/workflow value branches.",
+      "files": [],
+      "expectations": [
+        "Creates DiagnosticSelector.java with select(Optional<String>, Optional<Path>, List<String>) and Selection record",
+        "Preserves the exact conflict exception message",
+        "Uses map/orElseGet or another direct Optional/value-binding shape for board and workflow branches after the conflict check",
+        "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() for selector value branches",
+        "Does not use null or fake collection/list/loop workarounds"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Use $java-optionals to create CommandOptionMatcher.java.\n\nImplement:\n\n```java\nstatic Optional<String> redactedValueOption(String arg)\n```\n\nThe class should contain this option set:\n\n```java\nprivate static final Set<String> REDACTED_VALUE_OPTIONS = Set.of(\n        \"--token\", \"--key\", \"--workflow\", \"--config-dir\", \"--state-home\", \"--output\");\n```\n\nReturn the matching option when arg equals the option or starts with option + \"=\". Return Optional.empty() otherwise.",
+      "expected_output": "Use a readable stream over REDACTED_VALUE_OPTIONS with findAny and no null sentinel.",
+      "files": [],
+      "expectations": [
+        "Creates CommandOptionMatcher.java with the requested set and method",
+        "Uses a real collection stream or equivalent readable real collection lookup",
+        "Uses findAny because any matching redacted option is equivalent",
+        "Matches exact option arguments and option=value forms",
+        "Does not use null sentinels or local null-control-flow"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Use $java-optionals to review this adapter. Create review.md with a short review decision and rationale. Do not modify the Java code.\n\n```java\nimport java.util.Optional;\n\nfinal class AuditAdapter {\n    AuditEvent toLegacy(Optional<String> comment) {\n        return new AuditEvent(comment.orElse(null));\n    }\n\n    record AuditEvent(String nullableComment) {}\n}\n```",
+      "expected_output": "Allow the isolated nullable interop boundary if AuditEvent uses null for absence; do not add null branching or bundle an API redesign.",
+      "files": [],
+      "expectations": [
+        "Recognizes this can be acceptable if AuditEvent uses null to represent absent comments",
+        "Does not suggest extra value != null branching",
+        "Separates any AuditEvent redesign as a separate API/design decision",
+        "Does not claim every orElse(null) is forbidden regardless of boundary context"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.Optional;\n\nfinal class LegacyAdapter {\n    LegacyRequest toLegacy(Optional<String> comment) {\n        return new LegacyRequest(comment.orElse(null));\n    }\n\n    record LegacyRequest(String nullableComment) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\n\nfinal class LegacyAdapter {\n    LegacyRequest toLegacy(Optional<String> comment) {\n        return new LegacyRequest(comment);\n    }\n\n    record LegacyRequest(Optional<String> comment) {}\n}\n```",
+      "expected_output": "Reject bundling the LegacyRequest API/DTO change into a local Optional cleanup.",
+      "files": [],
+      "expectations": [
+        "Says the proposed change should not be accepted as a local Optional cleanup",
+        "Recognizes the original orElse(null) can be isolated legacy interop",
+        "Does not endorse changing the DTO/record field to Optional as part of this cleanup",
+        "Frames DTO redesign as separate scoped API/design work"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "Use $java-optionals to review this proposed change. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class ContactSelector {\n    Optional<Contact> primaryContact(List<Contact> contacts) {\n        return contacts.stream()\n                .filter(Contact::verified)\n                .findFirst();\n    }\n\n    record Contact(String email, boolean verified) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class ContactSelector {\n    Optional<Contact> primaryContact(List<Contact> contacts) {\n        return contacts.stream()\n                .filter(Contact::verified)\n                .findAny();\n    }\n\n    record Contact(String email, boolean verified) {}\n}\n```",
+      "expected_output": "Reject the findAny change because primaryContact and List encounter order imply priority.",
+      "files": [],
+      "expectations": [
+        "Says the proposed findAny change should not be accepted",
+        "Explains that primaryContact plus List order implies first verified contact priority",
+        "Does not rewrite the stream to a loop",
+        "Mentions testing two verified contacts where the earlier one wins or otherwise notes priority behavior"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "Use $java-optionals to create DeliveryRouter.java.\n\nImplement:\n\n```java\nvoid route(Optional<URI> webhook, Message message)\n```\n\nRules:\n\n- If webhook is present, call sendWebhook(webhookUri, message).\n- If webhook is absent, call enqueueLocal(message).\n\nInclude these members:\n\n```java\nvoid sendWebhook(URI webhookUri, Message message) {}\nvoid enqueueLocal(Message message) {}\nrecord Message(String body) {}\n```",
+      "expected_output": "Use webhook.ifPresentOrElse(...) or an equivalent Optional side-effect boundary with no value-read branch.",
+      "files": [],
+      "expectations": [
+        "Creates DeliveryRouter.java with route(Optional<URI>, Message), sendWebhook, enqueueLocal, and Message record",
+        "Uses ifPresentOrElse or an equivalent Optional side-effect boundary",
+        "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() for the webhook URI",
+        "Does not use null or fake collection/list/loop workarounds",
+        "Calls sendWebhook only when webhook is present and enqueueLocal only when absent"
+      ]
     }
   ]
 }

@@ -834,3 +834,47 @@ Expected: use a direct Optional boundary such as `assignee.map(...).orElse("unas
 `"@" + handle` when the present user's handle is not blank, return `displayName()` for a present
 user with a blank handle, and return `"unassigned"` when absent. Reject `isPresent()` plus `get()`,
 `orElse(null)` plus null branching, and fake single-Optional collection/loop workarounds.
+
+### Eval 18: Write First-Pass Selector Code
+
+Ask the agent to create a diagnostics selector with optional board/workflow selectors and a
+mutual-exclusion check.
+
+Expected: keep the conflict check as boolean-only validation, then use direct Optional boundaries
+for the value-reading board/workflow branches. Reject `get()`, `orElseThrow()`, null, and fake
+collection/list unwrapping for selector values.
+
+### Eval 19: Write First-Pass Redacted Option Matcher
+
+Ask the agent to create a redacted command option matcher from a real `Set<String>`.
+
+Expected: use a readable real collection lookup ending in `findAny()`. Reject null sentinels and do
+not turn this into a single-Optional workaround.
+
+### Eval 20: Review Legacy Null Boundary
+
+Ask the agent to review an isolated `new AuditEvent(comment.orElse(null))` adapter.
+
+Expected: allow it when the legacy record genuinely uses `null` for absence, avoid extra null
+branching, and frame any API redesign as separate work.
+
+### Eval 21: Review Optional DTO Overreach
+
+Review a proposed cleanup that changes a legacy request record field from nullable `String` to
+`Optional<String>`.
+
+Expected: reject the bundled API/DTO change as out of scope for a local Optional cleanup.
+
+### Eval 22: Review `findAny()` Order Regression
+
+Review a proposed change from `findFirst()` to `findAny()` in a `primaryContact(List<Contact>)`
+lookup.
+
+Expected: reject the change because the method name and list order imply first-match priority.
+
+### Eval 23: Write First-Pass Output Routing
+
+Ask the agent to create a router that sends to an optional webhook or enqueues locally.
+
+Expected: use `ifPresentOrElse` or an equivalent side-effect boundary, not `isPresent()` plus a value
+read, null, or fake collection control flow.
