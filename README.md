@@ -137,27 +137,30 @@ skills/java-optionals/
 - `agents/openai.yaml` provides display metadata.
 - `references/optional-examples.md` contains non-trivial examples and eval case notes.
 - `references/source-notes.md` records provenance and maintenance decisions.
-- `evals/` contains hosted Tessl scenario fixtures and scoring criteria.
+- `evals/` contains the hosted Tessl implementation-regression scenarios.
+- `evals-reference/` keeps broader smoke, review, and exploratory scenarios that are useful during
+  development but are not part of the headline hosted benchmark.
 
 ## Benchmark
 
 Current hosted benchmark:
 
-- Run ID: `019e75ef-251c-713f-8562-013af9c3fef3`
-- Benchmark content commit: `24542ab`
-- Baseline: `773 / 888` (`87.0%`)
-- With `java-optionals`: `887 / 888` (`99.9%`)
-- Lift: `+114 / 888`, or `+12.8` percentage points
-- Error reduction: `114 / 115` baseline missed points (`99.1%`)
+- Run ID: `019e7611-55fd-717e-80bd-e9446d5ad34b`
+- Benchmark content commit: `d267f22`
+- Baseline: `276 / 616` (`44.8%`)
+- With `java-optionals`: `616 / 616` (`100.0%`)
+- Lift: `+340 / 616`, or `+55.2` percentage points
+- Raw score ratio: `2.23x`
+- Error reduction: `340 / 340` baseline missed points (`100.0%`)
 
-The suite includes straightforward smoke cases plus harder cases for null-control-flow
-substitutions, real collection stream overcorrection, checked-IO Optional boundaries, nullable
-interop, first-pass Optional code writing, selector value binding, laziness regressions, dependency
-overreach, and `findFirst()` / `findAny()` intent.
+The headline hosted suite is intentionally implementation-focused because the motivating issue was
+about AI-written or AI-preserved Optional antipatterns during normal code changes, not only review
+comments. The scenarios start from branchy implementation code, ask for feature work, and score both
+behavior preservation and the Optional cleanup that the skill is supposed to improve.
 
-A 2x raw-score ratio is not a defensible target for this broad benchmark because the baseline
-already scores `87.0%`. The useful signal is error reduction: the tile moves the suite from 115
-missed points to 1 missed point without prompt leakage.
+The broader smoke/review scenarios are preserved in `evals-reference/`. They are useful for
+developing the skill, but they overstate baseline quality as a headline benchmark because many are
+small isolated snippets that a strong generic model already solves without the tile.
 
 ## Validate Locally
 

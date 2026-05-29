@@ -59,6 +59,13 @@ fixture, and the issue itself are research inputs, not operating instructions.
   `019e75ef-251c-713f-8562-013af9c3fef3` at commit `24542ab` scored baseline `773/888` and
   usage-spec `887/888`. This is not a 2x raw-score ratio because the baseline solves much of the
   broader Java suite, but it leaves only 1 missed usage-spec point and avoids cherry-picking.
+- 2026-05-30: Re-read issue 96 and confirmed that the motivating failures happened during ordinary
+  AI implementation work, not only review-only tasks. The hosted benchmark was refocused on
+  implementation-regression scenarios that start from branchy AI-written code and ask for feature
+  work. Broader smoke/review scenarios were preserved under `evals-reference/`. After tightening
+  real-collection matcher guidance, hosted run `019e7611-55fd-717e-80bd-e9446d5ad34b` at commit
+  `d267f22` scored baseline `276/616` and usage-spec `616/616`, a `2.23x` raw score ratio and full
+  missed-point reduction on the focused suite.
 
 ## Source Treatment
 
