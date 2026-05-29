@@ -132,6 +132,32 @@
         "Does not use orElse(createAndStore(key))",
         "Does not use isPresent() plus get() or an Optional-to-list workaround"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "Use $java-optionals to refactor this selector Optional code without changing behavior:\n\n```java\nimport java.nio.file.Path;\nimport java.util.List;\nimport java.util.Optional;\n\nfinal class DiagnosticSelector {\n    Selection select(Manifest manifest, Optional<String> board, Optional<Path> workflow, Path configDir) {\n        if (board.isPresent() && workflow.isPresent()) {\n            throw new IllegalArgumentException(\"--board and --workflow cannot be used together.\");\n        }\n        if (board.isPresent()) {\n            return byBoard(manifest, board.orElseThrow());\n        }\n        if (workflow.isPresent()) {\n            return byWorkflow(manifest, workflow.orElseThrow(), configDir);\n        }\n        return new Selection(\"none\", manifest.boards(), Optional.empty());\n    }\n\n    Selection byBoard(Manifest manifest, String board) { return new Selection(\"board\", List.of(), Optional.empty()); }\n    Selection byWorkflow(Manifest manifest, Path workflow, Path configDir) { return new Selection(\"workflow\", List.of(), Optional.of(workflow)); }\n    record Manifest(List<String> boards) {}\n    record Selection(String kind, List<String> boards, Optional<Path> workflow) {}\n}\n```",
+      "expected_output": "Keep the boolean-only conflict check, then use board.map(...).orElseGet(...) with a nested workflow Optional boundary.",
+      "files": [],
+      "expectations": [
+        "Keeps the board/workflow mutual-exclusion check and preserves its exception message",
+        "Recognizes that boolean-only presence validation may stay as isPresent() checks",
+        "Removes presence-check plus orElseThrow value reads from selector branches",
+        "Does not introduce orElse(null) or a local null branch",
+        "Does not convert either single Optional selector to stream().toList(), a list, or a loop"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Use $java-optionals to refactor this Optional output path code:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
+      "expected_output": "Use output.ifPresentOrElse(path -> write(path, report), () -> print(report)) or an equivalent side-effect boundary.",
+      "files": [],
+      "expectations": [
+        "Uses ifPresentOrElse or an equivalent Optional side-effect boundary",
+        "Removes isPresent() plus orElseThrow value read",
+        "Preserves both write and print branches",
+        "Does not introduce null-control-flow or a fake collection workaround",
+        "Mentions that explicit branching may be clearer if checked exceptions are involved"
+      ]
     }
   ]
 }

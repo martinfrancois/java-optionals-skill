@@ -26,6 +26,8 @@ modes from real Java refactors:
 - replacing readable real collection streams with worse loops;
 - using `findFirst()` when encounter order does not matter;
 - hiding checked exceptions only to preserve fluent Optional syntax;
+- confusing boolean-only Optional validation with value-reading selector branches;
+- using presence checks plus value reads where `ifPresentOrElse` would express side-effect branches;
 - adding broad functional dependencies for narrow local cleanups.
 
 ## Layout
@@ -61,7 +63,7 @@ tessl project create --workspace martinfrancois java-optionals-skill
 tessl eval run --variant with-context --variant without-context .
 ```
 
-Current benchmark run:
+Previous benchmark run, before adding the selector/output-path scenarios:
 
 - Run ID: `019e759f-9c13-7260-89dc-476093ad6424`
 - Commit: `978ec33`

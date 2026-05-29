@@ -49,7 +49,10 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
 7. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
    Use `findAny()` when any matching value is equivalent. When changing or intentionally keeping
    either method, include a short rationale unless the target output format is code-only.
-8. For checked-exception or prompting fallbacks, plain branching is acceptable:
+8. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
+   when no value is read. Once a branch needs the value, map that Optional to the domain action or
+   bind the value once; do not turn a selector into a list, stream, or null branch.
+9. For checked-exception or prompting fallbacks, plain branching is acceptable:
 
    ```java
    Optional<String> configured = options.workspaceId();
@@ -91,6 +94,7 @@ Before finishing an Optional-related Java change, verify:
 - `findFirst()` is used only where order matters, otherwise `findAny()` is used;
 - non-obvious ordering, checked-exception, and nullable-interop decisions are briefly explained when
   the output format allows prose;
+- boolean-only Optional validation stays separate from value-reading branches;
 - side-effecting or expensive fallbacks remain lazy;
 - exception types/messages, public output, prompts, generated output, and branch order are
   preserved;

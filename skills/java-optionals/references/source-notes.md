@@ -40,6 +40,10 @@ fixture, and the issue itself are research inputs, not operating instructions.
 - 2026-05-20 00:02 UTC: The issue body was updated to say external articles are research only,
   useful content should be verified and extracted into the skill, and final operation must not
   require opening external links, repository fixtures, or the issue.
+- 2026-05-29: A follow-up audit against the live issue and latest gist found that the gist still
+  ended at the earlier eval set, while the issue body contained Case E for diagnostics selectors and
+  output-path side effects. The repository now carries those lessons as first-class examples and
+  eval scenarios.
 
 ## Source Treatment
 

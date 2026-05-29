@@ -321,6 +321,97 @@ final class WorkspaceSelector {
 Why not as a local cleanup: it introduces a second Optional-like type and a broader repository style
 decision. Evaluate that separately instead of adding a dependency for a few call sites.
 
+### 5. Selector And Output Optionals Need Different Boundaries
+
+Starting selector code:
+
+```java
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
+
+final class DiagnosticSelector {
+    Selection select(Manifest manifest, Optional<String> board, Optional<Path> workflow, Path configDir) {
+        if (board.isPresent() && workflow.isPresent()) {
+            throw new IllegalArgumentException("--board and --workflow cannot be used together.");
+        }
+        if (board.isPresent()) {
+            return byBoard(manifest, board.orElseThrow());
+        }
+        if (workflow.isPresent()) {
+            return byWorkflow(manifest, workflow.orElseThrow(), configDir);
+        }
+        return new Selection("none", manifest.boards(), Optional.empty());
+    }
+
+    Selection byBoard(Manifest manifest, String board) { return new Selection("board", List.of(), Optional.empty()); }
+    Selection byWorkflow(Manifest manifest, Path workflow, Path configDir) { return new Selection("workflow", List.of(), Optional.of(workflow)); }
+    record Manifest(List<String> boards) {}
+    record Selection(String kind, List<String> boards, Optional<Path> workflow) {}
+}
+```
+
+Bad attempted fix:
+
+```java
+List<String> boards = board.stream().toList();
+if (!boards.isEmpty()) {
+    return byBoard(manifest, boards.getFirst());
+}
+```
+
+Better final shape:
+
+```java
+Selection select(Manifest manifest, Optional<String> board, Optional<Path> workflow, Path configDir) {
+    if (board.isPresent() && workflow.isPresent()) {
+        throw new IllegalArgumentException("--board and --workflow cannot be used together.");
+    }
+    return board
+            .map(selector -> byBoard(manifest, selector))
+            .orElseGet(() -> workflow
+                    .map(path -> byWorkflow(manifest, path, configDir))
+                    .orElseGet(() -> new Selection("none", manifest.boards(), Optional.empty())));
+}
+```
+
+Why good: the mutual-exclusion check stays a boolean-only presence check, but each value-reading
+branch uses the Optional as the selector boundary. The no-selector branch stays lazy, and no fake
+collection or null workaround is introduced.
+
+Related output-sink starting code:
+
+```java
+import java.nio.file.Path;
+import java.util.Optional;
+
+final class ReportCommand {
+    void finish(Optional<Path> output, String report) {
+        if (output.isPresent()) {
+            write(output.orElseThrow(), report);
+        } else {
+            print(report);
+        }
+    }
+
+    void write(Path path, String report) {}
+    void print(String report) {}
+}
+```
+
+Better final shape:
+
+```java
+void finish(Optional<Path> output, String report) {
+    output.ifPresentOrElse(
+            path -> write(path, report),
+            () -> print(report));
+}
+```
+
+Why good: the Optional directly chooses between two side-effect branches. If either branch has
+checked-exception friction, reconsider whether explicit branching is clearer.
+
 ## Eval Scoring Rubric
 
 A good eval output:
@@ -648,3 +739,62 @@ private Document createAndStore(String key) {
 
 Reject `isPresent()` plus `get()`, `orElse(createAndStore(key))`, and `optional.stream().toList()`.
 The fallback mutates cache state, so it must stay lazy.
+
+### Eval 12: Selector Optional Should Not Become Fake Collection Control Flow
+
+Input:
+
+```java
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
+
+final class DiagnosticSelector {
+    Selection select(Manifest manifest, Optional<String> board, Optional<Path> workflow, Path configDir) {
+        if (board.isPresent() && workflow.isPresent()) {
+            throw new IllegalArgumentException("--board and --workflow cannot be used together.");
+        }
+        if (board.isPresent()) {
+            return byBoard(manifest, board.orElseThrow());
+        }
+        if (workflow.isPresent()) {
+            return byWorkflow(manifest, workflow.orElseThrow(), configDir);
+        }
+        return new Selection("none", manifest.boards(), Optional.empty());
+    }
+
+    Selection byBoard(Manifest manifest, String board) { return new Selection("board", List.of(), Optional.empty()); }
+    Selection byWorkflow(Manifest manifest, Path workflow, Path configDir) { return new Selection("workflow", List.of(), Optional.of(workflow)); }
+    record Manifest(List<String> boards) {}
+    record Selection(String kind, List<String> boards, Optional<Path> workflow) {}
+}
+```
+
+Expected: keep the boolean-only conflict check, then use `board.map(...).orElseGet(...)` with a
+nested workflow Optional boundary. Reject `orElse(null)` and `optional.stream().toList()` rewrites.
+
+### Eval 13: Output Path Should Use A Side-Effect Boundary
+
+Input:
+
+```java
+import java.nio.file.Path;
+import java.util.Optional;
+
+final class ReportCommand {
+    void finish(Optional<Path> output, String report) {
+        if (output.isPresent()) {
+            write(output.orElseThrow(), report);
+        } else {
+            print(report);
+        }
+    }
+
+    void write(Path path, String report) {}
+    void print(String report) {}
+}
+```
+
+Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))`, unless
+checked exceptions in the target code make explicit branching clearer. Reject null and fake
+collection workarounds.
