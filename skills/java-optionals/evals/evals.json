@@ -51,7 +51,7 @@
     },
     {
       "id": 5,
-      "prompt": "Use $java-optionals to refactor this order-independent lookup. Return the refactored code followed by one sentence explaining why findAny is appropriate:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
+      "prompt": "Use $java-optionals to refactor this order-independent lookup and include a one-sentence rationale:\n\n```java\nimport java.util.Optional;\nimport java.util.Set;\n\nfinal class FlagMatcher {\n    Optional<String> matchingFlag(Set<String> flags, String arg) {\n        return flags.stream()\n                .filter(flag -> arg.equals(flag) || arg.startsWith(flag + \"=\"))\n                .findFirst();\n    }\n}\n```",
       "expected_output": "Use findAny because the Set lookup has no first-match priority contract.",
       "files": [],
       "expectations": [
@@ -148,7 +148,7 @@
     },
     {
       "id": 13,
-      "prompt": "Use $java-optionals to refactor this Optional output path code. Return the refactored code followed by one sentence noting that explicit branching may be clearer if either branch throws checked exceptions:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
+      "prompt": "Use $java-optionals to refactor this Optional output path code and include a one-sentence checked-exception caveat:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
       "expected_output": "Use output.ifPresentOrElse(path -> write(path, report), () -> print(report)) or an equivalent side-effect boundary.",
       "files": [],
       "expectations": [

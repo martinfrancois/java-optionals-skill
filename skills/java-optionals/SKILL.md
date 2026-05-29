@@ -27,15 +27,13 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    - nullable interop with an API that genuinely requires `null`.
 2. When writing new code, choose the Optional boundary before writing branches. Decide whether
    absence means fallback, error, side effect, prompt/IO, or nullable interop.
-3. Honor the requested output shape. If the task asks for a rationale, caveat, or review comment,
-   include it as prose even when you also provide a code diff or replacement snippet.
-4. Reject ordinary-control-flow workarounds:
+3. Reject ordinary-control-flow workarounds:
    - `optional.isPresent()` or `optional.isEmpty()` followed by `get()` or `orElseThrow()`;
    - `optional.orElse(null)` followed by local `value != null` branching;
    - `optional.stream().toList()` or similar just to loop over one Optional;
    - replacing a readable real collection stream with nested loops, labels, or sentinel flags only
      to avoid an Optional terminal result.
-5. Use the Optional API that matches the intent when it stays readable:
+4. Use the Optional API that matches the intent when it stays readable:
    - `map` for transforming a present value;
    - `flatMap` when the transform already returns Optional;
    - `filter` to keep a value only when a predicate matches;
@@ -44,19 +42,19 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    - `orElseGet` for lazy, expensive, or side-effecting fallbacks;
    - `orElseThrow` when absence is truly an error at that boundary;
    - `ifPresent` or `ifPresentOrElse` for side-effect boundaries.
-6. Extract a named helper when a fluent chain becomes dense. Prefer a clear helper over a clever
+5. Extract a named helper when a fluent chain becomes dense. Prefer a clear helper over a clever
    Optional expression.
-7. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
+6. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch, not `orElse(...)`.
-8. For review-only tasks, always return an explicit review decision. If no code change is needed,
+7. For review-only tasks, always return an explicit review decision. If no code change is needed,
    say that and give the Optional-shape rationale; do not return an empty answer.
-9. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
+8. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
    Use `findAny()` when any matching value is equivalent. When changing or intentionally keeping
    either method, include a short rationale unless the target output format is code-only.
-10. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
+9. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
    when no value is read. Once a branch needs the value, map that Optional to the domain action or
    bind the value once; do not turn a selector into a list, stream, or null branch.
-11. For checked-exception or prompting fallbacks, plain branching is acceptable:
+10. For checked-exception or prompting fallbacks, plain branching is acceptable:
 
    ```java
    Optional<String> configured = options.workspaceId();
@@ -70,7 +68,7 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    another checked operation, and the enclosing method should honestly expose that boundary. When
    using this exception, say why plain branching is clearer than hiding checked exceptions in an
    unchecked wrapper or local helper unless the target output format is code-only.
-12. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
+9. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
    absence. Do not add local null branching around it. If changing that boundary would require
    altering records, DTOs, serialization, or external APIs, call that out as a separate API/design
    decision rather than bundling it into an Optional cleanup.
@@ -90,7 +88,6 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
 Before finishing an Optional-related Java change, verify:
 
 - you scanned touched code for sibling instances of the same pattern;
-- any requested rationale, caveat, or review comment is present in the final response;
 - ordinary `isPresent()` or `isEmpty()` plus immediate value reads are removed or justified as a
   narrow checked-exception boundary;
 - no `orElse(null)` plus local null-control-flow workaround was introduced;

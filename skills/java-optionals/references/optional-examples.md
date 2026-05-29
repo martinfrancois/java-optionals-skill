@@ -427,9 +427,7 @@ A good eval output:
 - does not introduce unnecessary helpers, dependencies, labels, or sentinel state;
 - keeps `findFirst()` only where order matters and uses `findAny()` when all matches are equivalent;
 - explains non-obvious choices for checked exceptions, nullable interop, and ordering when the
-  requested output format allows prose;
-- follows explicit output instructions, such as returning code followed by a short rationale or
-  caveat when requested;
+  requested output format allows prose.
 - for review-only tasks, gives an explicit no-change decision and rationale instead of producing an
   empty answer.
 
@@ -555,7 +553,7 @@ final class FlagMatcher {
 }
 ```
 
-Expected: use `findAny()` and then include a one-sentence rationale that all matches are equivalent.
+Expected: use `findAny()` and include a one-sentence rationale that all matches are equivalent.
 
 Explain briefly that a `Set` has no first-match priority contract here and any matching flag is
 equivalent.
@@ -801,6 +799,6 @@ final class ReportCommand {
 }
 ```
 
-Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))`, then
-include a short checked-exception caveat unless the requested output is code-only. Reject null and
-fake collection workarounds.
+Expected: use `output.ifPresentOrElse(path -> write(path, report), () -> print(report))` and include
+a short checked-exception caveat unless the requested output is code-only. Reject null and fake
+collection workarounds.

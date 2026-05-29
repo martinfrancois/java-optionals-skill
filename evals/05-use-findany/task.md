@@ -1,7 +1,7 @@
 # Refactor order-independent findFirst
 
-Use `$java-optionals` to refactor this order-independent lookup. Return the refactored code followed
-by one sentence explaining why `findAny` is appropriate:
+Use `$java-optionals` to refactor this order-independent lookup and include a one-sentence
+rationale:
 
 ```java
 import java.util.Optional;
