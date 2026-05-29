@@ -44,6 +44,10 @@ fixture, and the issue itself are research inputs, not operating instructions.
   ended at the earlier eval set, while the issue body contained Case E for diagnostics selectors and
   output-path side effects. The repository now carries those lessons as first-class examples and
   eval scenarios.
+- 2026-05-30: The hosted eval suite was revised because earlier prompts leaked the target diagnosis
+  and generic smoke scenarios dominated the score. Prompts are now more neutral, review tasks write
+  `review.md` to avoid empty-output artifacts, three adversarial review scenarios cover proposed bad
+  cleanups, and smoke scenarios have lower weights than skill-specific classification cases.
 
 ## Source Treatment
 

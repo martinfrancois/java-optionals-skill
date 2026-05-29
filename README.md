@@ -63,16 +63,18 @@ tessl project create --workspace martinfrancois java-optionals-skill
 tessl eval run --variant with-context --variant without-context .
 ```
 
-Current expanded benchmark run:
+Current benchmark run:
 
-- Run ID: `019e75ad-81f1-7449-9ccb-17450fbc0e8a`
-- Benchmark content commit: `379af9d`
-- Baseline: `320 / 384` (`83.3%`)
-- With `java-optionals`: `374 / 384` (`97.4%`)
-- Lift: `+54 / 384`, or `+14.1` percentage points
+- Run ID: `019e75d9-cacd-7484-a979-e7ffa62f3b43`
+- Benchmark content commit: `042a0f4`
+- Baseline: `237 / 302` (`78.5%`)
+- With `java-optionals`: `302 / 302` (`100.0%`)
+- Lift: `+65 / 302`, or `+21.5` percentage points
 
-The current tree matches the benchmarked skill and eval content; later commits only updated
-documentation/history around the benchmark.
+The hosted suite keeps lightweight smoke coverage for straightforward refactors, but weights the
+benchmark toward the skill-specific failure modes: null-control-flow substitutions, real collection
+stream overcorrection, checked-IO Optional boundaries, nullable interop, and `findFirst()` /
+`findAny()` intent.
 
 ## OSS Readiness
 
