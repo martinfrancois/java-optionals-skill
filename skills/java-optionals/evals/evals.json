@@ -146,7 +146,7 @@
     },
     {
       "id": 13,
-      "prompt": "Use $java-optionals to improve this output handling:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
+      "prompt": "Use $java-optionals to improve this output handling. Create ReportCommand.java containing the revised class:\n\n```java\nimport java.nio.file.Path;\nimport java.util.Optional;\n\nfinal class ReportCommand {\n    void finish(Optional<Path> output, String report) {\n        if (output.isPresent()) {\n            write(output.orElseThrow(), report);\n        } else {\n            print(report);\n        }\n    }\n\n    void write(Path path, String report) {}\n    void print(String report) {}\n}\n```",
       "expected_output": "Use output.ifPresentOrElse(path -> write(path, report), () -> print(report)) or an equivalent side-effect boundary.",
       "files": [],
       "expectations": [

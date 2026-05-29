@@ -4,22 +4,22 @@
   "checklist": [
     {
       "name": "Removes repeated get calls",
-      "max_score": 10,
+      "max_score": 4,
       "description": "Removes repeated target.get() calls after the guard."
     },
     {
       "name": "Binds or maps once",
-      "max_score": 8,
+      "max_score": 3,
       "description": "Uses map plus a helper, or binds the value once after a narrow guard."
     },
     {
       "name": "Behavior preserved",
-      "max_score": 8,
+      "max_score": 3,
       "description": "Preserves no-op behavior when target is empty or when the card is already in the target list."
     },
     {
       "name": "No null workaround",
-      "max_score": 6,
+      "max_score": 2,
       "description": "Does not introduce orElse(null) or null-control-flow."
     }
   ]

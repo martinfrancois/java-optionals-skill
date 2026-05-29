@@ -4,22 +4,22 @@
   "checklist": [
     {
       "name": "Uses map for present value",
-      "max_score": 6,
+      "max_score": 2,
       "description": "Uses Optional.map or an equivalent direct Optional boundary for the present Comment branch."
     },
     {
       "name": "Fallback stays lazy",
-      "max_score": 12,
+      "max_score": 4,
       "description": "Uses orElseGet or an explicit lazy absent branch for create(text). Does not use orElse(create(text))."
     },
     {
       "name": "No null or fake collection workaround",
-      "max_score": 8,
+      "max_score": 2,
       "description": "Does not introduce orElse(null), null checks, Optional.stream().toList(), or a loop over one Optional."
     },
     {
       "name": "Behavior preserved",
-      "max_score": 6,
+      "max_score": 2,
       "description": "Preserves updated/created behavior and passes text through to update/create."
     }
   ]

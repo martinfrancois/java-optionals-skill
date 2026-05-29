@@ -1,6 +1,7 @@
 # Refactor report output
 
-Use `$java-optionals` to improve this output handling:
+Use `$java-optionals` to improve this output handling. Create `ReportCommand.java` containing the
+revised class:
 
 ```java
 import java.nio.file.Path;
