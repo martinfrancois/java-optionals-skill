@@ -7,8 +7,8 @@ They write code that looks modern at first glance, then leaves you with `isPrese
 as a noisy loop.
 
 This skill gives the agent a small decision guide before it writes or changes Optional code: choose
-the Optional shape, keep fallback work lazy, keep real collection streams readable, and use a plain
-branch when checked IO makes that clearer.
+the Optional shape, run fallback work only when needed, keep real collection streams readable, and
+use a plain branch when checked IO makes that clearer.
 
 ## Contents
 
@@ -19,7 +19,7 @@ branch when checked IO makes that clearer.
 - [Examples](#examples)
 - [Benchmark](#benchmark)
 - [Contributing](#contributing)
-- [Provenance](#provenance)
+- [Origin](#origin)
 - [License](#license)
 
 ## Getting Started
@@ -34,9 +34,9 @@ After installation, agents that support skill auto-selection, such as
 [Codex](https://developers.openai.com/codex/skills) and
 [Claude Code](https://code.claude.com/docs/en/skills), can choose this skill automatically from the
 task or code context. The task does not need to say `Optional` by name. It can also trigger when Java
-code deals with missing values, nullable results, fallback/default values, `isPresent()`,
-`orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, or similar present/absent control
-flow. In those agents, you do not have to mention the skill every time.
+code deals with missing values, values that may be `null`, fallback/default values, `isPresent()`,
+`orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, or similar code paths for values
+that may or may not exist. In those agents, you do not have to mention the skill every time.
 
 For important Optional-heavy work, you can still name it explicitly:
 
@@ -44,17 +44,17 @@ For important Optional-heavy work, you can still name it explicitly:
 Use $java-optionals to implement this Java feature with Optional best practices.
 ```
 
-For refactors:
+For changing existing code:
 
 ```text
-Use $java-optionals to refactor this Java method without changing its outputs or error handling.
+Use $java-optionals to clean up this Java method without changing its outputs or error handling.
 ```
 
 For reviews:
 
 ```text
 Use $java-optionals to review this proposed Optional cleanup. Create review.md with a decision and
-rationale.
+the reason.
 ```
 
 For new code with missing or fallback values:
@@ -78,13 +78,13 @@ tessl install martinfrancois/java-optionals
 ## Why This Exists
 
 The motivation was real AI-written Java code. The agent already used `Optional`, but not in a clear
-or idiomatic way. When asked to clean up the code and follow Optional best practices, it often swapped
+or standard way. When asked to clean up the code and follow Optional best practices, it often swapped
 one bad pattern for another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
   `orElseThrow()`;
-- losing laziness by using `orElse(...)` where `orElseGet(...)` is required;
+- running fallback work too early by using `orElse(...)` where `orElseGet(...)` is required;
 - turning one optional value into a fake list, then reading the first item;
 - replacing a clear collection stream with a long manual loop;
 - hiding checked IO or user prompts behind clever helper code;
@@ -110,7 +110,7 @@ if (!coupons.isEmpty()) {
 return cart;
 ```
 
-Another would have changed a product discount fallback into local null control flow:
+Another would have changed a product discount fallback into local null checks:
 
 ```java
 // before the AI cleanup request
@@ -152,7 +152,7 @@ for (String enteredCode : enteredCodes) {
 return Optional.empty();
 ```
 
-The goal is not to force every branch into a fluent chain. The goal is simpler: understand what the
+The goal is not to force every branch into a method chain. The goal is simpler: understand what the
 `Optional` is doing, keep the important effects in the same places, and choose the clearest code.
 
 ## What Good Looks Like
@@ -191,14 +191,14 @@ Good fit:
 - keeping real collection streams instead of rewriting them as noisy loops;
 - avoiding `optional.stream().toList()` loops for a single `Optional`;
 - handling old APIs that really use `null` for missing values;
-- writing first-pass Optional code directly instead of cleaning up branchy code later.
+- writing new Optional code directly instead of cleaning up hard-to-read branches later.
 
 Poor fit:
 
 - broad Java style enforcement unrelated to `Optional`;
-- large API redesigns, DTO changes, or new dependencies without maintainer agreement;
-- changing business semantics just to make code look more functional;
-- replacing every readable branch with a fluent chain.
+- large API redesigns, data object changes, or new dependencies without maintainer agreement;
+- changing business behavior just to make code look more functional;
+- replacing every readable branch with a method chain.
 
 ## Examples
 
@@ -210,7 +210,7 @@ String customerName(Optional<Customer> customer) {
 }
 ```
 
-Lazy creation or side effects:
+Create only when needed:
 
 ```java
 Cart cart(String cartId) {
@@ -263,7 +263,7 @@ Current hosted benchmark:
 - Error reduction: `340 / 340` baseline missed points (`100.0%`)
 
 The main benchmark is focused on implementation because the motivating failures happened during
-normal AI-assisted Java changes, not only during code review. The scenarios start from branchy code,
+normal AI-assisted Java changes, not only during code review. The scenarios start from branch-heavy code,
 ask for feature work, and score both the required outputs/effects and the Optional cleanup this skill
 is meant to improve.
 
@@ -274,7 +274,7 @@ skill, but many are small snippets that a strong generic model can already solve
 
 Want to improve the skill, evals, or package metadata? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Provenance
+## Origin
 
 This skill is based on real-world failures where coding agents changed Java `Optional` code into
 different bad shapes while working on production-style tasks. The motivating discussion is
