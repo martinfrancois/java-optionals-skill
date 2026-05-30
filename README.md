@@ -19,7 +19,7 @@ use a plain branch when checked IO makes that clearer.
 - [What Good Looks Like](#what-good-looks-like)
 - [What It Helps With](#what-it-helps-with)
 - [Examples](#examples)
-- [Benchmark](#benchmark)
+- [How It's Evaluated](#how-its-evaluated)
 - [Contributing](#contributing)
 - [Origin](#origin)
 - [License](#license)
@@ -245,22 +245,23 @@ Optional<String> freeShippingCode(String enteredCode) {
 }
 ```
 
-## Benchmark
+## How It's Evaluated
 
-Current hosted benchmark:
+The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. Each task
+is run without the skill and with the skill, then scored against checks for both the requested Java
+behavior and the `Optional` cleanup.
 
-- Run ID: `019e7611-55fd-717e-80bd-e9446d5ad34b`
-- Benchmark content commit: `d267f22`
-- Baseline: `276 / 616` (`44.8%`)
-- With `java-optionals`: `616 / 616` (`100.0%`)
-- Lift: `+340 / 616`, or `+55.2` percentage points
-- Raw score ratio: `2.23x`
-- Error reduction: `340 / 340` baseline missed points (`100.0%`)
+The evals check that agents:
 
-The main benchmark is focused on implementation because the motivating failures happened during
-normal AI-assisted Java changes, not only during code review. The scenarios start from branch-heavy code,
-ask for feature work, and score both the required outputs/effects and the Optional cleanup this skill
-is meant to improve.
+- avoid `isPresent()` / `get()` for ordinary value reads;
+- don't replace `Optional` with `orElse(null)`;
+- run fallback work only when needed;
+- keep checked IO and user prompts clear;
+- keep real collection streams readable;
+- preserve outputs, errors, prompts, side effects, and when fallback work runs.
+
+Current published scores are shown on the
+[Tessl tile](https://tessl.io/registry/martinfrancois/java-optionals).
 
 ## Contributing
 
