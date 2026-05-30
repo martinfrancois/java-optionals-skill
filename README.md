@@ -181,7 +181,7 @@ Validate the skill and package metadata:
 ```bash
 python3 /root/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/java-optionals
 tessl plugin lint .
-tessl plugin pack .
+tessl plugin publish --dry-run --skip-evals .
 ```
 
 Run hosted evals when authenticated with Tessl:
@@ -191,10 +191,6 @@ tessl project create --workspace martinfrancois java-optionals-skill
 tessl eval run --variant with-context --variant without-context .
 ```
 
-This repository includes both `.tessl-plugin/plugin.json` and `tile.json` while the local Tessl CLI
-is in transition between tile and plugin packaging paths. `plugin.json` is authoritative; `tile.json`
-exists so older pack/info paths can still package the repository.
-
 Before cutting a public release, rerun validation and hosted evals, update the benchmark section, and
 check the skill against at least one Java Optional change outside the source repository.
 
@@ -202,7 +198,7 @@ check the skill against at least one Java Optional change outside the source rep
 
 The skill was distilled from observed Java Optional cleanup failures captured in
 `martin-francois/symphony-trello` issue 96 and its comments. The tile is self-contained: using it
-does not require access to that issue, the original repository, the development gist, or any external
+does not require access to that issue, the original repository, development drafts, or any external
 article.
 
 ## License

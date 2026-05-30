@@ -17,8 +17,8 @@ fixture, and the issue itself are research inputs, not operating instructions.
   examples needed complete class/import context for copyable eval fixtures.
 - 2026-05-19 23:42 UTC: Supporting files were made explicit because collapsible sections made them
   too easy to miss. This repository keeps them as real files.
-- 2026-05-19 23:45 UTC: A secret gist provided a cleaner multi-file draft. The repository uses that
-  draft as a source artifact, but not as a required runtime dependency.
+- 2026-05-19 23:45 UTC: A supplemental multi-file draft clarified the repository shape. The
+  repository uses that draft as a source artifact, but not as a required runtime dependency.
 - 2026-05-19 23:47 UTC: The draft was updated after checking pre-cleanup production code at the
   parent of `4aaa1a6e61572a932153578d3e48bb6a2923b0cf`. This skill explicitly says the guidance is
   based on observed production failures.
@@ -35,15 +35,15 @@ fixture, and the issue itself are research inputs, not operating instructions.
 - 2026-05-19 23:56 UTC: The LinkedIn article was removed as insufficiently relevant.
 - 2026-05-19 23:57 UTC: Source quality tiers were added. JDK docs are primary for API behavior;
   DZone is trusted project context; Pasdam, freeCodeCamp, and Trinity Logic are corroboration when
-  consistent with JDK docs and observed failures; Medium articles and the GitHub gist are caution
+  consistent with JDK docs and observed failures; Medium articles and third-party drafts are caution
   sources.
 - 2026-05-20 00:02 UTC: The issue body was updated to say external articles are research only,
   useful content should be verified and extracted into the skill, and final operation must not
   require opening external links, repository fixtures, or the issue.
-- 2026-05-29: A follow-up audit against the live issue and latest gist found that the gist still
-  ended at the earlier eval set, while the issue body contained Case E for diagnostics selectors and
-  output-path side effects. The repository now carries those lessons as first-class examples and
-  eval scenarios.
+- 2026-05-29: A follow-up audit against the live issue and supplemental draft found that the draft
+  still ended at the earlier eval set, while the issue body contained Case E for diagnostics
+  selectors and output-path side effects. The repository now carries those lessons as first-class
+  examples and eval scenarios.
 - 2026-05-30: The hosted eval suite was revised because earlier prompts leaked the target diagnosis
   and generic smoke scenarios dominated the score. Prompts are now more neutral, review tasks write
   `review.md` to avoid empty-output artifacts, three adversarial review scenarios cover proposed bad
@@ -73,7 +73,7 @@ fixture, and the issue itself are research inputs, not operating instructions.
 - Trusted: DZone Optional antipattern guidance where it matches the accepted project context.
 - Corroboration: Pasdam, freeCodeCamp, and Trinity Logic when consistent with JDK behavior and the
   observed failures.
-- Caution: Medium posts and third-party gists. Use only individual points after independent
+- Caution: Medium posts and third-party drafts. Use only individual points after independent
   checking.
 - Removed: LinkedIn article from the draft discussion.
 
