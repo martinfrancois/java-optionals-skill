@@ -1,7 +1,10 @@
 # Contributing
 
-Thanks for helping improve the Java Optional Skill. This project is a Tessl-compatible skill for
-guiding AI agents toward better Java `Optional` usage.
+Thanks for helping improve the Java Optional Skill.
+
+This project helps AI coding agents write and clean up Java `Optional` code without replacing one
+bad pattern with another. You don't need maintainer access or a Tessl workspace to make most useful
+contributions.
 
 Keep changes focused on the observed failure modes: weak Optional boundaries, null-style control
 flow, fake single-Optional collections, eager fallback work, unclear checked-IO handling,
@@ -44,6 +47,15 @@ flow, fake single-Optional collections, eager fallback work, unclear checked-IO 
 - `.github/workflows/skill-review.yml` runs `tessl skill review` on pull requests when
   `TESSL_TOKEN` is configured.
 
+## Local Setup
+
+Clone the repository, make your change on a branch, and run the local checks below before opening a
+pull request. There are no project dependencies to install for the Python validation scripts.
+
+The Tessl CLI is only needed for `tessl plugin lint` and publish dry-runs. If you don't have Tessl
+set up locally, still run the Python checks and mention that Tessl checks were not run in your pull
+request.
+
 ## Local Checks
 
 Run these before committing skill, eval, README, package, script, or CI changes:
@@ -54,7 +66,7 @@ python3 scripts/validate_eval_criteria.py evals evals-reference
 tessl plugin lint .
 ```
 
-Before a maintainer publishes, also run the Tessl publish dry-run:
+If you have Tessl access, you can also run the publish dry-run:
 
 ```bash
 bash scripts/check_publish_dry_run.sh .
@@ -78,12 +90,17 @@ Release Please uses those commit types to decide the next version and generate r
 
 ## Hosted Evals
 
-When authenticated with Tessl, run hosted evals before updating benchmark numbers:
+Hosted evals are useful when a change affects the skill behavior, benchmark scenarios, or README
+score claims. They require Tessl authentication and a linked Tessl project.
+
+If you have your own Tessl workspace, link your checkout to your own project and run:
 
 ```bash
-tessl project create --workspace martinfrancois java-optionals-skill
 tessl eval run --variant with-context --variant without-context .
 ```
+
+If you don't have a Tessl workspace, that's fine. Open the pull request with the local check results,
+and a maintainer can run the hosted evals before release.
 
 The headline benchmark should stay focused on implementation tasks that mirror the motivating
 failures. Broad review and smoke scenarios can live in `evals-reference/` unless they're part of the
@@ -106,9 +123,10 @@ When the hosted benchmark changes:
 
 ## Release Checklist
 
-Release Please opens or updates a release pull request after changes land on `main`. Merging that
-release pull request updates `CHANGELOG.md`, bumps `.tessl-plugin/plugin.json`, creates the GitHub
-release, and then publishes the Tessl plugin from the release workflow.
+Releases are handled by maintainers. Release Please opens or updates a release pull request after
+changes land on `main`. Merging that release pull request updates `CHANGELOG.md`, bumps
+`.tessl-plugin/plugin.json`, creates the GitHub release, and then publishes the Tessl plugin from the
+release workflow.
 
 Before merging a release pull request:
 
