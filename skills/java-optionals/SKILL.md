@@ -6,36 +6,18 @@ description: Write, review, and refactor Java Optional code using best practices
 # Java Optional Skill
 
 Use this skill before writing Java code that may introduce `Optional`, and when reviewing or
-refactoring existing Optional code. Keep `Optional` as a clear present/absent boundary while
-preserving behavior, exception contracts, public output, laziness, and readability.
-
-This skill is based on observed production failures where agents avoided one Optional antipattern by
-introducing another. Treat it as a practical guardrail, not a broad Java style guide.
+refactoring existing Optional code. Preserve behavior, exception contracts, public output, laziness,
+and readability.
 
 Open [references/optional-examples.md](references/optional-examples.md) for non-trivial edits,
-review-only tasks, checked-exception cases, or benchmark-style examples.
+review-only tasks, priority selectors, checked-exception cases, or benchmark-style examples.
 
-## Decision Procedure
+## Core Workflow
 
-1. Classify each Optional shape before editing:
-   - single `Optional<T>`;
-   - real collection stream ending in an Optional terminal operation;
-   - boolean-only presence check;
-   - absence-as-error boundary;
-   - side-effecting or expensive fallback;
-   - checked-exception or prompting fallback;
-   - nullable interop with an API that genuinely requires `null`.
-2. When writing new code, choose the Optional boundary before writing branches. Decide whether
-   absence means fallback, error, side effect, prompt/IO, or nullable interop.
-   Don't start with an `isPresent()` skeleton and clean it up later; write the boundary directly
-   when the intent is ordinary fallback, transformation, or side-effect dispatch.
-3. Reject ordinary-control-flow workarounds:
-   - `optional.isPresent()` or `optional.isEmpty()` followed by `get()` or `orElseThrow()`;
-   - `optional.orElse(null)` followed by local `value != null` branching;
-   - `optional.stream().toList()` or similar just to loop over one Optional;
-   - replacing a readable real collection stream with nested loops, labels, or sentinel flags only
-     to avoid an Optional terminal result.
-4. Use the Optional API that matches the intent when it stays readable:
+1. Classify the Optional boundary before writing branches: fallback, error, side effect,
+   boolean-only check, collection lookup, checked IO/prompt, or nullable API interop. Don't start
+   ordinary value flow with an `isPresent()` skeleton.
+2. Use the Optional API that matches the intent when it stays readable:
    - `map` for transforming a present value;
    - `flatMap` when the transform already returns Optional;
    - `filter` to keep a value only when a predicate matches;
@@ -44,84 +26,40 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    - `orElseGet` for lazy, expensive, or side-effecting fallbacks;
    - `orElseThrow` when absence is truly an error at that boundary;
    - `ifPresent` or `ifPresentOrElse` for side-effect boundaries.
-5. Extract a named helper when a fluent chain becomes dense. Prefer a clear helper over a clever
-   Optional expression.
-6. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
-   services, or is expensive, use `orElseGet(...)` or an explicit lazy branch, not `orElse(...)`.
-7. For review-only tasks, always return an explicit review decision. If no code change is needed,
-   say that and give the Optional-shape rationale; don't return an empty answer.
-8. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
-   Use `findAny()` when any matching value is equivalent. When changing or intentionally keeping
-   either method, include a short rationale unless the target output format is code-only.
-   If a real collection lookup feeds more complex stateful code, keep the lookup as a small helper
-   returning `Optional<T>` and consume that result directly. For option matchers, centralize exact
-   matches and `option=value` matches in that helper instead of splitting matching logic across
-   separate branches. If the surrounding loop needs a boolean such as "does this argument exactly
-   equal the matched option?", derive it from the Optional value with `match.map(arg::equals).orElse(false)`
-   or a named helper; don't use `match.filter(arg::equals).isPresent()` as a new presence gate.
-9. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
-   when no value is read. Once a branch needs the value, map that Optional to the domain action or
-   bind the value once; don't turn a selector into a list, stream, or null branch.
-   For priority selectors, prefer a shape like:
 
    ```java
-   return primary
-           .map(value -> selectedFromPrimary(value))
-           .orElseGet(() -> secondary
-                   .map(value -> selectedFromSecondary(value))
-                   .orElseGet(this::defaultSelection));
+   return findCart(cartId).map(this::toSummary).orElseGet(() -> createSummary(cartId));
    ```
 
-   If the selected domain object stores the chosen value as an `Optional`, wrap the mapped value
-   with `Optional.of(value)` inside the mapping lambda rather than reopening the original Optional.
-10. For checked-exception or prompting fallbacks, plain branching is acceptable:
+3. Reject ordinary-control-flow workarounds:
+   - `isPresent()` / `isEmpty()` followed by `get()` or `orElseThrow()`;
+   - `orElse(null)` plus local null branching;
+   - `optional.stream().toList()` or another fake collection around one Optional;
+   - loops, labels, or sentinel flags that only avoid an Optional terminal result.
 
    ```java
-   Optional<String> configured = options.workspaceId();
-   if (configured.isEmpty()) {
-       return promptForWorkspace(terminal);
-   }
-   return configured.orElseThrow();
+   // avoid
+   if (cart.isPresent()) return summarize(cart.get());
+   return createSummary(cartId);
+
+   // prefer
+   return cart.map(this::summarize).orElseGet(() -> createSummary(cartId));
    ```
 
-   Keep this exception narrow. The absent branch must genuinely perform checked IO, prompting, or
-   another checked operation, and the enclosing method should honestly expose that boundary. When
-   using this exception, say why plain branching is clearer than hiding checked exceptions in an
-   unchecked wrapper or local helper unless the target output format is code-only.
-11. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
-   absence. Don't add local null branching around it. If changing that boundary would require
-   altering records, DTOs, serialization, or external APIs, call that out as a separate API/design
-   decision rather than bundling it into an Optional cleanup.
-
-## What Not To Do
-
-- Don't replace `isPresent()` plus `get()` with `orElse(null)` plus null checks.
-- Don't force a single `Optional<T>` through stream/list syntax to avoid a branch.
-- Don't ban `orElseThrow()`, `ifPresent()`, or `isPresent()` globally. Classify the shape first.
-- Don't replace readable collection streams with loops merely because the stream returns Optional.
-- Don't hide checked exceptions inside unchecked wrappers just to keep fluent Optional syntax.
-- Don't add Vavr or another functional library for a few Optional call sites. Treat that as a
-  repository-wide style decision requiring the target repository's design process.
-
-## Review Checklist
-
-Before finishing an Optional-related Java change, verify:
-
-- you scanned touched code for sibling instances of the same pattern;
-- ordinary `isPresent()` or `isEmpty()` plus immediate value reads are removed or justified as a
-  narrow checked-exception boundary;
-- no `orElse(null)` plus local null-control-flow workaround was introduced;
-- no single Optional was converted to a collection or stream just to branch;
-- real collection streams remain streams when clearer than manual loop state;
-- `findFirst()` is used only where order matters, otherwise `findAny()` is used;
-- non-obvious ordering, checked-exception, side-effect-boundary, and nullable-interop decisions are
-  briefly explained when the output format allows prose;
-- review-only no-op findings still include a short rationale;
-- boolean-only Optional validation stays separate from value-reading branches;
-- side-effecting or expensive fallbacks remain lazy;
-- exception types/messages, public output, prompts, generated output, and branch order are
-  preserved;
-- any attractive rejected approach is documented in the form expected by the target repository.
+4. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
+   services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
+5. For collection streams, use `findFirst()` only when order matters; otherwise use `findAny()`.
+   Keep real lookups as streams. When stateful code consumes the match, extract an `Optional<T>`
+   helper that centralizes exact and `option=value` matching.
+6. For selectors, keep presence checks only for boolean-only validation. Once a value is needed,
+   map or bind it once. For priority selectors, map the first Optional and use lazy fallback for
+   later sources. If the domain object stores an Optional, wrap the chosen value inside the mapping
+   lambda.
+7. Handle special boundaries directly: use a plain branch for checked IO or prompts; keep
+   `orElse(null)` only at real null-based API boundaries; return an explicit decision for
+   review-only tasks.
+8. Verify the result: same return values, exceptions, prompts, side effects, laziness, generated
+   output, and branch order; scan sibling code for the same Optional smell.
 
 ## When To Open References
 
@@ -129,6 +67,7 @@ Open [references/optional-examples.md](references/optional-examples.md) when:
 
 - you're unsure whether a stream source is a real collection or a single Optional workaround;
 - a fallback has side effects or checked exceptions;
+- priority selectors need a worked example;
 - `findFirst()` versus `findAny()` is under review;
 - you need examples for testing an agent or skill implementation.
 
