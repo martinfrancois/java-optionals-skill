@@ -88,7 +88,7 @@ tessl plugin lint .
 If you change the skill text or reference files, also run:
 
 ```bash
-tessl skill review --threshold 85 skills/java-optionals/SKILL.md
+tessl skill review --threshold 100 skills/java-optionals/SKILL.md
 ```
 
 If you have Tessl access, you can also run the publish dry-run:

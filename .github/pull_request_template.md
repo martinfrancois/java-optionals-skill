@@ -53,7 +53,7 @@ Checks most contributors can run:
 Tessl-authenticated checks:
 
 - [ ] `bash scripts/check_publish_dry_run.sh .`
-- [ ] `tessl skill review --threshold 85 skills/java-optionals/SKILL.md`, if skill text or references changed
+- [ ] `tessl skill review --threshold 100 skills/java-optionals/SKILL.md`, if skill text or references changed
 - [ ] `tessl eval run --variant with-context --variant without-context .`, if skill behavior,
       evals, or benchmark claims changed
 
