@@ -20,11 +20,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Release Please
+        id: release
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      - uses: actions/checkout@v6
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+
+      - name: Setup Tessl CLI for release publish
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        uses: tesslio/setup-tessl@v2
+        with:
+          version: "0.81.1"
+          token: ${{ secrets.TESSL_TOKEN }}
+
+      - name: Publish Tessl plugin
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: tessl plugin publish .
 
       - name: Find release PR
         id: release-pr
