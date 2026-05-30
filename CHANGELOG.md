@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.14](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.13...v0.1.14) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** preserve option-list lookups ([f8bd4bc](https://github.com/martinfrancois/java-optionals-skill/commit/f8bd4bcce1aa95899ddba106b4ca3babf30a22a3))
+
 ## [0.1.13](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.12...v0.1.13) (2026-05-30)
 
 
