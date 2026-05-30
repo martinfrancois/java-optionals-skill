@@ -1,29 +1,55 @@
 # Java Optionals
 
-Tessl tile for writing, reviewing, and refactoring Java `Optional` code without turning absence
-handling into null control flow, fake collections, or over-clever fluent code.
+Make coding agents handle Java `Optional` like a real absence boundary instead of turning it into
+null checks, fake collections, eager fallbacks, or unreadable rewrites.
 
 ```text
 martinfrancois/java-optionals
 ```
 
-## Why This Exists
+## Why You Want This
 
-`Optional` cleanup is easy to get wrong in agent-written Java code. A model may remove one smell and
-replace it with another: `orElse(null)` plus null checks, loops over `optional.stream().toList()`,
-eager fallbacks, unnecessary helper abstractions for checked exceptions, or loop rewrites that make a
-real collection stream harder to read.
+Use this skill when an agent is writing, reviewing, or refactoring Java code that touches
+`Optional`. It helps the agent preserve behavior while moving code toward clearer, more idiomatic
+Optional usage.
 
-This tile gives agents a compact decision procedure for classifying the Optional shape first, then
-choosing the clearest Java boundary while preserving behavior, exception contracts, public output,
-laziness, and readability.
+It targets failures that show up in real AI-assisted Java changes:
 
-## Install
+- replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
+- losing laziness by using `orElse(...)` where `orElseGet(...)` is required;
+- converting one `Optional` into a stream/list/loop just to branch;
+- replacing a clear collection stream with labeled loops or sentinel state;
+- hiding checked IO or prompting behind clever unchecked Optional helpers;
+- changing `findFirst()` / `findAny()` semantics by accident.
 
-Install directly from GitHub:
+The goal is not to make every branch fluent. The goal is to classify the Optional shape first, keep
+the real behavior intact, and choose the clearest boundary.
+
+## Fastest Path
+
+Install the skill:
 
 ```bash
 tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
+```
+
+Then use it directly in the task:
+
+```text
+Use $java-optionals to refactor this Java method without changing behavior.
+```
+
+For reviews:
+
+```text
+Use $java-optionals to review this proposed Optional cleanup. Create review.md with a decision and
+rationale.
+```
+
+For first-pass implementation:
+
+```text
+Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
 ```
 
 Install globally instead of into the current project:
@@ -32,27 +58,38 @@ Install globally instead of into the current project:
 tessl install --global github:martinfrancois/java-optionals-skill --skill java-optionals
 ```
 
-If the tile is published in your Tessl registry workspace, you can also install it by package name:
+If the skill is published in your Tessl registry workspace, you can also install it by package name:
 
 ```bash
 tessl install martinfrancois/java-optionals
 ```
 
-## Use
+## What Good Looks Like
 
-Mention the skill when Optional handling matters:
+Before, agents often "clean up" Optional code by moving absence back into `null`:
 
-```text
-Use $java-optionals to refactor this Java method without changing behavior.
+```java
+Comment workpad = card.comments().stream()
+        .filter(this::isWorkpadComment)
+        .findFirst()
+        .orElse(null);
+
+if (workpad != null) {
+    return updateExistingWorkpad(workpad, text);
+}
+return createWorkpad(card, text);
 ```
 
-```text
-Use $java-optionals to review this proposed Optional cleanup. Create review.md with a decision and
-rationale.
-```
+With this skill, the agent is pushed toward using the Optional as the decision boundary:
 
-```text
-Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
+```java
+Result upsertWorkpad(Card card, String text) {
+    return card.comments().stream()
+            .filter(this::isWorkpadComment)
+            .findFirst()
+            .map(workpad -> updateExistingWorkpad(card, workpad, text))
+            .orElseGet(() -> createWorkpad(card, text));
+}
 ```
 
 ## What It Helps With
@@ -168,11 +205,11 @@ Current hosted benchmark:
 The headline benchmark is implementation-focused because the motivating failures happened during
 ordinary AI-assisted Java changes, not only during review-only tasks. The scenarios start from
 branchy implementation code, ask for feature work, and score both behavior preservation and the
-Optional cleanup this tile is meant to improve.
+Optional cleanup this skill is meant to improve.
 
 The broader smoke and review scenarios remain in `evals-reference/`. They are useful for developing
 the skill, but they overstate baseline quality as a headline benchmark because many are small
-isolated snippets that a strong generic model can already solve without the tile.
+isolated snippets that a strong generic model can already solve without the skill.
 
 ## Development
 
@@ -196,10 +233,12 @@ check the skill against at least one Java Optional change outside the source rep
 
 ## Provenance
 
-The skill was distilled from observed Java Optional cleanup failures captured in
-`martin-francois/symphony-trello` issue 96 and its comments. The tile is self-contained: using it
-does not require access to that issue, the original repository, development drafts, or any external
-article.
+This skill was distilled from real-world failures where coding agents changed Java `Optional` code
+into worse shapes while working on production-style tasks. The motivating discussion is
+[`martin-francois/symphony-trello#96`](https://github.com/martin-francois/symphony-trello/issues/96).
+
+The skill is self-contained: using it does not require access to that issue, the original repository,
+development drafts, or any external article.
 
 ## License
 
