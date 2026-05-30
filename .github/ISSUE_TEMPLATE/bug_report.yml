@@ -87,19 +87,19 @@ body:
     id: model
     attributes:
       label: Model
-      description: For agent-output bugs, name the model that produced the behavior, if known.
-      placeholder: "For example: Claude Sonnet 4.6, GPT-5, or unknown"
+      description: For agent-output bugs, name the model that produced the behavior.
+      placeholder: "For example: Claude Opus 4.8 or GPT-5.5"
   - type: dropdown
     id: reasoning-effort
     attributes:
       label: Reasoning effort
-      description: For agent-output bugs, select the reasoning effort used, if the tool exposes that setting.
+      description: For agent-output bugs, select the reasoning effort used.
       options:
-        - No
-        - Low
-        - Medium
-        - High
-        - Xhigh
+        - none
+        - low
+        - medium
+        - high
+        - xhigh
   - type: textarea
     id: environment
     attributes:
