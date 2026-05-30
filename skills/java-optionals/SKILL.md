@@ -17,15 +17,9 @@ review-only tasks, priority selectors, checked-exception cases, or benchmark-sty
 1. Classify the Optional boundary before writing branches: fallback, error, side effect,
    boolean-only check, collection lookup, checked IO/prompt, or nullable API interop. Don't start
    ordinary value flow with an `isPresent()` skeleton.
-2. Use the Optional API that matches the intent when it stays readable:
-   - `map` for transforming a present value;
-   - `flatMap` when the transform already returns Optional;
-   - `filter` to keep a value only when a predicate matches;
-   - `or` for an alternate Optional source;
-   - `orElse` for cheap already-computed fallback values;
-   - `orElseGet` for lazy, expensive, or side-effecting fallbacks;
-   - `orElseThrow` when absence is truly an error at that boundary;
-   - `ifPresent` or `ifPresentOrElse` for side-effect boundaries.
+2. Use the Optional API that matches the intent: `map`, `flatMap`, `filter`, `or`, `orElse` for
+   cheap values, `orElseGet` for lazy fallback work, `orElseThrow` for true absence errors, and
+   `ifPresent` or `ifPresentOrElse` for side effects.
 
    ```java
    return findCart(cartId).map(this::toSummary).orElseGet(() -> createSummary(cartId));
@@ -48,15 +42,13 @@ review-only tasks, priority selectors, checked-exception cases, or benchmark-sty
 
 4. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
-5. For collection streams, use `findFirst()` only when order matters; otherwise use `findAny()`.
-   Keep real lookups as streams. When stateful code consumes the match, extract an `Optional<T>`
-   helper that streams the option collection and centralizes exact plus `option=value` matching.
-   Don't replace collection lookup with `Optional.of(arg).filter(collection::contains)`. Derive
-   loop-state booleans from the matched Optional, not mutable lambda-capture arrays.
-6. For selectors, keep presence checks only for boolean-only validation. Once a value is needed,
-   map or bind it once. For priority selectors, map the first Optional and use lazy fallback for
-   later sources. If the domain object stores an Optional, wrap the chosen value inside the mapping
-   lambda.
+5. For collection lookup, keep real collections as streams and use `findAny()` unless order matters.
+   For stateful consumers, extract one `Optional<T>` helper over the collection that handles exact
+   and `option=value` matches. Don't replace it with `Optional.of(arg).filter(collection::contains)`;
+   derive flags from the matched Optional.
+6. For selectors, presence checks are fine only for boolean-only validation. When you need the
+   value, map or bind once; for priority selectors, map the first source and lazy-fallback to later
+   sources. If the target stores Optional, wrap the chosen value inside the lambda.
 7. Handle special boundaries directly: use a plain branch for checked IO or prompts; keep
    `orElse(null)` only at real null-based API boundaries; return an explicit decision for
    review-only tasks.
