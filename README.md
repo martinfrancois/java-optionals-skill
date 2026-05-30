@@ -13,7 +13,8 @@ martinfrancois/java-optionals
 
 Use this skill when an agent writes or changes Java code that uses `Optional`.
 
-It helps the agent keep the same behavior while making the code cleaner and easier to read.
+When changing existing code, it helps the agent avoid accidental changes to results, errors, prompts,
+side effects, and when fallback code runs.
 
 The motivation was real AI-written Java code. Agents were writing and changing Optional code, but
 they often replaced one problem with another:
@@ -28,7 +29,7 @@ they often replaced one problem with another:
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
 The goal is not to force every branch into a fluent chain. The goal is simpler: understand what the
-`Optional` is doing, keep the behavior the same, and choose the clearest code.
+`Optional` is doing, keep the important effects in the same places, and choose the clearest code.
 
 ## Fastest Path
 
@@ -47,7 +48,7 @@ Use $java-optionals to implement this Java feature with Optional best practices.
 For refactors:
 
 ```text
-Use $java-optionals to refactor this Java method without changing behavior.
+Use $java-optionals to refactor this Java method without changing its outputs or error handling.
 ```
 
 For reviews:
@@ -113,7 +114,7 @@ Good fit:
 - avoiding `orElse(null)` followed by local null checks;
 - choosing between `orElse(...)` and `orElseGet(...)`;
 - keeping checked exceptions, user prompts, IO, and side effects in the right place;
-- deciding whether `findFirst()` or `findAny()` keeps the same behavior;
+- deciding whether `findFirst()` or `findAny()` keeps the same result;
 - keeping real collection streams instead of rewriting them as noisy loops;
 - avoiding `optional.stream().toList()` loops for a single `Optional`;
 - handling old APIs that really use `null` for missing values;
@@ -218,8 +219,8 @@ Current hosted benchmark:
 
 The main benchmark is focused on implementation because the motivating failures happened during
 normal AI-assisted Java changes, not only during code review. The scenarios start from branchy code,
-ask for feature work, and score both behavior preservation and the Optional cleanup this skill is
-meant to improve.
+ask for feature work, and score both the required outputs/effects and the Optional cleanup this skill
+is meant to improve.
 
 The broader review scenarios remain in `evals-reference/`. They are useful while developing the
 skill, but many are small snippets that a strong generic model can already solve without the skill.
