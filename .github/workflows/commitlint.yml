@@ -1,0 +1,55 @@
+name: Commitlint
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize, ready_for_review, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: commitlint-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Prepare commitlint
+        run: |
+          set -euo pipefail
+          commitlint_home="$RUNNER_TEMP/commitlint"
+          mkdir -p "$commitlint_home"
+          printf '{"private":true}\n' > "$commitlint_home/package.json"
+          cp commitlint.config.cjs "$commitlint_home/commitlint.config.cjs"
+          npm --prefix "$commitlint_home" install --silent \
+            @commitlint/cli@21.0.1 \
+            @commitlint/config-conventional@21.0.1
+          echo "COMMITLINT_BIN=$commitlint_home/node_modules/.bin/commitlint" >> "$GITHUB_ENV"
+          echo "COMMITLINT_CONFIG=$commitlint_home/commitlint.config.cjs" >> "$GITHUB_ENV"
+
+      - name: Lint pull request title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s\n' "$PR_TITLE" | "$COMMITLINT_BIN" --config "$COMMITLINT_CONFIG"
+
+      - name: Lint pull request commits
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          "$COMMITLINT_BIN" --config "$COMMITLINT_CONFIG" \
+            --from "$PR_BASE_SHA" --to "$PR_HEAD_SHA" --verbose

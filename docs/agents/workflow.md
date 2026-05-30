@@ -28,6 +28,8 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
 - CI mirrors the portable validation checks. When `TESSL_TOKEN` is configured, it also runs a
   publish dry-run. The optional skill review workflow runs `tessl skill review --threshold 85` when
   `TESSL_TOKEN` is configured.
+- Pull request titles and commits must use Conventional Commits. Release Please uses them to update
+  `CHANGELOG.md`, `.tessl-plugin/plugin.json`, GitHub releases, and the Tessl publish workflow.
 
 - Commit and push finished changes unless the user explicitly asks not to.
 

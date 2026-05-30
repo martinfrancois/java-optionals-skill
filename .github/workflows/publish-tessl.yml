@@ -1,0 +1,30 @@
+name: Publish Tessl Plugin
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-tessl-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish Tessl plugin
+    runs-on: ubuntu-latest
+    env:
+      TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Tessl CLI
+        uses: tesslio/setup-tessl@v2
+        with:
+          version: "0.81.1"
+          token: ${{ env.TESSL_TOKEN }}
+
+      - name: Publish plugin
+        run: tessl plugin publish --skip-evals .

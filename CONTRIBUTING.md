@@ -63,6 +63,19 @@ bash scripts/check_publish_dry_run.sh .
 That dry-run may fail because the current version already exists in the registry. That's expected
 after a version has already been published; any other failure needs investigation.
 
+## Commit Messages
+
+Pull request titles and commits must use Conventional Commits, for example:
+
+```text
+feat: add selector fallback guidance
+fix: preserve lazy Optional fallback
+docs: clarify README motivation
+ci: update release workflow
+```
+
+Release Please uses those commit types to decide the next version and generate release notes.
+
 ## Hosted Evals
 
 When authenticated with Tessl, run hosted evals before updating benchmark numbers:
@@ -93,7 +106,11 @@ When the hosted benchmark changes:
 
 ## Release Checklist
 
-Before publishing a public release:
+Release Please opens or updates a release pull request after changes land on `main`. Merging that
+release pull request updates `CHANGELOG.md`, bumps `.tessl-plugin/plugin.json`, creates the GitHub
+release, and then publishes the Tessl plugin from the release workflow.
+
+Before merging a release pull request:
 
 - run local checks;
 - run hosted evals or confirm the current benchmark is still valid;
