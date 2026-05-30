@@ -117,3 +117,8 @@ Before merging a release pull request:
 - test the skill against at least one Java Optional change outside this repository;
 - confirm `README.md` stays user-focused;
 - confirm contributor-only process details live here.
+
+## Dependency Updates
+
+Renovate keeps GitHub Actions, commitlint, and pinned action digests current. Major updates need
+manual approval from the dependency dashboard.

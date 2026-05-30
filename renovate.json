@@ -1,0 +1,65 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    ":rebaseStalePrs",
+    "group:all"
+  ],
+  "reviewers": ["martinfrancois"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "replace",
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-required",
+  "automerge": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/commitlint\\.yml$/"
+      ],
+      "matchStrings": [
+        "(?:\\s+)(?<depName>@commitlint/(?:cli|config-conventional))@(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/(?:ci|commitlint|publish-tessl|release-please|skill-review)\\.yml$/"
+      ],
+      "matchStrings": [
+        "version:\\s*[\"']?(?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']?"
+      ],
+      "depNameTemplate": "tessl-cli",
+      "datasourceTemplate": "github-releases",
+      "packageNameTemplate": "tesslio/cli",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "dependencyDashboardApproval": true,
+      "addLabels": ["major-update"]
+    },
+    {
+      "matchDatasources": ["github-tags"],
+      "matchPackageNames": ["actions/checkout", "actions/setup-node"],
+      "groupName": "GitHub Actions"
+    },
+    {
+      "matchPackageNames": [
+        "@commitlint/cli",
+        "@commitlint/config-conventional"
+      ],
+      "groupName": "commitlint"
+    }
+  ]
+}

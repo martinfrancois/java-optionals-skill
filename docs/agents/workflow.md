@@ -30,6 +30,9 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   `TESSL_TOKEN` is configured.
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
   `CHANGELOG.md`, `.tessl-plugin/plugin.json`, GitHub releases, and the Tessl publish workflow.
+- Renovate manages GitHub Actions, action digests, commitlint packages, and the pinned Tessl CLI
+  version in workflows. Keep `renovate.json` adapted to this plugin repo; don't add Maven, Docker,
+  or vendored Tessl dependency rules unless those files exist here.
 
 - Commit and push finished changes unless the user explicitly asks not to.
 
