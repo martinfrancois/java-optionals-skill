@@ -24,10 +24,42 @@ fixed one antipattern by adding a different one:
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
   `orElseThrow()`;
 - losing laziness by using `orElse(...)` where `orElseGet(...)` is required;
-- turning one `Optional` into a stream, list, or loop just to make a branch;
+- turning one optional value into a fake list, then reading the first item;
 - replacing a clear collection stream with a long manual loop;
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
+
+For example, one cleanup turned a single optional selector into a fake list:
+
+```java
+List<String> boards = selectedBoard.stream().toList();
+if (!boards.isEmpty()) {
+    return selectBoardDiagnostics(manifest, boards.getFirst());
+}
+```
+
+Another turned an Optional result back into local null control flow:
+
+```java
+Comment workpad = existingWorkpad.orElse(null);
+if (workpad != null) {
+    return updateExistingWorkpad(workpad, text);
+}
+```
+
+And another overcorrected a real option-set lookup into a harder-to-read loop:
+
+```java
+arguments:
+for (String arg : args) {
+    for (String option : REDACTED_VALUE_OPTIONS) {
+        if (arg.startsWith(option + "=")) {
+            sanitized.add(option + "=<redacted>");
+            continue arguments;
+        }
+    }
+}
+```
 
 The goal is not to force every branch into a fluent chain. The goal is simpler: understand what the
 `Optional` is doing, keep the important effects in the same places, and choose the clearest code.
