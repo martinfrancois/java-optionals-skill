@@ -5,10 +5,6 @@ Help coding agents improve Java `Optional` code without trading one bad pattern 
 This skill teaches the agent to choose the right Optional shape first, so Java code that already uses
 `Optional` stays clear, lazy, and correct instead of becoming clever but worse.
 
-```text
-martinfrancois/java-optionals
-```
-
 ## Getting Started
 
 Install the skill:
