@@ -24,27 +24,40 @@ use a plain branch when checked IO makes that clearer.
 
 ## Getting Started
 
+### 1. Install
+
 Install the published Tessl tile:
 
 ```bash
 tessl install martinfrancois/java-optionals
 ```
 
-After installation, agents that support skill auto-selection, such as
+Install globally instead of into the current project:
+
+```bash
+tessl install --global martinfrancois/java-optionals
+```
+
+### 2. Use It
+
+Agents that support skill auto-selection, such as
 [Codex](https://developers.openai.com/codex/skills) and
 [Claude Code](https://code.claude.com/docs/en/skills), can choose this skill automatically from the
-task or code context. The task does not need to say `Optional` by name. It can also trigger when Java
-code deals with missing values, values that may be `null`, fallback/default values, `isPresent()`,
-`orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, or similar code paths for values
-that may or may not exist. In those agents, you do not have to mention the skill every time.
+task or code context. The task does not need to say `Optional` by name.
 
-For important Optional-heavy work, you can still name it explicitly:
+For those agents, describe the Java change normally.
+
+It can also trigger when Java code deals with missing values, values that may be `null`,
+fallback/default values, `isPresent()`, `orElse(null)`, `optional.stream()`,
+`findFirst()` / `findAny()`, or similar code paths for values that may or may not exist.
+
+For important Optional-heavy work, you can still name the skill explicitly:
 
 ```text
 Use $java-optionals to implement this Java feature with Optional best practices.
 ```
 
-For changing existing code:
+For cleanup work:
 
 ```text
 Use $java-optionals to clean up this Java method without changing its outputs or error handling.
@@ -57,11 +70,7 @@ Use $java-optionals to review this proposed Optional cleanup. Create review.md w
 the reason.
 ```
 
-Install globally instead of into the current project:
-
-```bash
-tessl install --global martinfrancois/java-optionals
-```
+### 3. Source Install
 
 The GitHub repository is still private for now. If you have repository access and want to install
 from source instead, use:

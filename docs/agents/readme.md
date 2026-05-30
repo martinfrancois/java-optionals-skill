@@ -17,6 +17,8 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   of a real install command or are otherwise useful to the reader.
 - Keep Getting Started simple. Do not add overly specific prompt examples that restate individual
   antipatterns; one implementation prompt, one cleanup prompt, and one review prompt is enough.
+- Structure Getting Started so readers can skim it: install first, then how automatic use works,
+  then optional explicit prompts, then private source install if needed.
 - Once the Tessl tile is published, make the package install command the primary install path. If the
   GitHub repo is still private, describe GitHub installation only as a source install for people with
   repository access.
