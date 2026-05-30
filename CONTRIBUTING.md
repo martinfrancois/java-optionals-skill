@@ -77,16 +77,71 @@ after a version has already been published; any other failure needs investigatio
 
 ## Commit Messages
 
-Pull request titles and commits must use Conventional Commits, for example:
+Pull request titles and commits must use Conventional Commits. CI checks both the pull request title
+and every commit in the pull request.
+
+Use this shape:
 
 ```text
-feat: add selector fallback guidance
-fix: preserve lazy Optional fallback
-docs: clarify README motivation
-ci: update release workflow
+type(optional-scope): short description
 ```
 
-Release Please uses those commit types to decide the next version and generate release notes.
+Keep the description short, lowercase, and written as an action or result. Don't end it with a
+period.
+
+Common types in this repository:
+
+- `feat`: user-facing skill behavior, new guidance, or new benchmark coverage.
+- `fix`: correct wrong guidance, broken metadata, validation, CI, or release behavior.
+- `docs`: README, contributing guide, source notes, examples, or contributor docs.
+- `test`: eval scenarios, eval criteria, or validation coverage.
+- `ci`: GitHub Actions, Renovate, Release Please, or publishing automation.
+- `chore`: repository maintenance that doesn't change user-facing behavior.
+- `refactor`: restructure docs, scripts, or skill text without changing behavior.
+
+Scopes are optional. Use one when it makes the change easier to scan:
+
+```text
+feat(skill): add selector fallback guidance
+test(evals): cover eager fallback regression
+docs(readme): clarify why the skill exists
+ci(renovate): wait seven days before update PRs
+fix(release): publish Tessl releases with evals
+```
+
+Avoid vague or non-conventional messages:
+
+```text
+update stuff
+fixes
+README changes
+WIP
+```
+
+Release Please uses Conventional Commits after changes land on `main`:
+
+- `feat` normally creates a minor release.
+- `fix` normally creates a patch release.
+- `feat!`, `fix!`, or a `BREAKING CHANGE:` footer creates a major release.
+- `docs`, `ci`, `chore`, `refactor`, and `test` usually don't create a release by themselves unless
+  they include a breaking-change marker.
+
+For breaking changes, use either form:
+
+```text
+feat!: change skill activation contract
+```
+
+or:
+
+```text
+feat: change skill activation contract
+
+BREAKING CHANGE: agents must now load the skill through the new package name.
+```
+
+If your branch has several small commits, each commit still needs a valid message. It's fine to keep
+history simple and use one clear commit for a focused pull request.
 
 ## Hosted Evals
 
