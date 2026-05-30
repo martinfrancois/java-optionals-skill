@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.15...v0.1.16) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** compress lookup selector guidance ([ac2a1f6](https://github.com/martinfrancois/java-optionals-skill/commit/ac2a1f604efed0ec85f25c351c675d64c7f6a388))
+
 ## [0.1.15](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.14...v0.1.15) (2026-05-30)
 
 
