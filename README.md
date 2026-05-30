@@ -87,27 +87,45 @@ fixed one antipattern by adding a different one:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-For example, one cleanup turned a single optional selector into a fake list:
+For example, one cleanup changed a direct Optional selector into a fake list:
 
 ```java
+// from
+return selectedBoard
+        .map(board -> selectBoardDiagnostics(manifest, board))
+        .orElseGet(() -> selectDefaultDiagnostics(manifest));
+
+// to
 List<String> boards = selectedBoard.stream().toList();
 if (!boards.isEmpty()) {
     return selectBoardDiagnostics(manifest, boards.getFirst());
 }
 ```
 
-Another turned an Optional result back into local null control flow:
+Another changed a lazy Optional fallback into local null control flow:
 
 ```java
+// from
+return existingWorkpad
+        .map(workpad -> updateExistingWorkpad(workpad, text))
+        .orElseGet(() -> createWorkpad(card, text));
+
+// to
 Comment workpad = existingWorkpad.orElse(null);
 if (workpad != null) {
     return updateExistingWorkpad(workpad, text);
 }
 ```
 
-And another overcorrected a real option-set lookup into a harder-to-read loop:
+And another changed a real option-set lookup into a harder-to-read loop:
 
 ```java
+// from
+return REDACTED_VALUE_OPTIONS.stream()
+        .filter(option -> arg.equals(option) || arg.startsWith(option + "="))
+        .findAny();
+
+// to
 arguments:
 for (String arg : args) {
     for (String option : REDACTED_VALUE_OPTIONS) {
