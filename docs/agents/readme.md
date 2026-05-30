@@ -20,10 +20,10 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep Getting Started simple. Do not add overly specific prompt examples that restate individual
   antipatterns; one implementation prompt, one cleanup prompt, and one review prompt is enough.
 - Structure Getting Started so readers can skim it: install first, then how automatic use works,
-  then optional explicit prompts, then private source install if needed.
-- Once the Tessl tile is published, make the package install command the primary install path. If the
-  GitHub repo is still private, describe GitHub installation only as a source install for people with
-  repository access.
+  then optional explicit prompts.
+- Once the Tessl tile is published, make the package install command the primary install path.
+- Write the README as if the GitHub repository is public, even before it actually is. Do not mention
+  that the repo is private or add private-repo source install instructions.
 - Use simple words that non-native Java developers can understand.
 - Avoid avoidable words such as "idiomatic", "rationale", "provenance", "fluent", "semantics",
   "nullable", "present/absent", "first-pass", and "DTO" in user-facing README text.

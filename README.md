@@ -70,15 +70,6 @@ Use $java-optionals to review this proposed Optional cleanup. Create review.md w
 the reason.
 ```
 
-### 3. Source Install
-
-The GitHub repository is still private for now. If you have repository access and want to install
-from source instead, use:
-
-```bash
-tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
-```
-
 ## Why This Exists
 
 The motivation was real AI-written Java code. The agent already used `Optional`, but not in a clear
