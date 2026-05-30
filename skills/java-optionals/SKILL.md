@@ -13,9 +13,8 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
 
 ## Core Workflow
 
-1. Classify the boundary first: fallback, error, side effect, boolean check, collection lookup,
-   checked IO/prompt, or nullable API. Ordinary value flow should start with an Optional terminal,
-   not `isPresent()`.
+1. Classify the boundary first. For ordinary value flow, use an Optional terminal instead of
+   `isPresent()`.
 2. Use the Optional API that matches the intent: `map`, `flatMap`, `filter`, `or`, `orElse` for
    cheap values, `orElseGet` for lazy fallback work, `orElseThrow` for true absence errors, and
    `ifPresent` or `ifPresentOrElse` for side effects.
@@ -49,8 +48,9 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
    chosen values in target Optional fields inside that lambda.
 7. Special boundaries: use a plain branch for checked IO/prompts; keep `orElse(null)` only at
    null-based API boundaries; return an explicit decision for review-only tasks.
-8. Verify manually and with tests: same return values, exceptions, prompts, side effects, lazy
-   fallback timing, generated output, branch order, and sibling Optional smells.
+8. Verify with relevant tests or a traced example for each changed branch: same return values,
+   exceptions, prompts, side effects, laziness, generated output, and branch order; scan sibling code
+   for the same Optional smell.
 
 ## References
 
