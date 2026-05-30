@@ -84,7 +84,7 @@ one bad pattern for another:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-The examples below show Java `Optional` code an AI agent would write, followed by what it could
+The examples below show Java `Optional` code an AI agent would write, followed by what it would
 change that code to when asked to follow Optional best practices without this skill.
 
 For example, one cleanup would have changed a simple coupon branch into a fake list:
