@@ -51,7 +51,12 @@
     },
     {
       "matchDatasources": ["github-tags"],
-      "matchPackageNames": ["actions/checkout", "actions/setup-node"],
+      "matchPackageNames": [
+        "actions/checkout",
+        "actions/setup-node",
+        "googleapis/release-please-action",
+        "tesslio/setup-tessl"
+      ],
       "groupName": "GitHub Actions"
     },
     {
