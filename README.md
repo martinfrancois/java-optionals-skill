@@ -84,8 +84,8 @@ one bad pattern for another:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-The examples below use a small store domain to show those failure shapes. In each one, the second
-half is the kind of output this skill is meant to prevent.
+The examples below show Java `Optional` code an AI agent might write, followed by what it could
+change that code to when asked to follow Optional best practices without this skill.
 
 For example, one cleanup would have changed a simple coupon branch into a fake list:
 
