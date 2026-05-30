@@ -16,8 +16,9 @@ Use this skill when an agent writes or changes Java code that uses `Optional`.
 When changing existing code, it helps the agent avoid accidental changes to results, errors, prompts,
 side effects, and when fallback code runs.
 
-The motivation was real AI-written Java code. Agents were writing and changing Optional code, but
-they often replaced one problem with another:
+The motivation was real AI-written Java code. The agent already used `Optional`, but often used it
+in weak shapes. Then, when asked to clean up the code and follow Optional best practices, it sometimes
+fixed one antipattern by adding a different one:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
