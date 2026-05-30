@@ -30,9 +30,10 @@ Install the skill:
 tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
 ```
 
-After installation, Codex can choose this skill automatically when your task mentions Java
-`Optional`, `isPresent()`, `orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, or
-related nullable control flow. You do not have to mention the skill every time.
+After installation, agents that support skill auto-selection can choose this skill automatically
+when your task mentions Java `Optional`, `isPresent()`, `orElse(null)`, `optional.stream()`,
+`findFirst()` / `findAny()`, or related nullable control flow. In those agents, you do not have to
+mention the skill every time.
 
 For important Optional-heavy work, you can still name it explicitly:
 
