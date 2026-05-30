@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.18](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.17...v0.1.18) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** tighten reference guidance ([04f22e3](https://github.com/martinfrancois/java-optionals-skill/commit/04f22e3b523ebb4a2c035a8644a4df4a606cff07))
+
 ## [0.1.17](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.16...v0.1.17) (2026-05-30)
 
 
