@@ -10,6 +10,18 @@ This skill gives the agent a small decision guide before it writes or changes Op
 the Optional shape, keep fallback work lazy, keep real collection streams readable, and use a plain
 branch when checked IO makes that clearer.
 
+## Contents
+
+- [Getting Started](#getting-started)
+- [Why This Exists](#why-this-exists)
+- [What Good Looks Like](#what-good-looks-like)
+- [What It Helps With](#what-it-helps-with)
+- [Examples](#examples)
+- [Benchmark](#benchmark)
+- [Development](#development)
+- [Provenance](#provenance)
+- [License](#license)
+
 ## Getting Started
 
 Install the skill:
