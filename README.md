@@ -28,17 +28,18 @@ use a plain branch when checked IO makes that clearer.
 
 ### 1. Install
 
-Install the published Tessl tile:
+Install the published Tessl tile using the option that fits your setup:
 
-```bash
-tessl install martinfrancois/java-optionals
-```
+| Tool | Command |
+| --- | --- |
+| npm | `npx tessl i martinfrancois/java-optionals` |
+| yarn | `yarn dlx tessl i martinfrancois/java-optionals` |
+| pnpm | `pnpx tessl i martinfrancois/java-optionals` |
+| bun | `bunx tessl i martinfrancois/java-optionals` |
+| Tessl CLI | `tessl i martinfrancois/java-optionals` |
 
-Install globally instead of into the current project:
-
-```bash
-tessl install --global martinfrancois/java-optionals
-```
+Use one of the package-runner commands if you want to try the skill without installing the Tessl CLI
+first.
 
 ### 2. Use It
 
