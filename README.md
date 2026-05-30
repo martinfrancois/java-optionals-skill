@@ -66,8 +66,7 @@ Use $java-optionals to clean up this Java method without changing its outputs or
 For reviews:
 
 ```text
-Use $java-optionals to review this proposed Optional cleanup. Create review.md with a decision and
-the reason.
+Use $java-optionals to review this Java Optional code and suggest any cleanups.
 ```
 
 ## Why This Exists

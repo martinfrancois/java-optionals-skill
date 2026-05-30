@@ -19,6 +19,8 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   of a real install command or are otherwise useful to the reader.
 - Keep Getting Started simple. Do not add overly specific prompt examples that restate individual
   antipatterns; one implementation prompt, one cleanup prompt, and one review prompt is enough.
+- Prompt examples should match how users naturally ask. For reviews, assume the user wants the agent
+  to find possible Optional cleanups, not review a cleanup proposal they already wrote.
 - Structure Getting Started so readers can skim it: install first, then how automatic use works,
   then optional explicit prompts.
 - Once the Tessl tile is published, make the package install command the primary install path.
