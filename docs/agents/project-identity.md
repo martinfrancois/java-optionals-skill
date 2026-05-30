@@ -17,8 +17,10 @@ Use this when naming the repository, skill, package, workspace, or public source
   ```
 
 - The GitHub repository started private. Do not make it public unless the user explicitly asks.
-- The goal is OSS readiness, not automatic public release. Tell the user when it looks ready to
-  publish; do not publish it for them without an explicit request.
+- The Tessl tile may be published while the GitHub repository remains private.
+- The goal is OSS readiness for the GitHub repository, not automatic public release. Tell the user
+  when the repository looks ready to publish; do not make it public for them without an explicit
+  request.
 - Keep the project independent of company naming. Do not add company names to the repo name, package
   name, README, or public metadata unless the user asks.
 - Do not mention private gists or secret references in public docs. Public origin links should point

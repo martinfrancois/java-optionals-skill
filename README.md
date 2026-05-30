@@ -27,7 +27,7 @@ use a plain branch when checked IO makes that clearer.
 Install the skill:
 
 ```bash
-tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
+tessl install martinfrancois/java-optionals
 ```
 
 After installation, agents that support skill auto-selection, such as
@@ -57,22 +57,17 @@ Use $java-optionals to review this proposed Optional cleanup. Create review.md w
 the reason.
 ```
 
-For new code with missing or fallback values:
-
-```text
-Use $java-optionals to implement this Java fallback without `isPresent()` / `get()` or `orElse(null)`.
-```
-
 Install globally instead of into the current project:
 
 ```bash
-tessl install --global github:martinfrancois/java-optionals-skill --skill java-optionals
+tessl install --global martinfrancois/java-optionals
 ```
 
-If the skill is published in your Tessl workspace, you can also install it by package name:
+The GitHub repository is still private for now. If you have repository access and want to install
+from source instead, use:
 
 ```bash
-tessl install martinfrancois/java-optionals
+tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
 ```
 
 ## Why This Exists

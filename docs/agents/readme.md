@@ -15,6 +15,11 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep contributor-only details in `CONTRIBUTING.md`, not in the README.
 - Do not add random package-name blocks such as `martinfrancois/java-optionals` unless they are part
   of a real install command or are otherwise useful to the reader.
+- Keep Getting Started simple. Do not add overly specific prompt examples that restate individual
+  antipatterns; one implementation prompt, one cleanup prompt, and one review prompt is enough.
+- Once the Tessl tile is published, make the package install command the primary install path. If the
+  GitHub repo is still private, describe GitHub installation only as a source install for people with
+  repository access.
 - Use simple words that non-native Java developers can understand.
 - Avoid avoidable words such as "idiomatic", "rationale", "provenance", "fluent", "semantics",
   "nullable", "present/absent", "first-pass", and "DTO" in user-facing README text.
