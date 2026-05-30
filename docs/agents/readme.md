@@ -53,7 +53,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Avoid phrases that make the examples sound like recommended transformations. They are bad outputs
   the skill is meant to prevent.
 - When introducing the anti-examples, be accurate that both parts are bad: first, code an AI agent
-  might write, then what it could change that code to when asked to follow Optional best practices
+  would write, then what it could change that code to when asked to follow Optional best practices
   without this skill.
 
 ## Example Rules
