@@ -48,8 +48,6 @@ Agents that support skill auto-selection, such as
 [Claude Code](https://code.claude.com/docs/en/skills), can choose this skill automatically from the
 task or code context. The task doesn't need to say `Optional` by name.
 
-For those agents, describe the Java change normally.
-
 It can also trigger when Java code deals with missing values, values that may be `null`,
 fallback/default values, `isPresent()`, `orElse(null)`, `optional.stream()`,
 `findFirst()` / `findAny()`, or similar code paths for values that may or may not exist.
