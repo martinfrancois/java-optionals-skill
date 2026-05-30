@@ -20,7 +20,7 @@
     {
       "name": "No unchecked wrapper or helper",
       "max_score": 18,
-      "description": "Does not introduce RuntimeException, UncheckedIOException, CheckedSupplier, CheckedOptionals, Vavr, or another helper/dependency to force fluent Optional syntax."
+      "description": "Does not introduce RuntimeException, UncheckedIOException, CheckedSupplier, CheckedOptionals, or another helper/dependency to force fluent Optional syntax."
     },
     {
       "name": "Avoids ordinary value-read antipattern",

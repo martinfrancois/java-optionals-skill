@@ -25,7 +25,7 @@
     {
       "name": "No dependency/style creep",
       "max_score": 6,
-      "description": "Does not suggest Vavr or another functional dependency for this narrow local cleanup."
+      "description": "Does not suggest adding a functional dependency for this narrow local cleanup."
     }
   ]
 }

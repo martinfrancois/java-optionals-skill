@@ -68,7 +68,7 @@
       "expectations": [
         "Preserves the checked IOException contract",
         "Does not wrap IOException in RuntimeException or UncheckedIOException",
-        "Does not introduce a CheckedOptionals helper or Vavr dependency"
+        "Does not introduce a CheckedOptionals helper or functional dependency"
       ]
     },
     {
@@ -183,14 +183,14 @@
     {
       "id": 16,
       "prompt": "Use $java-optionals to review this proposed helper-based refactor. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isPresent()) {\n            return configured.get();\n        }\n        return promptForWorkspace(terminal);\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```\n\nProposed:\n\n```java\nimport java.io.IOException;\nimport java.io.UncheckedIOException;\nimport java.util.Optional;\nimport java.util.function.Function;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        return CheckedOptionals.mapOrElseGet(\n                options.workspaceId(),\n                id -> id,\n                () -> promptForWorkspace(terminal));\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n\nfinal class CheckedOptionals {\n    static <T, R> R mapOrElseGet(Optional<T> value, Function<T, R> present, CheckedSupplier<R> absent)\n            throws IOException {\n        try {\n            return value.map(present).orElseGet(() -> unchecked(absent));\n        } catch (UncheckedIOException e) {\n            throw e.getCause();\n        }\n    }\n\n    private static <R> R unchecked(CheckedSupplier<R> supplier) {\n        try {\n            return supplier.get();\n        } catch (IOException e) {\n            throw new UncheckedIOException(e);\n        }\n    }\n\n    @FunctionalInterface\n    interface CheckedSupplier<T> {\n        T get() throws IOException;\n    }\n}\n```",
-      "expected_output": "Reject the helper-based local cleanup; keep a narrow explicit checked-IO branch and do not add unchecked wrappers or Vavr-style dependencies for this case.",
+      "expected_output": "Reject the helper-based local cleanup; keep a narrow explicit checked-IO branch and do not add unchecked wrappers or new dependencies for this case.",
       "files": [],
       "expectations": [
         "Says the helper-based refactor should not be accepted as a narrow local cleanup",
         "Explains that prompting is checked IO and should remain visible",
         "Rejects UncheckedIOException adaptation solely to keep fluent Optional syntax",
         "Suggests an explicit isEmpty branch with configured.orElseThrow() or equivalent",
-        "Does not suggest adding Vavr or another functional dependency for this local cleanup"
+        "Does not suggest adding a functional dependency for this local cleanup"
       ]
     },
     {
@@ -345,18 +345,6 @@
     },
     {
       "id": 29,
-      "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        Optional<String> configured = options.workspaceId();\n        if (configured.isEmpty()) {\n            return promptForWorkspace(terminal);\n        }\n        return configured.orElseThrow();\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```\n\nProposed:\n\n```java\nimport io.vavr.control.Option;\nimport java.io.IOException;\nimport java.util.Optional;\n\nfinal class WorkspaceSelector {\n    String workspaceId(Options options, Terminal terminal) throws IOException {\n        return Option.ofOptional(options.workspaceId())\n                .getOrElseTry(() -> promptForWorkspace(terminal));\n    }\n\n    String promptForWorkspace(Terminal terminal) throws IOException {\n        return terminal.readLine(\"Workspace: \");\n    }\n\n    interface Options { Optional<String> workspaceId(); }\n    interface Terminal { String readLine(String prompt) throws IOException; }\n}\n```",
-      "expected_output": "Reject the Vavr dependency/style change as broader than a local Optional cleanup; keep the checked-IO boundary explicit.",
-      "files": [],
-      "expectations": [
-        "Says the proposed Vavr Option change should not be accepted as a local cleanup",
-        "Explains that prompting is checked IO and the boundary should stay visible in plain Java",
-        "Notes that adding Vavr or an Option style is a repository-wide design/dependency decision",
-        "Recommends keeping the explicit isEmpty branch with configured.orElseThrow(), or an equivalent plain Java checked-IO branch"
-      ]
-    },
-    {
-      "id": 30,
       "prompt": "Use $java-optionals to create LabelFormatter.java.\n\nImplement:\n\n```java\nString label(Optional<String> rawLabel)\n```\n\nRules:\n\n- Trim a present label.\n- If the trimmed label is not blank, return it.\n- If the Optional is absent or the trimmed label is blank, return \"untitled\".",
       "expected_output": "Use rawLabel.map(String::trim).filter(...).orElse(\"untitled\") or an equivalent direct Optional boundary.",
       "files": [],
@@ -369,7 +357,7 @@
       ]
     },
     {
-      "id": 31,
+      "id": 30,
       "prompt": "Use $java-optionals to review this proposed cleanup. Create review.md with a short review decision and rationale.\n\nBefore:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isEmpty()) {\n            return card;\n        }\n        if (card.listId().equals(target.get().id())) {\n            return card;\n        }\n        return new Card(card.id(), target.get().id());\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```\n\nProposed:\n\n```java\nimport java.util.Optional;\n\nfinal class CardMover {\n    Card moveIfNeeded(Optional<ListRef> target, Card card) {\n        if (target.isPresent()) {\n            if (!card.listId().equals(target.get().id())) {\n                return new Card(card.id(), target.get().id());\n            }\n        }\n        return card;\n    }\n\n    record Card(String id, String listId) {}\n    record ListRef(String id) {}\n}\n```",
       "expected_output": "Reject the cleanup because it preserves presence-check/value-read control flow and repeated target.get() calls; suggest binding once.",
       "files": [],

@@ -20,7 +20,7 @@
     {
       "name": "No unchecked wrapper or helper",
       "max_score": 16,
-      "description": "Does not introduce RuntimeException, UncheckedIOException, CheckedSupplier, CheckedOptionals, Vavr, or another helper/dependency to force fluent Optional syntax."
+      "description": "Does not introduce RuntimeException, UncheckedIOException, CheckedSupplier, CheckedOptionals, or another helper/dependency to force fluent Optional syntax."
     },
     {
       "name": "Preserves prompt behavior",
@@ -34,4 +34,3 @@
     }
   ]
 }
-
