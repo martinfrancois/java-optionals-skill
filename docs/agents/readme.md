@@ -14,8 +14,9 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Put Getting Started before the motivation section.
 - Keep a table of contents.
 - Keep contributor-only details in `CONTRIBUTING.md`, not in the README.
-- Keep eval-development details in `CONTRIBUTING.md`. The README can show headline benchmark
-  results and a short explanation of what they measure, but not notes about reference eval suites.
+- Keep eval-development details in `CONTRIBUTING.md`. The README should explain how the skill is
+  evaluated and link to the Tessl tile for current scores instead of duplicating fixed benchmark
+  numbers that can go stale.
 - Use contractions in docs, including `README.md`, unless a contraction would make a technical
   statement less clear.
 - Don't add random package-name blocks such as `martinfrancois/java-optionals` unless they're part
