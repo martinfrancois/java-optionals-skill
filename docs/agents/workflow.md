@@ -7,7 +7,7 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
 ## Rules
 
 - If a Tessl or GitHub command fails because auth, login, workspace, or permission state appears
-  missing, re-check after the user says they changed it. Do not keep assuming the old state.
+  missing, re-check after the user says they changed it. Don't keep assuming the old state.
 - When the user asks for autonomous work, carry it through implementation, validation, commit, and
   push unless they explicitly ask to stop earlier.
 - Before committing changes to the skill, README, evals, package metadata, agent docs, or this file,
@@ -20,8 +20,8 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   ```
 
 - After a version has been published, the dry-run may fail only because that exact version already
-  exists. For docs-only changes that do not need a new tile release, record that as expected and do
-  not bump the version. For skill, eval, or package changes that should be published, bump the
+  exists. For docs-only changes that don't need a new tile release, record that as expected and don't
+  bump the version. For skill, eval, or package changes that should be published, bump the
   version before publishing again.
 
 - When editing eval criteria, also run:

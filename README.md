@@ -43,7 +43,7 @@ tessl install --global martinfrancois/java-optionals
 Agents that support skill auto-selection, such as
 [Codex](https://developers.openai.com/codex/skills) and
 [Claude Code](https://code.claude.com/docs/en/skills), can choose this skill automatically from the
-task or code context. The task does not need to say `Optional` by name.
+task or code context. The task doesn't need to say `Optional` by name.
 
 For those agents, describe the Java change normally.
 
@@ -71,7 +71,7 @@ Use $java-optionals to review this Java Optional code and suggest any cleanups.
 
 ## Why This Exists
 
-The motivation was real AI-written Java code. The agent already used `Optional`, but did not follow
+The motivation was real AI-written Java code. The agent already used `Optional`, but didn't follow
 best practices. When asked to clean up the code and follow Optional best practices, it often swapped
 one bad pattern for another:
 
@@ -146,7 +146,7 @@ for (String enteredCode : enteredCodes) {
 return Optional.empty();
 ```
 
-The goal is not to force every branch into a method chain. The goal is simpler: understand what the
+The goal isn't to force every branch into a method chain. The goal is simpler: understand what the
 `Optional` is doing, keep the important effects in the same places, and choose the clearest code.
 
 ## What Good Looks Like
@@ -271,7 +271,7 @@ This skill is based on real-world failures where coding agents changed Java `Opt
 different bad shapes while working on production-style tasks. The motivating discussion is
 [`martin-francois/symphony-trello#96`](https://github.com/martin-francois/symphony-trello/issues/96).
 
-The skill is self-contained: using it does not require access to that issue, the original repository,
+The skill is self-contained: using it doesn't require access to that issue, the original repository,
 development drafts, or any external article.
 
 ## License

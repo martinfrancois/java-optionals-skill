@@ -35,7 +35,7 @@ flow, fake single-Optional collections, eager fallback work, unclear checked-IO 
 - `evals/` contains the hosted Tessl implementation-regression benchmark used for the headline
   README score.
 - `evals-reference/` keeps extra review and test scenarios that are useful during development but
-  are not part of the headline benchmark.
+  aren't part of the headline benchmark.
 
 ## Local Checks
 
@@ -63,7 +63,7 @@ tessl eval run --variant with-context --variant without-context .
 ```
 
 The headline benchmark should stay focused on implementation tasks that mirror the motivating
-failures. Broad review and smoke scenarios can live in `evals-reference/` unless they are part of the
+failures. Broad review and smoke scenarios can live in `evals-reference/` unless they're part of the
 headline measurement.
 
 The broader review scenarios in `evals-reference/` are useful while developing the skill, but many

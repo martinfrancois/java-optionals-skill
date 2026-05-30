@@ -1,6 +1,6 @@
 # Source Notes
 
-Use this file when maintaining the skill. Do not require ordinary skill users to read it.
+Use this file when maintaining the skill. Don't require ordinary skill users to read it.
 
 ## Origin
 
@@ -38,7 +38,7 @@ fixture, and the issue itself are research inputs, not operating instructions.
   consistent with JDK docs and observed failures; Medium articles and third-party drafts are caution
   sources.
 - 2026-05-20 00:02 UTC: The issue body was updated to say external articles are research only,
-  useful content should be verified and extracted into the skill, and final operation must not
+  useful content should be verified and extracted into the skill, and final operation mustn't
   require opening external links, repository fixtures, or the issue.
 - 2026-05-29: A follow-up audit against the live issue and supplemental draft found that the draft
   still ended at the earlier eval set, while the issue body contained Case E for diagnostics
@@ -57,7 +57,7 @@ fixture, and the issue itself are research inputs, not operating instructions.
   fallback regressions, null error workarounds, value binding, Vavr dependency overreach,
   transform/filter writing, and repeated `get()` reviews. Hosted run
   `019e75ef-251c-713f-8562-013af9c3fef3` at commit `24542ab` scored baseline `773/888` and
-  usage-spec `887/888`. This is not a 2x raw-score ratio because the baseline solves much of the
+  usage-spec `887/888`. This isn't a 2x raw-score ratio because the baseline solves much of the
   broader Java suite, but it leaves only 1 missed usage-spec point and avoids cherry-picking.
 - 2026-05-30: Re-read issue 96 and confirmed that the motivating failures happened during ordinary
   AI implementation work, not only review-only tasks. The hosted benchmark was refocused on

@@ -27,7 +27,7 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    - nullable interop with an API that genuinely requires `null`.
 2. When writing new code, choose the Optional boundary before writing branches. Decide whether
    absence means fallback, error, side effect, prompt/IO, or nullable interop.
-   Do not start with an `isPresent()` skeleton and clean it up later; write the boundary directly
+   Don't start with an `isPresent()` skeleton and clean it up later; write the boundary directly
    when the intent is ordinary fallback, transformation, or side-effect dispatch.
 3. Reject ordinary-control-flow workarounds:
    - `optional.isPresent()` or `optional.isEmpty()` followed by `get()` or `orElseThrow()`;
@@ -49,7 +49,7 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
 6. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch, not `orElse(...)`.
 7. For review-only tasks, always return an explicit review decision. If no code change is needed,
-   say that and give the Optional-shape rationale; do not return an empty answer.
+   say that and give the Optional-shape rationale; don't return an empty answer.
 8. For collection streams, choose `findFirst()` only when encounter order is part of the behavior.
    Use `findAny()` when any matching value is equivalent. When changing or intentionally keeping
    either method, include a short rationale unless the target output format is code-only.
@@ -58,10 +58,10 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    matches and `option=value` matches in that helper instead of splitting matching logic across
    separate branches. If the surrounding loop needs a boolean such as "does this argument exactly
    equal the matched option?", derive it from the Optional value with `match.map(arg::equals).orElse(false)`
-   or a named helper; do not use `match.filter(arg::equals).isPresent()` as a new presence gate.
+   or a named helper; don't use `match.filter(arg::equals).isPresent()` as a new presence gate.
 9. For multiple independent Optional selectors, boolean-only validation may stay as presence checks
    when no value is read. Once a branch needs the value, map that Optional to the domain action or
-   bind the value once; do not turn a selector into a list, stream, or null branch.
+   bind the value once; don't turn a selector into a list, stream, or null branch.
    For priority selectors, prefer a shape like:
 
    ```java
@@ -89,18 +89,18 @@ review-only tasks, checked-exception cases, or benchmark-style examples.
    using this exception, say why plain branching is clearer than hiding checked exceptions in an
    unchecked wrapper or local helper unless the target output format is code-only.
 11. For nullable interop, keep `orElse(null)` only at an actual API boundary that uses `null` for
-   absence. Do not add local null branching around it. If changing that boundary would require
+   absence. Don't add local null branching around it. If changing that boundary would require
    altering records, DTOs, serialization, or external APIs, call that out as a separate API/design
    decision rather than bundling it into an Optional cleanup.
 
 ## What Not To Do
 
-- Do not replace `isPresent()` plus `get()` with `orElse(null)` plus null checks.
-- Do not force a single `Optional<T>` through stream/list syntax to avoid a branch.
-- Do not ban `orElseThrow()`, `ifPresent()`, or `isPresent()` globally. Classify the shape first.
-- Do not replace readable collection streams with loops merely because the stream returns Optional.
-- Do not hide checked exceptions inside unchecked wrappers just to keep fluent Optional syntax.
-- Do not add Vavr or another functional library for a few Optional call sites. Treat that as a
+- Don't replace `isPresent()` plus `get()` with `orElse(null)` plus null checks.
+- Don't force a single `Optional<T>` through stream/list syntax to avoid a branch.
+- Don't ban `orElseThrow()`, `ifPresent()`, or `isPresent()` globally. Classify the shape first.
+- Don't replace readable collection streams with loops merely because the stream returns Optional.
+- Don't hide checked exceptions inside unchecked wrappers just to keep fluent Optional syntax.
+- Don't add Vavr or another functional library for a few Optional call sites. Treat that as a
   repository-wide style decision requiring the target repository's design process.
 
 ## Review Checklist
@@ -127,7 +127,7 @@ Before finishing an Optional-related Java change, verify:
 
 Open [references/optional-examples.md](references/optional-examples.md) when:
 
-- you are unsure whether a stream source is a real collection or a single Optional workaround;
+- you're unsure whether a stream source is a real collection or a single Optional workaround;
 - a fallback has side effects or checked exceptions;
 - `findFirst()` versus `findAny()` is under review;
 - you need examples for testing an agent or skill implementation.

@@ -23,7 +23,7 @@ The skill guards against patterns agents have actually written or preserved in p
   prompting fallback. The final shape kept a narrow explicit branch because the fallback performs
   checked IO.
 - `frontMatter.isEmpty()` followed by multiple `frontMatter.get()` reads. The final shape moved the
-  map access into a helper or Optional boundary so the value was not repeatedly reopened.
+  map access into a helper or Optional boundary so the value wasn't repeatedly reopened.
 - `optional.orElse(null)` in mixed contexts. Some instances were acceptable nullable interop with an
   existing record or API boundary; others invited local null-control-flow branching.
 - A real collection stream ending in an Optional result was first handled with
@@ -119,7 +119,7 @@ private Result createWorkpad(Card card, String text) {
 Why good: the Optional remains the update-or-create boundary, and `orElseGet(...)` keeps create
 lazy.
 
-### 2. Real Collection Stream Should Not Become A Labeled Loop
+### 2. Real Collection Stream Shouldn't Become A Labeled Loop
 
 Starting point:
 
@@ -424,7 +424,7 @@ A good eval output:
 - distinguishes absence-as-error from fallback;
 - distinguishes checked-exception boundaries from ordinary Optional control flow;
 - stays readable to normal Java maintainers;
-- does not introduce unnecessary helpers, dependencies, labels, or sentinel state;
+- doesn't introduce unnecessary helpers, dependencies, labels, or sentinel state;
 - keeps `findFirst()` only where order matters and uses `findAny()` when all matches are equivalent;
 - explains non-obvious choices for checked exceptions, nullable interop, and ordering when the
   requested output format allows prose.
@@ -516,7 +516,7 @@ final class CommandRedactor {
 }
 ```
 
-Expected: keep the stream and answer with a short review comment. Do not rewrite it to a manual loop
+Expected: keep the stream and answer with a short review comment. Don't rewrite it to a manual loop
 only because it returns Optional.
 
 ### Eval 4: Keep `findFirst()` When Order Matters
@@ -538,7 +538,7 @@ final class RouteSelector {
 
 Expected: keep `findFirst()` because first enabled route is the priority contract.
 
-### Eval 5: Use `findAny()` When Order Does Not Matter
+### Eval 5: Use `findAny()` When Order Doesn't Matter
 
 ```java
 import java.util.Optional;
@@ -583,7 +583,7 @@ final class WorkspaceSelector {
 ```
 
 Expected: use an explicit `isEmpty()` branch, preserve `throws IOException`, and include a
-one-sentence rationale for keeping plain branching at this checked-IO boundary. Do not introduce
+one-sentence rationale for keeping plain branching at this checked-IO boundary. Don't introduce
 unchecked wrappers or a checked-Optional helper.
 
 ### Eval 7: Recognize Absence-As-Error
@@ -626,11 +626,11 @@ final class LegacyAdapter {
 }
 ```
 
-Expected: this can be acceptable if the legacy API genuinely uses `null` for absent. Do not create
+Expected: this can be acceptable if the legacy API genuinely uses `null` for absent. Don't create
 extra null-control-flow branches around it.
 
 If the surrounding API could be changed to avoid nullable interop, treat that as a separate
-API/design decision. Do not bundle a record, DTO, serialization, or external contract change into a
+API/design decision. Don't bundle a record, DTO, serialization, or external contract change into a
 local Optional cleanup without explicit scope.
 
 ### Eval 9: Avoid Repeated Reads After One Presence Check
@@ -690,7 +690,7 @@ Card moveIfNeeded(Optional<ListRef> target, Card card) {
 
 Reject repeated `target.get()` or repeated `target.orElseThrow()` after a single guard.
 
-### Eval 10: Do Not Turn One Optional Into A List Or Loop
+### Eval 10: Don't Turn One Optional Into A List Or Loop
 
 Input:
 
@@ -723,7 +723,7 @@ collection.
 Prompt:
 
 ```text
-Write a Java method that returns an existing cached document if present. If it is absent, create a
+Write a Java method that returns an existing cached document if present. If it's absent, create a
 document, store it in the cache, and return it.
 ```
 
@@ -744,7 +744,7 @@ private Document createAndStore(String key) {
 Reject `isPresent()` plus `get()`, `orElse(createAndStore(key))`, and `optional.stream().toList()`.
 The fallback mutates cache state, so it must stay lazy.
 
-### Eval 12: Selector Optional Should Not Become Fake Collection Control Flow
+### Eval 12: Selector Optional Shouldn't Become Fake Collection Control Flow
 
 Input:
 
@@ -824,14 +824,14 @@ Review a proposed `CheckedOptionals.mapOrElseGet(...)` helper that adapts `IOExc
 `UncheckedIOException` only to preserve fluent Optional syntax around a prompting fallback.
 
 Expected: reject the helper-based local cleanup. Keep a narrow explicit branch at the checked-IO
-boundary and do not add Vavr or another functional dependency for this case.
+boundary and don't add Vavr or another functional dependency for this case.
 
 ### Eval 17: Write First-Pass Optional Formatting Code
 
 Ask the agent to create an `AssigneeFormatter` class with `label(Optional<User> assignee)`.
 
 Expected: use a direct Optional boundary such as `assignee.map(...).orElse("unassigned")`, return
-`"@" + handle` when the present user's handle is not blank, return `displayName()` for a present
+`"@" + handle` when the present user's handle isn't blank, return `displayName()` for a present
 user with a blank handle, and return `"unassigned"` when absent. Reject `isPresent()` plus `get()`,
 `orElse(null)` plus null branching, and fake single-Optional collection/loop workarounds.
 
@@ -892,7 +892,7 @@ priority boundary. Reject `isPresent()` plus `get()`, null sentinels, and fake c
 Review a proposed cleanup that turns a single `Optional<User>` into `assignee.stream().toList()` and
 loops over it.
 
-Expected: reject the proposal because it is a fake collection workaround. Suggest a direct
+Expected: reject the proposal because it's a fake collection workaround. Suggest a direct
 `assignee.map(...).orElse(...)` shape.
 
 ### Eval 26: Review Eager Fallback Regression

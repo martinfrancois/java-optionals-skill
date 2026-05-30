@@ -10,7 +10,7 @@ that correction durable in the relevant file under `docs/agents/`.
 
 ## Maintenance
 
-`AGENTS.md` is intentionally minimal. Do not add topic-specific guidance here. See
+`AGENTS.md` is intentionally minimal. Don't add topic-specific guidance here. See
 [Maintaining Agent Docs](docs/agents/maintaining-agent-docs.md).
 
 ## More Detailed Instructions

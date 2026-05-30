@@ -32,7 +32,7 @@ Use this when changing `AGENTS.md` or files under `docs/agents/`.
 ## Contradictions
 
 If a requested change conflicts with existing instructions, stop and ask the user which version to
-keep. Do not auto-resolve.
+keep. Don't auto-resolve.
 
 ## Remove Vague Rules
 
@@ -46,7 +46,7 @@ actionable.
 
 ## Scope
 
-Describe what this page covers and what it does not.
+Describe what this page covers and what it doesn't.
 
 ## Rules
 

@@ -15,16 +15,18 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep contributor-only details in `CONTRIBUTING.md`, not in the README.
 - Keep eval-development details in `CONTRIBUTING.md`. The README can show headline benchmark
   results and a short explanation of what they measure, but not notes about reference eval suites.
-- Do not add random package-name blocks such as `martinfrancois/java-optionals` unless they are part
+- Use contractions in docs, including `README.md`, unless a contraction would make a technical
+  statement less clear.
+- Don't add random package-name blocks such as `martinfrancois/java-optionals` unless they're part
   of a real install command or are otherwise useful to the reader.
-- Keep Getting Started simple. Do not add overly specific prompt examples that restate individual
+- Keep Getting Started simple. Don't add overly specific prompt examples that restate individual
   antipatterns; one implementation prompt, one cleanup prompt, and one review prompt is enough.
 - Prompt examples should match how users naturally ask. For reviews, assume the user wants the agent
   to find possible Optional cleanups, not review a cleanup proposal they already wrote.
 - Structure Getting Started so readers can skim it: install first, then how automatic use works,
   then optional explicit prompts.
 - Once the Tessl tile is published, make the package install command the primary install path.
-- Write the README as if the GitHub repository is public, even before it actually is. Do not mention
+- Write the README as if the GitHub repository is public, even before it's actually public. Don't mention
   that the repo is private or add private-repo source install instructions.
 - Use simple words that non-native Java developers can understand.
 - Avoid avoidable words such as "idiomatic", "rationale", "provenance", "fluent", "semantics",
@@ -39,18 +41,18 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   rewritten as noisy loops.
 - The core motivation is: AI agents already wrote Java `Optional` code, but often used bad patterns.
   When asked to clean it up, they sometimes replaced one bad pattern with another.
-- Prefer direct wording such as "did not follow best practices" over vague phrases such as "not in a
+- Prefer direct wording such as "didn't follow best practices" over vague phrases such as "not in a
   clear or standard way".
 - Mention that the skill is based on real AI-written failures, not a made-up style preference.
 - If changing the motivation, re-check the original issue body and all comments, plus the local
   source notes. The comments contained useful details that were easy to miss.
-- Do not lose the issue-only cases that were added after the first audit: diagnostics selector
+- Don't lose the issue-only cases that were added after the first audit: diagnostics selector
   Optionals and optional output side-effect handling.
-- Do not imply the skill is only for refactoring. It helps agents write new Optional code well and
+- Don't imply the skill is only for refactoring. It helps agents write new Optional code well and
   clean up existing Optional code.
 - Avoid vague phrases like "keep the same behavior" unless you name what must stay the same, such as
   outputs, errors, prompts, side effects, or when fallback work runs.
-- Avoid phrases that make the examples sound like recommended transformations. They are bad outputs
+- Avoid phrases that make the examples sound like recommended transformations. They're bad outputs
   the skill is meant to prevent.
 - When introducing the anti-examples, be accurate that both parts are bad: first, code an AI agent
   would write, then what it could change that code to when asked to follow Optional best practices
@@ -63,7 +65,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep the store examples intuitive: coupons, discounts, shipping codes, totals, customers, carts,
   and receipts are good. Avoid examples whose business story distracts from the Optional problem.
 - Keep code samples as short as possible while still showing the failure.
-- The README examples are not exact copies from the original issue. Phrase them accurately with
+- The README examples aren't exact copies from the original issue. Phrase them accurately with
   "would have changed" or equivalent wording.
 - In anti-examples, avoid generic `from` / `to` labels because they can imply the second half is the
   desired change.
@@ -75,7 +77,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   ```
 
 - If mentioning a failure like "turning one Optional into a fake list", include a tiny code example
-  so readers understand why it is bad.
+  so readers understand why it's bad.
 
 ## References
 

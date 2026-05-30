@@ -7,14 +7,14 @@ auto-selection wording.
 
 ## Rules
 
-- The skill should not require users to explicitly type `$java-optionals` every time.
+- The skill shouldn't require users to explicitly type `$java-optionals` every time.
 - Metadata should let agents auto-select it for Java tasks involving `Optional`, `isPresent()`,
   `orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, missing values, values that may
   be `null`, fallback/default values, and code where a value may or may not exist.
 - The README may say: "agents that support skill auto-selection, such as Codex and Claude Code".
 - Before naming platforms that support auto-selection, verify against official docs and link those
   docs when possible.
-- Do not over-explain install-path differences in the Getting Started flow.
+- Don't over-explain install-path differences in the Getting Started flow.
 
 ## References
 
