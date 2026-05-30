@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.21](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.20...v0.1.21) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** improve review quality wording ([#40](https://github.com/martinfrancois/java-optionals-skill/issues/40)) ([d5b9312](https://github.com/martinfrancois/java-optionals-skill/commit/d5b9312b18fc35ff649ecc8d3f64af1e98ed6ba7))
+
 ## [0.1.20](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.19...v0.1.20) (2026-05-30)
 
 
