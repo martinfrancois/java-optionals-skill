@@ -1,7 +1,7 @@
 # Contributing
 
-Thanks for helping improve Java Optionals. This project is a Tessl-compatible skill for guiding AI
-agents toward better Java `Optional` usage.
+Thanks for helping improve the Java Optional Skill. This project is a Tessl-compatible skill for
+guiding AI agents toward better Java `Optional` usage.
 
 Keep changes focused on the observed failure modes: weak Optional boundaries, null-style control
 flow, fake single-Optional collections, eager fallback work, unclear checked-IO handling,

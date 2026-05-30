@@ -7,6 +7,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 ## Reader Rules
 
 - Write for users first. Tessl is the install path, not the main story.
+- Use `Java Optional Skill for AI Agents` as the README title. Keep package and repo names unchanged.
 - The README should quickly make a Java developer think: "This solves a real problem I have."
 - Keep the README flow natural from top to bottom. People may read it in order, so avoid sections
   that feel like disconnected notes.

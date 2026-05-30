@@ -3,7 +3,7 @@ name: java-optionals
 description: Write, review, and refactor Java Optional code using best practices, improving readability, and preventing common Optional antipatterns such as null-style control flow and readability regressions. Use whenever writing, reviewing, or refactoring Java code that introduces, changes, or reasons about Optional; handles absent, missing, nullable, fallback, or default values where Optional may be appropriate; or touches isPresent/isEmpty, get/orElseThrow, orElse(null), optional.stream(), findFirst/findAny, checked exceptions inside Optional chains, or nullable control flow.
 ---
 
-# Java Optionals
+# Java Optional Skill
 
 Use this skill before writing Java code that may introduce `Optional`, and when reviewing or
 refactoring existing Optional code. Keep `Optional` as a clear present/absent boundary while
