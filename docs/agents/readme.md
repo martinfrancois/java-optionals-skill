@@ -13,6 +13,8 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Put Getting Started before the motivation section.
 - Keep a table of contents.
 - Keep contributor-only details in `CONTRIBUTING.md`, not in the README.
+- Keep eval-development details in `CONTRIBUTING.md`. The README can show headline benchmark
+  results and a short explanation of what they measure, but not notes about reference eval suites.
 - Do not add random package-name blocks such as `martinfrancois/java-optionals` unless they are part
   of a real install command or are otherwise useful to the reader.
 - Keep Getting Started simple. Do not add overly specific prompt examples that restate individual

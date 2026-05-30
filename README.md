@@ -271,9 +271,6 @@ normal AI-assisted Java changes, not only during code review. The scenarios star
 ask for feature work, and score both the required outputs/effects and the Optional cleanup this skill
 is meant to improve.
 
-The broader review scenarios remain in `evals-reference/`. They are useful while developing the
-skill, but many are small snippets that a strong generic model can already solve without the skill.
-
 ## Contributing
 
 Want to improve the skill, evals, or package metadata? See [CONTRIBUTING.md](CONTRIBUTING.md).

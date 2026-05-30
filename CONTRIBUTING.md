@@ -66,6 +66,11 @@ The headline benchmark should stay focused on implementation tasks that mirror t
 failures. Broad review and smoke scenarios can live in `evals-reference/` unless they are part of the
 headline measurement.
 
+The broader review scenarios in `evals-reference/` are useful while developing the skill, but many
+are small snippets that a strong generic model can already solve without the skill. Keep them as
+reference coverage unless they reveal a real implementation failure that belongs in the headline
+benchmark.
+
 ## Benchmark Updates
 
 When the hosted benchmark changes:
