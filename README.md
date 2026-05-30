@@ -122,14 +122,14 @@ if (value != null) {
 return price;
 ```
 
-And another would have changed a real free-shipping-code lookup into a harder-to-read loop:
+And another would have changed a delivery-slot lookup into a harder-to-read loop:
 
 ```java
 // before the AI cleanup request
-for (String enteredCode : enteredCodes) {
-    Optional<String> match = FREE_SHIPPING_CODES.stream()
-            .filter(code -> enteredCode.equals(code))
-            .findAny();
+for (DeliveryWindow preferredWindow : preferredWindows) {
+    Optional<DeliverySlot> match = availableSlots.stream()
+            .filter(slot -> slot.fits(preferredWindow))
+            .findFirst();
     if (match.isPresent()) {
         return Optional.of(match.orElseThrow());
     }
@@ -137,10 +137,10 @@ for (String enteredCode : enteredCodes) {
 return Optional.empty();
 
 // what an unassisted AI would have changed it to
-for (String enteredCode : enteredCodes) {
-    for (String code : FREE_SHIPPING_CODES) {
-        if (enteredCode.equals(code)) {
-            return Optional.of(code);
+for (DeliveryWindow preferredWindow : preferredWindows) {
+    for (DeliverySlot slot : availableSlots) {
+        if (slot.fits(preferredWindow)) {
+            return Optional.of(slot);
         }
     }
 }
@@ -238,10 +238,10 @@ String shippingAddress(Checkout checkout, Console console) throws IOException {
 Real collection lookup:
 
 ```java
-Optional<String> freeShippingCode(String enteredCode) {
-    return FREE_SHIPPING_CODES.stream()
-            .filter(code -> enteredCode.equals(code))
-            .findAny();
+Optional<DeliverySlot> deliverySlot(DeliveryWindow preferredWindow) {
+    return availableSlots.stream()
+            .filter(slot -> slot.fits(preferredWindow))
+            .findFirst();
 }
 ```
 
