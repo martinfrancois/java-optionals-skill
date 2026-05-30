@@ -12,8 +12,10 @@ flow, fake single-Optional collections, eager fallback work, unclear checked-IO 
 ```text
 .
 ├── .tessl-plugin/plugin.json
+├── .github/workflows/
 ├── evals/
 ├── evals-reference/
+├── scripts/
 ├── skills/java-optionals/
 │   ├── SKILL.md
 │   ├── agents/openai.yaml
@@ -36,22 +38,30 @@ flow, fake single-Optional collections, eager fallback work, unclear checked-IO 
   README score.
 - `evals-reference/` keeps extra review and test scenarios that are useful during development but
   aren't part of the headline benchmark.
+- `scripts/` contains portable validation checks used by CI.
+- `.github/workflows/ci.yml` validates skill metadata, eval criteria, Tessl linting, and the
+  publish dry-run when `TESSL_TOKEN` is configured.
+- `.github/workflows/skill-review.yml` runs `tessl skill review` on pull requests when
+  `TESSL_TOKEN` is configured.
 
 ## Local Checks
 
-Run these before committing skill, eval, README, or package changes:
+Run these before committing skill, eval, README, package, script, or CI changes:
 
 ```bash
-python3 /root/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/java-optionals
+python3 scripts/validate_skill.py skills/java-optionals
+python3 scripts/validate_eval_criteria.py evals evals-reference
 tessl plugin lint .
-tessl plugin publish --dry-run --skip-evals .
 ```
 
-Also validate eval criteria JSON when editing evals:
+Before a maintainer publishes, also run the Tessl publish dry-run:
 
 ```bash
-find evals -name criteria.json -print0 | xargs -0 -n1 jq empty
+bash scripts/check_publish_dry_run.sh .
 ```
+
+That dry-run may fail because the current version already exists in the registry. That's expected
+after a version has already been published; any other failure needs investigation.
 
 ## Hosted Evals
 

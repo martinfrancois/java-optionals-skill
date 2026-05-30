@@ -10,13 +10,14 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   missing, re-check after the user says they changed it. Don't keep assuming the old state.
 - When the user asks for autonomous work, carry it through implementation, validation, commit, and
   push unless they explicitly ask to stop earlier.
-- Before committing changes to the skill, README, evals, package metadata, agent docs, or this file,
-  run:
+- Before committing changes to the skill, README, evals, package metadata, scripts, CI, agent docs,
+  or this file, run:
 
   ```bash
-  python3 /root/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/java-optionals
+  python3 scripts/validate_skill.py skills/java-optionals
+  python3 scripts/validate_eval_criteria.py evals evals-reference
   tessl plugin lint .
-  tessl plugin publish --dry-run --skip-evals .
+  bash scripts/check_publish_dry_run.sh .
   ```
 
 - After a version has been published, the dry-run may fail only because that exact version already
@@ -24,11 +25,9 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   bump the version. For skill, eval, or package changes that should be published, bump the
   version before publishing again.
 
-- When editing eval criteria, also run:
-
-  ```bash
-  find evals -name criteria.json -print0 | xargs -0 -n1 jq empty
-  ```
+- CI mirrors the portable validation checks. When `TESSL_TOKEN` is configured, it also runs a
+  publish dry-run. The optional skill review workflow runs `tessl skill review --threshold 85` when
+  `TESSL_TOKEN` is configured.
 
 - Commit and push finished changes unless the user explicitly asks not to.
 

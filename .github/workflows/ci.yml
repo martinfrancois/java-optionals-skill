@@ -1,0 +1,64 @@
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/ci.yml"
+      - ".tessl-plugin/**"
+      - "evals/**"
+      - "evals-reference/**"
+      - "scripts/**"
+      - "skills/**"
+      - "tessl.json"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/ci.yml"
+      - ".tessl-plugin/**"
+      - "evals/**"
+      - "evals-reference/**"
+      - "scripts/**"
+      - "skills/**"
+      - "tessl.json"
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate skill and plugin
+    runs-on: ubuntu-latest
+    env:
+      TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Tessl CLI
+        uses: tesslio/setup-tessl@v2
+        with:
+          version: "0.81.1"
+          token: ${{ env.TESSL_TOKEN }}
+
+      - name: Validate skill metadata
+        run: python3 scripts/validate_skill.py skills/java-optionals
+
+      - name: Validate eval criteria
+        run: python3 scripts/validate_eval_criteria.py evals evals-reference
+
+      - name: Lint Tessl plugin
+        run: tessl plugin lint .
+
+      - name: Check publish dry-run
+        if: ${{ env.TESSL_TOKEN != '' }}
+        run: bash scripts/check_publish_dry_run.sh .
+
+      - name: Skip publish dry-run when Tessl token is unavailable
+        if: ${{ env.TESSL_TOKEN == '' }}
+        run: echo "TESSL_TOKEN isn't configured; skipping publish dry-run."
