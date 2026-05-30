@@ -38,4 +38,4 @@ jobs:
 
       - name: Review skill
         if: ${{ env.TESSL_TOKEN != '' }}
-        run: tessl skill review --threshold 85 skills/java-optionals/SKILL.md
+        run: tessl skill review --threshold 100 skills/java-optionals/SKILL.md
