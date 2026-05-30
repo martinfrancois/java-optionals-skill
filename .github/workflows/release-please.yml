@@ -24,3 +24,28 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      - name: Dispatch release PR checks
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          pr_json="$(gh pr list \
+            --state open \
+            --head release-please--branches--main--components--java-optionals \
+            --json title,headRefName \
+            --jq '.[0] // empty')"
+
+          if [ -z "$pr_json" ]; then
+            echo "No open release PR to check."
+            exit 0
+          fi
+
+          title="$(printf '%s\n' "$pr_json" | jq -r '.title')"
+          branch="$(printf '%s\n' "$pr_json" | jq -r '.headRefName')"
+
+          gh workflow run ci.yml --ref "$branch"
+          gh workflow run commitlint.yml --ref "$branch" \
+            -f pr_title="$title" \
+            -f base_ref=main

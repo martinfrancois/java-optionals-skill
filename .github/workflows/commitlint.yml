@@ -1,6 +1,17 @@
 name: Commitlint
 
 on:
+  workflow_dispatch:
+    inputs:
+      pr_title:
+        description: Pull request title to lint.
+        required: true
+        type: string
+      base_ref:
+        description: Base branch to compare against.
+        required: false
+        default: main
+        type: string
   pull_request:
     branches:
       - main
@@ -43,13 +54,21 @@ jobs:
 
       - name: Lint pull request title
         env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_TITLE: ${{ github.event_name == 'pull_request' && github.event.pull_request.title || inputs.pr_title }}
         run: printf '%s\n' "$PR_TITLE" | "$COMMITLINT_BIN" --config "$COMMITLINT_CONFIG"
 
       - name: Lint pull request commits
         env:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_REF: ${{ inputs.base_ref || 'main' }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          "$COMMITLINT_BIN" --config "$COMMITLINT_CONFIG" \
-            --from "$PR_BASE_SHA" --to "$PR_HEAD_SHA" --verbose
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            "$COMMITLINT_BIN" --config "$COMMITLINT_CONFIG" \
+              --from "$PR_BASE_SHA" --to "$PR_HEAD_SHA" --verbose
+          else
+            git fetch origin "$BASE_REF"
+            "$COMMITLINT_BIN" --config "$COMMITLINT_CONFIG" \
+              --from "origin/$BASE_REF" --to HEAD --verbose
+          fi
