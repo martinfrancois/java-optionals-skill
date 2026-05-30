@@ -9,7 +9,52 @@ This skill teaches the agent to choose the right Optional shape first, so Java c
 martinfrancois/java-optionals
 ```
 
-## Why You Want This
+## Getting Started
+
+Install the skill:
+
+```bash
+tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
+```
+
+Then ask the agent to use it:
+
+```text
+Use $java-optionals to implement this Java feature with Optional best practices.
+```
+
+For refactors:
+
+```text
+Use $java-optionals to refactor this Java method without changing its outputs or error handling.
+```
+
+For reviews:
+
+```text
+Use $java-optionals to review this proposed Optional cleanup. Create review.md with a decision and
+rationale.
+```
+
+For focused first-pass Optional code:
+
+```text
+Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
+```
+
+Install globally instead of into the current project:
+
+```bash
+tessl install --global github:martinfrancois/java-optionals-skill --skill java-optionals
+```
+
+If the skill is published in your Tessl workspace, you can also install it by package name:
+
+```bash
+tessl install martinfrancois/java-optionals
+```
+
+## Why This Exists
 
 Use this skill when an agent writes or changes Java code that uses `Optional`.
 
@@ -63,51 +108,6 @@ for (String arg : args) {
 
 The goal is not to force every branch into a fluent chain. The goal is simpler: understand what the
 `Optional` is doing, keep the important effects in the same places, and choose the clearest code.
-
-## Fastest Path
-
-Install the skill:
-
-```bash
-tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
-```
-
-Then ask the agent to use it:
-
-```text
-Use $java-optionals to implement this Java feature with Optional best practices.
-```
-
-For refactors:
-
-```text
-Use $java-optionals to refactor this Java method without changing its outputs or error handling.
-```
-
-For reviews:
-
-```text
-Use $java-optionals to review this proposed Optional cleanup. Create review.md with a decision and
-rationale.
-```
-
-For focused first-pass Optional code:
-
-```text
-Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
-```
-
-Install globally instead of into the current project:
-
-```bash
-tessl install --global github:martinfrancois/java-optionals-skill --skill java-optionals
-```
-
-If the skill is published in your Tessl workspace, you can also install it by package name:
-
-```bash
-tessl install martinfrancois/java-optionals
-```
 
 ## What Good Looks Like
 
