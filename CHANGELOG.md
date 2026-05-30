@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.17](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.16...v0.1.17) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** shorten optional boundary rules ([24b2665](https://github.com/martinfrancois/java-optionals-skill/commit/24b26658aa7ea4dd8827eb94bbe7ce2fe5c82c00))
+
 ## [0.1.16](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.15...v0.1.16) (2026-05-30)
 
 
