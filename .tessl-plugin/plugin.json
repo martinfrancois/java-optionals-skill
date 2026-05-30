@@ -2,5 +2,7 @@
   "name": "martinfrancois/java-optionals",
   "version": "0.1.9",
   "description": "Java Optional best practices, readability, and antipattern prevention.",
+  "summary": "Java Optional best practices, readability, and antipattern prevention.",
+  "entrypoint": "README.md",
   "private": false
 }

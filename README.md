@@ -1,5 +1,7 @@
 # Java Optionals
 
+[![tessl](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.tessl.io%2Fv1%2Fbadges%2Fmartinfrancois%2Fjava-optionals)](https://tessl.io/registry/martinfrancois/java-optionals)
+
 AI agents often know enough Java to reach for `Optional`, but not enough to use it well.
 
 They write code that looks modern at first glance, then leaves you with `isPresent()` plus `get()`,
