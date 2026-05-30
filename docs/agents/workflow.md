@@ -31,8 +31,11 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
   `CHANGELOG.md`, `.tessl-plugin/plugin.json`, GitHub releases, and the Tessl publish workflow.
 - Renovate manages GitHub Actions, action digests, commitlint packages, and the pinned Tessl CLI
-  version in workflows. Keep `renovate.json` adapted to this plugin repo; don't add Maven, Docker,
-  or vendored Tessl dependency rules unless those files exist here.
+  version in workflows. Keep `minimumReleaseAge` at 7 days with `internalChecksFilter: "strict"` so
+  Renovate waits before creating branches or PRs for updates that haven't passed the age gate. Keep
+  custom managers only for dependencies Renovate can't detect natively: commitlint packages installed
+  inside workflow shell commands, and the Tessl CLI version passed to `tesslio/setup-tessl`. Don't
+  add Maven, Docker, or vendored Tessl dependency rules unless those files exist here.
 
 - Commit and push finished changes unless the user explicitly asks not to.
 

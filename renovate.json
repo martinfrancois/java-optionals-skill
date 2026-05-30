@@ -9,8 +9,9 @@
   "reviewers": ["martinfrancois"],
   "labels": ["dependencies"],
   "rangeStrategy": "replace",
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "7 days",
   "minimumReleaseAgeBehaviour": "timestamp-required",
+  "internalChecksFilter": "strict",
   "automerge": true,
   "vulnerabilityAlerts": {
     "enabled": true,
@@ -48,23 +49,6 @@
       "automerge": false,
       "dependencyDashboardApproval": true,
       "addLabels": ["major-update"]
-    },
-    {
-      "matchDatasources": ["github-tags"],
-      "matchPackageNames": [
-        "actions/checkout",
-        "actions/setup-node",
-        "googleapis/release-please-action",
-        "tesslio/setup-tessl"
-      ],
-      "groupName": "GitHub Actions"
-    },
-    {
-      "matchPackageNames": [
-        "@commitlint/cli",
-        "@commitlint/config-conventional"
-      ],
-      "groupName": "commitlint"
     }
   ]
 }
