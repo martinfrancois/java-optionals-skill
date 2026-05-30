@@ -31,9 +31,10 @@ tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
 ```
 
 After installation, agents that support skill auto-selection can choose this skill automatically
-when your task mentions Java `Optional`, `isPresent()`, `orElse(null)`, `optional.stream()`,
-`findFirst()` / `findAny()`, or related nullable control flow. In those agents, you do not have to
-mention the skill every time.
+from the task or code context. The task does not need to say `Optional` by name. It can also trigger
+when Java code deals with missing values, nullable results, fallback/default values, `isPresent()`,
+`orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, or similar present/absent control
+flow. In those agents, you do not have to mention the skill every time.
 
 For important Optional-heavy work, you can still name it explicitly:
 
