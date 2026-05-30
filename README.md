@@ -57,10 +57,10 @@ Use $java-optionals to review this proposed Optional cleanup. Create review.md w
 rationale.
 ```
 
-For focused first-pass Optional code:
+For new code with missing or fallback values:
 
 ```text
-Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
+Use $java-optionals to implement this Java fallback without `isPresent()` / `get()` or `orElse(null)`.
 ```
 
 Install globally instead of into the current project:
