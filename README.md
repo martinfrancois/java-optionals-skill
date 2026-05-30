@@ -73,14 +73,10 @@ tessl install martinfrancois/java-optionals
 
 ## Why This Exists
 
-Use this skill when an agent writes or changes Java code that uses `Optional`.
+This started with real AI-written Java code, not a style preference.
 
-When changing existing code, it helps the agent avoid accidental changes to results, errors, prompts,
-side effects, and when fallback code runs.
-
-The motivation was real AI-written Java code. The agent already used `Optional`, but often used it
-in weak shapes. Then, when asked to clean up the code and follow Optional best practices, it sometimes
-fixed one antipattern by adding a different one:
+The agent was already using `Optional`, but in weak shapes. When asked to clean it up, it often did
+not move to clearer Optional code. It swapped one bad pattern for another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
@@ -91,10 +87,8 @@ fixed one antipattern by adding a different one:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-The snippets below use a simple store domain, but they mirror the real failure shapes from the issue.
-They are anti-examples. They are not what this skill tells an agent to do. They show the kind of
-cleanup an AI agent would have produced without this skill: remove one smell, then add another.
-This skill exists to stop those moves and guide the agent toward the simpler Optional shape instead.
+The examples below use a small store domain to show those failure shapes. In each one, the second
+half is the kind of output this skill is meant to prevent.
 
 For example, one cleanup would have changed a simple coupon branch into a fake list:
 
