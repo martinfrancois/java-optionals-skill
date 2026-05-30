@@ -50,7 +50,9 @@ review-only tasks, priority selectors, checked-exception cases, or benchmark-sty
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
 5. For collection streams, use `findFirst()` only when order matters; otherwise use `findAny()`.
    Keep real lookups as streams. When stateful code consumes the match, extract an `Optional<T>`
-   helper that centralizes exact and `option=value` matching.
+   helper that streams the option collection and centralizes exact plus `option=value` matching.
+   Don't replace collection lookup with `Optional.of(arg).filter(collection::contains)`. Derive
+   loop-state booleans from the matched Optional, not mutable lambda-capture arrays.
 6. For selectors, keep presence checks only for boolean-only validation. Once a value is needed,
    map or bind it once. For priority selectors, map the first Optional and use lazy fallback for
    later sources. If the domain object stores an Optional, wrap the chosen value inside the mapping
