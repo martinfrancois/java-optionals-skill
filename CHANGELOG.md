@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.15](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.14...v0.1.15) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** tighten optional workflow wording ([0b1328a](https://github.com/martinfrancois/java-optionals-skill/commit/0b1328a181b838c3ee4381e592e7cb06a8b88a69))
+
 ## [0.1.14](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.13...v0.1.14) (2026-05-30)
 
 
