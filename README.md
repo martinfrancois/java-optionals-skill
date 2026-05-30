@@ -80,10 +80,9 @@ tessl install martinfrancois/java-optionals
 
 ## Why This Exists
 
-This started with real AI-written Java code, not a style preference.
-
-The agent was already using `Optional`, but in weak shapes. When asked to clean it up, it often did
-not move to clearer Optional code. It swapped one bad pattern for another:
+The motivation was real AI-written Java code. The agent already used `Optional`, but not in a clear
+or idiomatic way. When asked to clean up the code and follow Optional best practices, it often swapped
+one bad pattern for another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
