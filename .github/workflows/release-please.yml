@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  statuses: write
 
 concurrency:
   group: release-please-${{ github.ref }}
@@ -25,7 +26,8 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - name: Dispatch release PR checks
+      - name: Find release PR
+        id: release-pr
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -40,13 +42,108 @@ jobs:
 
           if [ -z "$pr_json" ]; then
             echo "No open release PR to check."
+            echo "found=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           title="$(printf '%s\n' "$pr_json" | jq -r '.title')"
           branch="$(printf '%s\n' "$pr_json" | jq -r '.headRefName')"
 
-          gh workflow run ci.yml --ref "$branch"
-          gh workflow run commitlint.yml --ref "$branch" \
-            -f pr_title="$title" \
-            -f base_ref=main
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "title=$title" >> "$GITHUB_OUTPUT"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v6
+        if: ${{ steps.release-pr.outputs.found == 'true' }}
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.release-pr.outputs.branch }}
+
+      - name: Setup Tessl CLI
+        if: ${{ steps.release-pr.outputs.found == 'true' }}
+        uses: tesslio/setup-tessl@v2
+        with:
+          version: "0.81.1"
+          token: ${{ secrets.TESSL_TOKEN }}
+
+      - name: Validate release PR
+        if: ${{ steps.release-pr.outputs.found == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
+          STATUS_SHA: ${{ github.sha }}
+          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+
+          release_sha="$(git rev-parse HEAD)"
+          context="Validate skill and plugin"
+
+          set_status() {
+            local state="$1"
+            local description="$2"
+            gh api "repos/${GITHUB_REPOSITORY}/statuses/${release_sha}" \
+              -f state="$state" \
+              -f context="$context" \
+              -f description="$description" \
+              -f target_url="$TARGET_URL" >/dev/null
+          }
+
+          set_status pending "Release PR validation is running"
+          trap 'code=$?; if [ "$code" -eq 0 ]; then set_status success "Release PR validation passed"; else set_status failure "Release PR validation failed"; fi' EXIT
+
+          python3 scripts/validate_skill.py skills/java-optionals
+          python3 scripts/validate_eval_criteria.py evals evals-reference
+          tessl plugin lint .
+
+          if [ -n "${TESSL_TOKEN:-}" ]; then
+            bash scripts/check_publish_dry_run.sh .
+          else
+            echo "TESSL_TOKEN isn't configured; skipping publish dry-run."
+          fi
+
+      - uses: actions/setup-node@v6
+        if: ${{ steps.release-pr.outputs.found == 'true' }}
+        with:
+          node-version: "24"
+
+      - name: Commitlint release PR
+        if: ${{ steps.release-pr.outputs.found == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TITLE: ${{ steps.release-pr.outputs.title }}
+          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+
+          release_sha="$(git rev-parse HEAD)"
+          context="Commitlint"
+
+          set_status() {
+            local state="$1"
+            local description="$2"
+            gh api "repos/${GITHUB_REPOSITORY}/statuses/${release_sha}" \
+              -f state="$state" \
+              -f context="$context" \
+              -f description="$description" \
+              -f target_url="$TARGET_URL" >/dev/null
+          }
+
+          set_status pending "Release PR commitlint is running"
+          trap 'code=$?; if [ "$code" -eq 0 ]; then set_status success "Release PR commitlint passed"; else set_status failure "Release PR commitlint failed"; fi' EXIT
+
+          commitlint_home="$RUNNER_TEMP/commitlint"
+          mkdir -p "$commitlint_home"
+          printf '{"private":true}\n' > "$commitlint_home/package.json"
+          cp commitlint.config.cjs "$commitlint_home/commitlint.config.cjs"
+          npm --prefix "$commitlint_home" install --silent \
+            @commitlint/cli@21.0.1 \
+            @commitlint/config-conventional@21.0.1
+
+          commitlint_bin="$commitlint_home/node_modules/.bin/commitlint"
+          commitlint_config="$commitlint_home/commitlint.config.cjs"
+
+          printf '%s\n' "$PR_TITLE" | "$commitlint_bin" --config "$commitlint_config"
+          git fetch origin main
+          "$commitlint_bin" --config "$commitlint_config" \
+            --from origin/main --to HEAD --verbose
