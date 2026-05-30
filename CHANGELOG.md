@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.20](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.19...v0.1.20) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** add validation checkpoint ([06bca63](https://github.com/martinfrancois/java-optionals-skill/commit/06bca63a64ca2df2f98e09cc530a478cb8fb21ac))
+
 ## [0.1.19](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.18...v0.1.19) (2026-05-30)
 
 
