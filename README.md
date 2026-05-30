@@ -2,8 +2,9 @@
 
 Help coding agents improve Java `Optional` code without trading one bad pattern for another.
 
-This skill teaches the agent to choose the right Optional shape first, so refactors keep the same
-behavior, stay lazy, keep readable streams, and do not hide checked IO behind clever helper code.
+This skill teaches the agent to choose the right Optional shape first, so new code and refactors keep
+the same behavior, stay lazy, keep readable streams, and do not hide checked IO behind clever helper
+code.
 
 ```text
 martinfrancois/java-optionals
@@ -11,12 +12,13 @@ martinfrancois/java-optionals
 
 ## Why You Want This
 
-Use this skill when an agent writes, reviews, or refactors Java code that uses `Optional`.
+Use this skill when an agent writes new Java code, reviews a change, or refactors existing code that
+uses `Optional`.
 
 It helps the agent keep the same behavior while making the code cleaner and easier to read.
 
-The motivation was real AI-written Java code. Agents were trying to improve Optional usage, but they
-often replaced one problem with another:
+The motivation was real AI-written Java code. Agents were writing and changing Optional code, but
+they often replaced one problem with another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
@@ -41,6 +43,12 @@ tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
 Then ask the agent to use it:
 
 ```text
+Use $java-optionals to implement this Java feature with Optional best practices.
+```
+
+For refactors:
+
+```text
 Use $java-optionals to refactor this Java method without changing behavior.
 ```
 
@@ -51,7 +59,7 @@ Use $java-optionals to review this proposed Optional cleanup. Create review.md w
 rationale.
 ```
 
-For new code:
+For focused first-pass Optional code:
 
 ```text
 Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
