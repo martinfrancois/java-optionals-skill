@@ -10,11 +10,24 @@ Keep changes focused on the observed failure modes: weak Optional boundaries, nu
 flow, fake single-Optional collections, eager fallback work, unclear checked-IO handling,
 `findFirst()` / `findAny()` mistakes, and overcorrected collection streams.
 
+## Community Standards
+
+Please follow the [Code of Conduct](CODE_OF_CONDUCT.md) in issues, pull requests, discussions, and
+reviews.
+
+AI-assisted contributions are welcome. If AI materially helped with a change, follow the
+[AI Contribution Policy](AI_CONTRIBUTION_POLICY.md) and disclose that in the pull request body.
+
+For suspected vulnerabilities, don't open a public issue. Follow the private reporting path in the
+[Security Policy](SECURITY.md).
+
 ## Repository Layout
 
 ```text
 .
 ├── .tessl-plugin/plugin.json
+├── .github/ISSUE_TEMPLATE/
+├── .github/pull_request_template.md
 ├── .github/workflows/
 ├── evals/
 ├── evals-reference/
@@ -26,11 +39,15 @@ flow, fake single-Optional collections, eager fallback work, unclear checked-IO 
 │   └── references/
 │       ├── optional-examples.md
 │       └── source-notes.md
+├── AI_CONTRIBUTION_POLICY.md
+├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── LICENSE
 └── README.md
 ```
 
+- `.github/ISSUE_TEMPLATE/` and `.github/pull_request_template.md` guide public issues and pull
+  requests.
 - `skills/java-optionals/SKILL.md` is the runtime instruction file loaded by agents.
 - `skills/java-optionals/agents/openai.yaml` provides display metadata.
 - `skills/java-optionals/references/optional-examples.md` contains larger examples and eval case
@@ -46,15 +63,17 @@ flow, fake single-Optional collections, eager fallback work, unclear checked-IO 
   publish dry-run when `TESSL_TOKEN` is configured.
 - `.github/workflows/skill-review.yml` runs `tessl skill review` on pull requests when
   `TESSL_TOKEN` is configured.
+- `AI_CONTRIBUTION_POLICY.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` set expectations for AI
+  assistance, project conduct, and private vulnerability reporting.
 
 ## Local Setup
 
 Clone the repository, make your change on a branch, and run the local checks below before opening a
 pull request. There are no project dependencies to install for the Python validation scripts.
 
-The Tessl CLI is only needed for `tessl plugin lint` and publish dry-runs. If you don't have Tessl
-set up locally, still run the Python checks and mention that Tessl checks were not run in your pull
-request.
+The Tessl CLI is needed for Tessl linting, skill review, publish dry-runs, and hosted evals. If you
+don't have Tessl set up locally, still run the Python checks and mention that Tessl checks were not
+run in your pull request.
 
 ## Local Checks
 
@@ -66,6 +85,12 @@ python3 scripts/validate_eval_criteria.py evals evals-reference
 tessl plugin lint .
 ```
 
+If you change the skill text or reference files, also run:
+
+```bash
+tessl skill review --threshold 85 skills/java-optionals/SKILL.md
+```
+
 If you have Tessl access, you can also run the publish dry-run:
 
 ```bash
@@ -74,6 +99,10 @@ bash scripts/check_publish_dry_run.sh .
 
 That dry-run may fail because the current version already exists in the registry. That's expected
 after a version has already been published; any other failure needs investigation.
+
+`tessl skill review`, `bash scripts/check_publish_dry_run.sh .`, and hosted evals require Tessl
+authentication. Hosted evals also require a linked Tessl project. If you don't have access, include
+the local checks you did run and say which Tessl checks need maintainer help.
 
 ## Commit Messages
 
