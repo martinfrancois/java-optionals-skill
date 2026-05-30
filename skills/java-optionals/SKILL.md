@@ -42,13 +42,12 @@ review-only tasks, priority selectors, checked-exception cases, or benchmark-sty
 
 4. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
-5. For collection lookup, keep real collections as streams and use `findAny()` unless order matters.
-   For stateful consumers, extract one `Optional<T>` helper over the collection that handles exact
-   and `option=value` matches. Don't replace it with `Optional.of(arg).filter(collection::contains)`;
-   derive flags from the matched Optional.
-6. For selectors, presence checks are fine only for boolean-only validation. When you need the
-   value, map or bind once; for priority selectors, map the first source and lazy-fallback to later
-   sources. If the target stores Optional, wrap the chosen value inside the lambda.
+5. Collection lookup: keep real collections as streams; use `findAny()` unless order matters; put
+   exact and `option=value` matching in one `Optional<T>` helper. Avoid
+   `Optional.of(arg).filter(collection::contains)` and mutable capture flags.
+6. Selectors: use presence checks only for boolean-only validation. If code needs the value, bind
+   it once. For priority, map the first source, use lazy fallback for later sources, and wrap chosen
+   values in target Optional fields inside that lambda.
 7. Handle special boundaries directly: use a plain branch for checked IO or prompts; keep
    `orElse(null)` only at real null-based API boundaries; return an explicit decision for
    review-only tasks.
