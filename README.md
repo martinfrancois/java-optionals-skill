@@ -1,7 +1,9 @@
 # Java Optionals
 
-Help coding agents write better Java `Optional` code. It keeps agents from turning `Optional` back
-into `null` checks, fake lists, fallback code that runs too early, or hard-to-read code.
+Help coding agents improve Java `Optional` code without trading one bad pattern for another.
+
+This skill teaches the agent to choose the right Optional shape first, so refactors keep the same
+behavior, stay lazy, keep readable streams, and do not hide checked IO behind clever helper code.
 
 ```text
 martinfrancois/java-optionals
@@ -13,9 +15,12 @@ Use this skill when an agent writes, reviews, or refactors Java code that uses `
 
 It helps the agent keep the same behavior while making the code cleaner and easier to read.
 
-It fixes mistakes that happen in real AI-written Java changes:
+The motivation was real AI-written Java code. Agents were trying to improve Optional usage, but they
+often replaced one problem with another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
+- using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
+  `orElseThrow()`;
 - losing laziness by using `orElse(...)` where `orElseGet(...)` is required;
 - turning one `Optional` into a stream, list, or loop just to make a branch;
 - replacing a clear collection stream with a long manual loop;
@@ -66,8 +71,8 @@ tessl install martinfrancois/java-optionals
 
 ## What Good Looks Like
 
-Without this skill, agents often "clean up" Optional code by moving the missing-value case back into
-`null`:
+Without this skill, agents may "clean up" Optional code but still leave the same control-flow
+problem:
 
 ```java
 Comment workpad = card.comments().stream()
@@ -81,7 +86,8 @@ if (workpad != null) {
 return createWorkpad(card, text);
 ```
 
-With this skill, the agent is pushed toward using the `Optional` for the actual decision:
+With this skill, the agent is pushed toward using the `Optional` for the actual decision and keeping
+the create path lazy:
 
 ```java
 Result upsertWorkpad(Card card, String text) {
@@ -235,7 +241,7 @@ the skill against at least one Java Optional change outside the source repositor
 ## Provenance
 
 This skill is based on real-world failures where coding agents changed Java `Optional` code into
-worse code while working on production-style tasks. The motivating discussion is
+different bad shapes while working on production-style tasks. The motivating discussion is
 [`martin-francois/symphony-trello#96`](https://github.com/martin-francois/symphony-trello/issues/96).
 
 The skill is self-contained: using it does not require access to that issue, the original repository,
