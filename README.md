@@ -87,54 +87,63 @@ fixed one antipattern by adding a different one:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-For example, one cleanup changed a direct Optional selector into a fake list:
+For example, one cleanup changed a simple coupon branch into a fake list:
 
 ```java
 // from
-return selectedBoard
-        .map(board -> selectBoardDiagnostics(manifest, board))
-        .orElseGet(() -> selectDefaultDiagnostics(manifest));
+if (selectedCoupon.isPresent()) {
+    return applyCoupon(cart, selectedCoupon.get());
+}
+return cart;
 
 // to
-List<String> boards = selectedBoard.stream().toList();
-if (!boards.isEmpty()) {
-    return selectBoardDiagnostics(manifest, boards.getFirst());
+List<Coupon> coupons = selectedCoupon.stream().toList();
+if (!coupons.isEmpty()) {
+    return applyCoupon(cart, coupons.getFirst());
 }
+return cart;
 ```
 
-Another changed a lazy Optional fallback into local null control flow:
+Another changed a saved-cart fallback into local null control flow:
 
 ```java
 // from
-return existingWorkpad
-        .map(workpad -> updateExistingWorkpad(workpad, text))
-        .orElseGet(() -> createWorkpad(card, text));
+if (savedCart.isPresent()) {
+    return price(savedCart.get());
+}
+return price(newCart());
 
 // to
-Comment workpad = existingWorkpad.orElse(null);
-if (workpad != null) {
-    return updateExistingWorkpad(workpad, text);
+Cart cart = savedCart.orElse(null);
+if (cart != null) {
+    return price(cart);
 }
+return price(newCart());
 ```
 
-And another changed a real option-set lookup into a harder-to-read loop:
+And another changed a real free-shipping-code lookup into a harder-to-read loop:
 
 ```java
 // from
-return REDACTED_VALUE_OPTIONS.stream()
-        .filter(option -> arg.equals(option) || arg.startsWith(option + "="))
-        .findAny();
+for (String enteredCode : enteredCodes) {
+    Optional<String> match = FREE_SHIPPING_CODES.stream()
+            .filter(code -> enteredCode.equals(code))
+            .findAny();
+    if (match.isPresent()) {
+        return Optional.of(match.orElseThrow());
+    }
+}
+return Optional.empty();
 
 // to
-arguments:
-for (String arg : args) {
-    for (String option : REDACTED_VALUE_OPTIONS) {
-        if (arg.startsWith(option + "=")) {
-            sanitized.add(option + "=<redacted>");
-            continue arguments;
+for (String enteredCode : enteredCodes) {
+    for (String code : FREE_SHIPPING_CODES) {
+        if (enteredCode.equals(code)) {
+            return Optional.of(code);
         }
     }
 }
+return Optional.empty();
 ```
 
 The goal is not to force every branch into a fluent chain. The goal is simpler: understand what the
@@ -146,27 +155,21 @@ Without this skill, agents may "clean up" Optional code but still leave the same
 problem:
 
 ```java
-Comment workpad = card.comments().stream()
-        .filter(this::isWorkpadComment)
-        .findFirst()
-        .orElse(null);
+Coupon coupon = cart.coupon().orElse(null);
 
-if (workpad != null) {
-    return updateExistingWorkpad(workpad, text);
+if (coupon != null) {
+    return totalWithCoupon(cart, coupon);
 }
-return createWorkpad(card, text);
+return totalWithoutCoupon(cart);
 ```
 
-With this skill, the agent is pushed toward using the `Optional` for the actual decision and keeping
-the create path lazy:
+With this skill, the agent is pushed toward using the `Optional` for the actual decision:
 
 ```java
-Result upsertWorkpad(Card card, String text) {
-    return card.comments().stream()
-            .filter(this::isWorkpadComment)
-            .findFirst()
-            .map(workpad -> updateExistingWorkpad(card, workpad, text))
-            .orElseGet(() -> createWorkpad(card, text));
+Money total(Cart cart) {
+    return cart.coupon()
+            .map(coupon -> totalWithCoupon(cart, coupon))
+            .orElseGet(() -> totalWithoutCoupon(cart));
 }
 ```
 
@@ -196,47 +199,47 @@ Poor fit:
 Simple fallback:
 
 ```java
-String displayName(Optional<User> user) {
-    return user.map(User::displayName).orElse("Anonymous");
+String customerName(Optional<Customer> customer) {
+    return customer.map(Customer::name).orElse("Guest");
 }
 ```
 
 Lazy creation or side effects:
 
 ```java
-Document document(String key) {
-    return cache.find(key).orElseGet(() -> createAndStore(key));
+Cart cart(String cartId) {
+    return carts.find(cartId).orElseGet(() -> createCart(cartId));
 }
 ```
 
 Side-effect branch:
 
 ```java
-void finish(Optional<Path> output, String report) {
-    output.ifPresentOrElse(
-            path -> write(path, report),
-            () -> print(report));
+void sendReceipt(Order order, Optional<Email> email) {
+    email.ifPresentOrElse(
+            address -> sendEmail(address, order),
+            () -> printReceipt(order));
 }
 ```
 
 Checked IO case where a plain branch is clearer:
 
 ```java
-String workspaceId(Options options, Terminal terminal) throws IOException {
-    Optional<String> configured = options.workspaceId();
-    if (configured.isEmpty()) {
-        return promptForWorkspace(terminal);
+String shippingAddress(Checkout checkout, Console console) throws IOException {
+    Optional<String> saved = checkout.savedShippingAddress();
+    if (saved.isEmpty()) {
+        return console.readLine("Shipping address: ");
     }
-    return configured.orElseThrow();
+    return saved.orElseThrow();
 }
 ```
 
 Real collection lookup:
 
 ```java
-private static Optional<String> redactedOption(String arg) {
-    return REDACTED_VALUE_OPTIONS.stream()
-            .filter(option -> arg.equals(option) || arg.startsWith(option + "="))
+Optional<String> freeShippingCode(String enteredCode) {
+    return FREE_SHIPPING_CODES.stream()
+            .filter(code -> enteredCode.equals(code))
             .findAny();
 }
 ```
