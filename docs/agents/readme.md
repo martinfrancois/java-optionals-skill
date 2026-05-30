@@ -39,6 +39,8 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   rewritten as noisy loops.
 - The core motivation is: AI agents already wrote Java `Optional` code, but often used bad patterns.
   When asked to clean it up, they sometimes replaced one bad pattern with another.
+- Prefer direct wording such as "did not follow best practices" over vague phrases such as "not in a
+  clear or standard way".
 - Mention that the skill is based on real AI-written failures, not a made-up style preference.
 - If changing the motivation, re-check the original issue body and all comments, plus the local
   source notes. The comments contained useful details that were easy to miss.

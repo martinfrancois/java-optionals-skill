@@ -71,8 +71,8 @@ Use $java-optionals to review this Java Optional code and suggest any cleanups.
 
 ## Why This Exists
 
-The motivation was real AI-written Java code. The agent already used `Optional`, but not in a clear
-or standard way. When asked to clean up the code and follow Optional best practices, it often swapped
+The motivation was real AI-written Java code. The agent already used `Optional`, but did not follow
+best practices. When asked to clean up the code and follow Optional best practices, it often swapped
 one bad pattern for another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
