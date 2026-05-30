@@ -36,6 +36,11 @@ when Java code deals with missing values, nullable results, fallback/default val
 `orElse(null)`, `optional.stream()`, `findFirst()` / `findAny()`, or similar present/absent control
 flow. In those agents, you do not have to mention the skill every time.
 
+Examples of popular coding agents with automatic skill matching include
+[Codex](https://developers.openai.com/codex/skills) and
+[Claude Code](https://code.claude.com/docs/en/skills). Install paths and exact behavior depend on
+the agent you use.
+
 For important Optional-heavy work, you can still name it explicitly:
 
 ```text
