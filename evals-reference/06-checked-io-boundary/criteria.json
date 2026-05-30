@@ -15,7 +15,7 @@
     {
       "name": "No new helper or dependency",
       "max_score": 8,
-      "description": "Does not introduce CheckedOptionals, Vavr, or another helper/dependency for this narrow case."
+      "description": "Does not introduce CheckedOptionals or another helper/dependency for this narrow case."
     }
   ]
 }

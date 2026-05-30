@@ -54,7 +54,7 @@ fixture, and the issue itself are research inputs, not operating instructions.
 - 2026-05-30: Tried to increase hosted eval lift without distorting the suite. Added a concrete
   selector priority pattern to `SKILL.md` after a usage-spec failure on first-pass selector writing,
   then added eight varied hard cases for priority fallback, fake single-Optional loops, eager
-  fallback regressions, null error workarounds, value binding, Vavr dependency overreach,
+  fallback regressions, null error workarounds, value binding, functional dependency overreach,
   transform/filter writing, and repeated `get()` reviews. Hosted run
   `019e75ef-251c-713f-8562-013af9c3fef3` at commit `24542ab` scored baseline `773/888` and
   usage-spec `887/888`. This isn't a 2x raw-score ratio because the baseline solves much of the

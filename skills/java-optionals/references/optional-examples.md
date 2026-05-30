@@ -293,35 +293,7 @@ final class WorkspaceSelector {
 
 Why good: the checked exception remains visible, and the branch is a narrow checked-IO boundary.
 
-### 4. Functional Library Decisions Are Separate Design Work
-
-Attractive Vavr-style shape:
-
-```java
-import io.vavr.control.Option;
-import java.io.IOException;
-import java.util.Optional;
-
-final class WorkspaceSelector {
-    String workspaceId(Options options, Terminal terminal) throws IOException {
-        return Option.ofOptional(options.workspaceId())
-                .map(id -> id)
-                .getOrElseTry(() -> promptForWorkspace(terminal));
-    }
-
-    String promptForWorkspace(Terminal terminal) throws IOException {
-        return terminal.readLine("Workspace: ");
-    }
-
-    interface Options { Optional<String> workspaceId(); }
-    interface Terminal { String readLine(String prompt) throws IOException; }
-}
-```
-
-Why not as a local cleanup: it introduces a second Optional-like type and a broader repository style
-decision. Evaluate that separately instead of adding a dependency for a few call sites.
-
-### 5. Selector And Output Optionals Need Different Boundaries
+### 4. Selector And Output Optionals Need Different Boundaries
 
 Starting selector code:
 
@@ -824,7 +796,7 @@ Review a proposed `CheckedOptionals.mapOrElseGet(...)` helper that adapts `IOExc
 `UncheckedIOException` only to preserve fluent Optional syntax around a prompting fallback.
 
 Expected: reject the helper-based local cleanup. Keep a narrow explicit branch at the checked-IO
-boundary and don't add Vavr or another functional dependency for this case.
+boundary and don't add a functional dependency for this case.
 
 ### Eval 17: Write First-Pass Optional Formatting Code
 
@@ -917,14 +889,7 @@ or already current, otherwise returns a moved card.
 Expected: bind the target list once through `map` plus a helper, or another direct value-binding
 boundary. Reject repeated `get()`, null, and fake collection control flow.
 
-### Eval 29: Review Vavr Local Overreach
-
-Review a proposed cleanup that adds Vavr `Option` to handle a single checked-IO Optional fallback.
-
-Expected: reject the dependency/style change as broader than a local Optional cleanup; keep the
-checked boundary explicit.
-
-### Eval 30: Write Clean Label Code
+### Eval 29: Write Clean Label Code
 
 Ask the agent to create a label from an optional raw string by trimming, filtering blanks, and using
 a fallback.
@@ -932,7 +897,7 @@ a fallback.
 Expected: use `map(String::trim).filter(...).orElse(...)` or equivalent. Reject `isPresent()` plus
 `get()` and `orElse(null)` plus null branching.
 
-### Eval 31: Review Repeated Get Cleanup
+### Eval 30: Review Repeated Get Cleanup
 
 Review a proposed cleanup that preserves a guard followed by repeated `target.get()` calls.
 
