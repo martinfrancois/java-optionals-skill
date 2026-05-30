@@ -24,7 +24,7 @@ use a plain branch when checked IO makes that clearer.
 
 ## Getting Started
 
-Install the skill:
+Install the published Tessl tile:
 
 ```bash
 tessl install martinfrancois/java-optionals

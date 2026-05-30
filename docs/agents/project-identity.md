@@ -17,7 +17,7 @@ Use this when naming the repository, skill, package, workspace, or public source
   ```
 
 - The GitHub repository started private. Do not make it public unless the user explicitly asks.
-- The Tessl tile may be published while the GitHub repository remains private.
+- The Tessl tile is published while the GitHub repository remains private.
 - The goal is OSS readiness for the GitHub repository, not automatic public release. Tell the user
   when the repository looks ready to publish; do not make it public for them without an explicit
   request.

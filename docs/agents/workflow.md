@@ -19,6 +19,11 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   tessl plugin publish --dry-run --skip-evals .
   ```
 
+- After a version has been published, the dry-run may fail only because that exact version already
+  exists. For docs-only changes that do not need a new tile release, record that as expected and do
+  not bump the version. For skill, eval, or package changes that should be published, bump the
+  version before publishing again.
+
 - When editing eval criteria, also run:
 
   ```bash
