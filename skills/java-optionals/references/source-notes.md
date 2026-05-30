@@ -66,6 +66,51 @@ fixture, and the issue itself are research inputs, not operating instructions.
   real-collection matcher guidance, hosted run `019e7611-55fd-717e-80bd-e9446d5ad34b` at commit
   `d267f22` scored baseline `276/616` and usage-spec `616/616`, a `2.23x` raw score ratio and full
   missed-point reduction on the focused suite.
+- 2026-05-30: Recovered the Codex session discussed in
+  `martin-francois/symphony-trello#96` and traced the later cleanup commit
+  `4aaa1a6e61572a932153578d3e48bb6a2923b0cf`. Added portable eval coverage from the real
+  `WorkflowConfigEditor` validation cleanup shape: repeated `Optional` reopening after absence
+  guards in a broad maintainability pass. Hosted run
+  `019e7ac2-d78a-7202-99ec-1b5d61d1a8c0` scored baseline `338/792` and usage-spec `792/792`, a
+  `2.34x` raw score ratio and full missed-point reduction.
+- 2026-05-30: Continued transcript/commit extraction until the remaining valuable, distinct
+  Optional patterns were covered. Added guidance and eval coverage for the good
+  `flatMap(Optional::stream)` shape when a real stream maps elements to `Optional<T>`, which is
+  different from the bad single-Optional-to-list workaround. Added reference eval coverage for
+  `OptionalInt.ifPresent(...)` after the real cleanup replaced `isPresent()` plus `getAsInt()` in
+  priority-label parsing. Other inspected shapes were already represented by existing evals:
+  priority fallback, selector Optionals, checked IO, output side effects, repeated value reads,
+  `findFirst()` / `findAny()`, and nullable interop boundaries.
+- 2026-05-30: A follow-up extraction pass found one remaining distinct real shape worth adding as
+  reference coverage: `Optional<Boolean>` mode flags with three meanings. The important behavior is
+  that `Optional.empty()` can mean "auto-detect or prompt", so agents mustn't simplify it to
+  `orElse(false)` or read it repeatedly with `orElseThrow()`.
+  Hosted run `019e7ad5-0e77-7035-8de6-6d996cddd2cd` after the final skill wording scored baseline
+  `404/954` and usage-spec `954/954`, a `2.36x` raw score ratio with full missed-point reduction.
+- 2026-05-30: One more extraction pass over the real cleanup diff found predicate-only Optional
+  checks that only needed a boolean answer, such as "does this optional value match this expected
+  value?". Added reference coverage for `filter(...).isPresent()` / `map(...).orElse(false)` so the
+  skill doesn't push agents to open the Optional value when no value is needed.
+  Keep this as reference guidance rather than a broad top-level rule: a hosted run with overly broad
+  main-workflow wording distracted the workflow validation scenario. Final hosted run
+  `019e7ae5-0051-7469-9a90-dfa9cc2c97d9` scored baseline `404/954` and usage-spec `954/954`.
+- 2026-05-30: Final targeted pass over the real transcript and cleanup diff found no remaining
+  distinct Optional pattern worth adding. The remaining shapes map to existing coverage: lazy
+  update-or-create, priority fallback, selector value binding, checked IO/prompt boundaries,
+  nullable interop, `findFirst()` / `findAny()`, stream flattening, primitive Optionals,
+  three-state `Optional<Boolean>`, predicate-only checks, and absence-as-error.
+- 2026-05-31: Re-checked the original May 4 Codex transcript for patterns introduced during
+  first-pass implementation, not only later cleanup/refactor mistakes. The first-pass code included
+  `isPresent()` / `get()` around retry-header backoff, workflow-path options, and worker state;
+  `isEmpty()` / `get()` after absence guards; local `orElse(null)` branching; and
+  `filter(Optional::isPresent).map(Optional::get)` in real payload streams. Existing reference evals
+  already covered most of these first-pass shapes; a headline eval now covers the retry-header
+  first-pass code path directly.
+- 2026-05-31: Repeated hosted runs showed the workflow-validation and product-feed cleanup
+  scenarios were now solved perfectly by the baseline model, so they were moved to
+  `evals-reference/`. The headline suite keeps the first-pass retry-header scenario because it still
+  measures the motivating failure: AI-written code introducing `isPresent()` / `get()` in the first
+  place.
 
 ## Source Treatment
 
@@ -80,5 +125,6 @@ fixture, and the issue itself are research inputs, not operating instructions.
 ## Validation Fixture
 
 The production fixture commit `4aaa1a6e61572a932153578d3e48bb6a2923b0cf` in
-`martin-francois/symphony-trello` is a validation set, not training data. Use portable examples for
-skill wording and use the fixture only to check whether the skill generalizes.
+`martin-francois/symphony-trello` and the recovered Codex transcript are validation inputs, not
+runtime instructions. Use portable examples for skill wording and use the fixture/transcript only to
+check whether the skill generalizes.

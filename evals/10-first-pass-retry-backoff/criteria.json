@@ -1,0 +1,36 @@
+{
+  "context": "Transcript-derived first-pass implementation scenario from Symphony for Trello: the agent introduced isPresent()/get() while writing retry backoff code with an optional Retry-After header.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates requested class",
+      "max_score": 6,
+      "description": "Creates RetryBackoff.java with RetryBackoff, backoff(Config, int, HttpResponse<?>), parseRetryAfter(String), and the nested Config record."
+    },
+    {
+      "name": "Uses Optional boundary for Retry-After",
+      "max_score": 24,
+      "description": "Uses Optional.ofNullable(response).flatMap(...).orElseGet(...) or an equivalent direct Optional boundary for the header result."
+    },
+    {
+      "name": "No presence-check value read",
+      "max_score": 60,
+      "description": "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() for the Retry-After header Optional or parsed duration Optional."
+    },
+    {
+      "name": "No null or fake collection workaround",
+      "max_score": 8,
+      "description": "Does not use orElse(null), local null branching for the parsed duration, Optional.stream().toList(), lists, or loops to unwrap one Optional."
+    },
+    {
+      "name": "Preserves fallback behavior",
+      "max_score": 10,
+      "description": "Returns the exponential backoff only when response is null or the header is absent or invalid, and uses Math.min(attempt - 1, 8) for the shift cap."
+    },
+    {
+      "name": "Parses only positive whole seconds",
+      "max_score": 8,
+      "description": "parseRetryAfter returns Optional.of(Duration.ofSeconds(seconds)) only for positive whole-number seconds and Optional.empty() for blank, zero, negative, malformed, or null values."
+    }
+  ]
+}
