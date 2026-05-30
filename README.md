@@ -88,17 +88,20 @@ fixed one antipattern by adding a different one:
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
 The snippets below use a simple store domain, but they mirror the real failure shapes from the issue.
+They are anti-examples. They are not what this skill tells an agent to do. They show the kind of
+cleanup an AI agent would have produced without this skill: remove one smell, then add another.
+This skill exists to stop those moves and guide the agent toward the simpler Optional shape instead.
 
 For example, one cleanup would have changed a simple coupon branch into a fake list:
 
 ```java
-// from
+// before the AI cleanup request
 if (selectedCoupon.isPresent()) {
     return applyCoupon(cart, selectedCoupon.get());
 }
 return cart;
 
-// to
+// what an unassisted AI would have changed it to
 List<Coupon> coupons = selectedCoupon.stream().toList();
 if (!coupons.isEmpty()) {
     return applyCoupon(cart, coupons.getFirst());
@@ -109,13 +112,13 @@ return cart;
 Another would have changed a product discount fallback into local null control flow:
 
 ```java
-// from
+// before the AI cleanup request
 if (discount.isPresent()) {
     return price.minus(discount.get());
 }
 return price;
 
-// to
+// what an unassisted AI would have changed it to
 Money value = discount.orElse(null);
 if (value != null) {
     return price.minus(value);
@@ -126,7 +129,7 @@ return price;
 And another would have changed a real free-shipping-code lookup into a harder-to-read loop:
 
 ```java
-// from
+// before the AI cleanup request
 for (String enteredCode : enteredCodes) {
     Optional<String> match = FREE_SHIPPING_CODES.stream()
             .filter(code -> enteredCode.equals(code))
@@ -137,7 +140,7 @@ for (String enteredCode : enteredCodes) {
 }
 return Optional.empty();
 
-// to
+// what an unassisted AI would have changed it to
 for (String enteredCode : enteredCodes) {
     for (String code : FREE_SHIPPING_CODES) {
         if (enteredCode.equals(code)) {
