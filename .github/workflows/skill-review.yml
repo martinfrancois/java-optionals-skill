@@ -23,7 +23,7 @@ jobs:
     env:
       TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Skip review when Tessl token is unavailable
         if: ${{ env.TESSL_TOKEN == '' }}

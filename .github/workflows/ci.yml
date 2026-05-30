@@ -38,7 +38,7 @@ jobs:
     env:
       TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Tessl CLI
         uses: tesslio/setup-tessl@v2
