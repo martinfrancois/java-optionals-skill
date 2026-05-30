@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.23](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.22...v0.1.23) (2026-05-30)
+
+
+### Bug Fixes
+
+* **metadata:** clarify Tessl summary ([#47](https://github.com/martinfrancois/java-optionals-skill/issues/47)) ([d40378e](https://github.com/martinfrancois/java-optionals-skill/commit/d40378ef119da105c53a951a637f9f1c9289d867))
+* **skill:** remove Vavr reference material ([#46](https://github.com/martinfrancois/java-optionals-skill/issues/46)) ([4d1ce97](https://github.com/martinfrancois/java-optionals-skill/commit/4d1ce974a287d24b60acaf4718da05b04ff106c1))
+
 ## [0.1.22](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.21...v0.1.22) (2026-05-30)
 
 
