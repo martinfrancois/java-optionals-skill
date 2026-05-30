@@ -53,6 +53,8 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
 
 ## References
 
-- [optional-examples.md](references/optional-examples.md): non-trivial edits, side-effecting
-  fallbacks, priority selectors, checked IO, `findFirst()` / `findAny()`, eval examples.
-- [source-notes.md](references/source-notes.md): maintenance and rule provenance only.
+- [optional-examples.md](references/optional-examples.md): use when the workflow needs a concrete
+  pattern. It contains worked Java examples for non-trivial edits, side-effecting fallbacks,
+  priority selectors, checked IO, `findFirst()` / `findAny()`, and eval-shaped cases.
+- [source-notes.md](references/source-notes.md): use only when maintaining the skill. It records the
+  real issue, failure modes, and rule provenance behind this guidance.
