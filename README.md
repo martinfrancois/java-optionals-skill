@@ -7,53 +7,40 @@ handling into null control flow, fake collections, or over-clever fluent code.
 martinfrancois/java-optionals
 ```
 
-The repository is named `java-optionals-skill`; the installable tile is `java-optionals`.
+## Why This Exists
 
-## What It Helps With
+`Optional` cleanup is easy to get wrong in agent-written Java code. A model may remove one smell and
+replace it with another: `orElse(null)` plus null checks, loops over `optional.stream().toList()`,
+eager fallbacks, unnecessary helper abstractions for checked exceptions, or loop rewrites that make a
+real collection stream harder to read.
 
-Use this tile when an agent is working on Java code that introduces, reviews, or changes
-`Optional`, especially around:
-
-- `isPresent()` or `isEmpty()` followed by `get()` or `orElseThrow()`;
-- `orElse(null)` followed by local null checks;
-- choosing between `orElse(...)` and `orElseGet(...)`;
-- deciding whether `findFirst()` or `findAny()` preserves behavior;
-- keeping real collection streams instead of rewriting them into noisy loops;
-- avoiding `optional.stream().toList()` loops for a single `Optional`;
-- preserving checked-exception, prompting, IO, and side-effect boundaries;
-- handling legacy APIs that genuinely use `null` for absent values;
-- writing first-pass Optional code directly instead of cleaning up branchy code later.
-
-The goal is not to make every Optional chain fluent. The tile pushes agents to classify the
-Optional shape first, then choose the clearest boundary while preserving behavior, public output,
-exception contracts, laziness, and readability.
+This tile gives agents a compact decision procedure for classifying the Optional shape first, then
+choosing the clearest Java boundary while preserving behavior, exception contracts, public output,
+laziness, and readability.
 
 ## Install
 
-Install from the Tessl registry when the tile is available to your workspace:
-
-```bash
-tessl install martinfrancois/java-optionals
-```
-
-Install globally instead of into the current project:
-
-```bash
-tessl install --global martinfrancois/java-optionals
-```
-
-Install from this GitHub repository:
+Install directly from GitHub:
 
 ```bash
 tessl install github:martinfrancois/java-optionals-skill --skill java-optionals
 ```
 
-This repository is currently private. After it is made public, the GitHub install form should work
-for users with normal repository access.
+Install globally instead of into the current project:
+
+```bash
+tessl install --global github:martinfrancois/java-optionals-skill --skill java-optionals
+```
+
+If the tile is published in your Tessl registry workspace, you can also install it by package name:
+
+```bash
+tessl install martinfrancois/java-optionals
+```
 
 ## Use
 
-Mention the skill in prompts where Optional handling matters:
+Mention the skill when Optional handling matters:
 
 ```text
 Use $java-optionals to refactor this Java method without changing behavior.
@@ -68,18 +55,26 @@ rationale.
 Use $java-optionals to write the first-pass implementation for this Java Optional fallback.
 ```
 
+## What It Helps With
+
 Good fit:
 
-- local refactors that replace presence-check/value-read code with a clearer Optional boundary;
-- review comments on proposed Optional cleanups;
-- first-pass implementation of fallback, selector, and side-effect branches;
-- checking whether an apparent Optional antipattern is actually a legacy or checked-IO boundary.
+- replacing `isPresent()` or `isEmpty()` followed by `get()` or `orElseThrow()`;
+- avoiding `orElse(null)` followed by local null checks;
+- choosing between `orElse(...)` and `orElseGet(...)`;
+- preserving checked-exception, prompting, IO, and side-effect boundaries;
+- deciding whether `findFirst()` or `findAny()` preserves behavior;
+- keeping real collection streams instead of rewriting them into noisy loops;
+- avoiding `optional.stream().toList()` loops for a single `Optional`;
+- handling legacy APIs that genuinely use `null` for absent values;
+- writing first-pass Optional code directly instead of cleaning up branchy code later.
 
 Poor fit:
 
 - broad Java style enforcement unrelated to `Optional`;
 - repository-wide API redesigns, DTO changes, or dependency additions without maintainer buy-in;
-- changing business semantics just to make code look more functional.
+- changing business semantics just to make code look more functional;
+- replacing every readable branch with a fluent chain.
 
 ## Examples
 
@@ -121,25 +116,42 @@ String workspaceId(Options options, Terminal terminal) throws IOException {
 }
 ```
 
-## Included Files
+Real collection lookup:
 
-```text
-skills/java-optionals/
-├── SKILL.md
-├── agents/openai.yaml
-├── evals/evals.json
-└── references/
-    ├── optional-examples.md
-    └── source-notes.md
+```java
+private static Optional<String> redactedOption(String arg) {
+    return REDACTED_VALUE_OPTIONS.stream()
+            .filter(option -> arg.equals(option) || arg.startsWith(option + "="))
+            .findAny();
+}
 ```
 
-- `SKILL.md` is the runtime instruction file loaded by agents.
-- `agents/openai.yaml` provides display metadata.
-- `references/optional-examples.md` contains non-trivial examples and eval case notes.
-- `references/source-notes.md` records provenance and maintenance decisions.
-- `evals/` contains the hosted Tessl implementation-regression scenarios.
+## Repository Layout
+
+```text
+.
+├── .tessl-plugin/plugin.json
+├── evals/
+├── evals-reference/
+├── skills/java-optionals/
+│   ├── SKILL.md
+│   ├── agents/openai.yaml
+│   ├── evals/evals.json
+│   └── references/
+│       ├── optional-examples.md
+│       └── source-notes.md
+├── LICENSE
+└── README.md
+```
+
+- `skills/java-optionals/SKILL.md` is the runtime instruction file loaded by agents.
+- `skills/java-optionals/agents/openai.yaml` provides display metadata.
+- `skills/java-optionals/references/optional-examples.md` contains non-trivial examples and eval
+  case notes.
+- `skills/java-optionals/references/source-notes.md` records provenance and maintenance decisions.
+- `evals/` contains the hosted Tessl implementation-regression benchmark.
 - `evals-reference/` keeps broader smoke, review, and exploratory scenarios that are useful during
-  development but are not part of the headline hosted benchmark.
+  development but are not part of the headline benchmark.
 
 ## Benchmark
 
@@ -153,18 +165,18 @@ Current hosted benchmark:
 - Raw score ratio: `2.23x`
 - Error reduction: `340 / 340` baseline missed points (`100.0%`)
 
-The headline hosted suite is intentionally implementation-focused because the motivating issue was
-about AI-written or AI-preserved Optional antipatterns during normal code changes, not only review
-comments. The scenarios start from branchy implementation code, ask for feature work, and score both
-behavior preservation and the Optional cleanup that the skill is supposed to improve.
+The headline benchmark is implementation-focused because the motivating failures happened during
+ordinary AI-assisted Java changes, not only during review-only tasks. The scenarios start from
+branchy implementation code, ask for feature work, and score both behavior preservation and the
+Optional cleanup this tile is meant to improve.
 
-The broader smoke/review scenarios are preserved in `evals-reference/`. They are useful for
-developing the skill, but they overstate baseline quality as a headline benchmark because many are
-small isolated snippets that a strong generic model already solves without the tile.
+The broader smoke and review scenarios remain in `evals-reference/`. They are useful for developing
+the skill, but they overstate baseline quality as a headline benchmark because many are small
+isolated snippets that a strong generic model can already solve without the tile.
 
-## Validate Locally
+## Development
 
-Run structural checks:
+Validate the skill and package metadata:
 
 ```bash
 python3 /root/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/java-optionals
@@ -183,23 +195,16 @@ This repository includes both `.tessl-plugin/plugin.json` and `tile.json` while 
 is in transition between tile and plugin packaging paths. `plugin.json` is authoritative; `tile.json`
 exists so older pack/info paths can still package the repository.
 
-## OSS Readiness
-
-Before making this repository public:
-
-- run the validation commands above;
-- run the hosted eval suite and update the benchmark section;
-- test the skill against at least one Java Optional refactor outside the source repository;
-- confirm the tile is self-contained and does not require the original issue, gist, fixture repo, or
-  external articles to operate;
-- decide whether the package should remain under `martinfrancois/java-optionals`.
+Before cutting a public release, rerun validation and hosted evals, update the benchmark section, and
+check the skill against at least one Java Optional change outside the source repository.
 
 ## Provenance
 
-The skill was distilled from `martin-francois/symphony-trello` issue 96 and every issue comment
-present at creation time. See `skills/java-optionals/references/source-notes.md` for maintenance
-notes and source treatment.
+The skill was distilled from observed Java Optional cleanup failures captured in
+`martin-francois/symphony-trello` issue 96 and its comments. The tile is self-contained: using it
+does not require access to that issue, the original repository, the development gist, or any external
+article.
 
 ## License
 
-MIT.
+MIT. See [LICENSE](LICENSE).
