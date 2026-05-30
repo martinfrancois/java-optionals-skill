@@ -41,11 +41,10 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
 4. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
 5. Collection lookup: keep real collections as streams and use `findAny()` unless order matters.
-   If loop state consumes the match, use one `Optional<T>` helper for exact and `option=value`;
-   avoid `Optional.of(arg).filter(collection::contains)` and mutable capture flags.
-6. Selectors: use presence checks only for boolean-only validation. If code needs the value, bind it
-   once. For priority selectors, map the first source and lazy-fallback to later sources; wrap
-   chosen values in target Optional fields inside that lambda.
+   Bind the match to one `Optional<T>`; avoid `Optional.of(arg).filter(collection::contains)` and
+   mutable capture flags.
+6. Selectors: bind a value once if the code needs it; for priority selectors, map the first source
+   and lazy-fallback to later sources. Use presence checks only for boolean-only validation.
 7. Special boundaries: use a plain branch for checked IO/prompts; keep `orElse(null)` only at
    null-based API boundaries; return an explicit decision for review-only tasks.
 8. Verify with relevant tests or a traced example for each changed branch: same return values,
