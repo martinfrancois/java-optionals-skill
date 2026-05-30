@@ -1,9 +1,14 @@
 # Java Optionals
 
-Help coding agents improve Java `Optional` code without trading one bad pattern for another.
+AI agents often know enough Java to reach for `Optional`, but not enough to use it well.
 
-This skill teaches the agent to choose the right Optional shape first, so Java code that already uses
-`Optional` stays clear, lazy, and correct instead of becoming clever but worse.
+They write code that looks modern at first glance, then leaves you with `isPresent()` plus `get()`,
+`orElse(null)`, fallback code that runs too early, fake one-item lists, or a clear stream rewritten
+as a noisy loop.
+
+This skill gives the agent a small decision guide before it writes or changes Optional code: choose
+the Optional shape, keep fallback work lazy, keep real collection streams readable, and use a plain
+branch when checked IO makes that clearer.
 
 ## Getting Started
 
