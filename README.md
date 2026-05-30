@@ -2,9 +2,8 @@
 
 Help coding agents improve Java `Optional` code without trading one bad pattern for another.
 
-This skill teaches the agent to choose the right Optional shape first, so new code and refactors keep
-the same behavior, stay lazy, keep readable streams, and do not hide checked IO behind clever helper
-code.
+This skill teaches the agent to choose the right Optional shape first, so Java code that already uses
+`Optional` stays clear, lazy, and correct instead of becoming clever but worse.
 
 ```text
 martinfrancois/java-optionals
@@ -12,8 +11,7 @@ martinfrancois/java-optionals
 
 ## Why You Want This
 
-Use this skill when an agent writes new Java code, reviews a change, or refactors existing code that
-uses `Optional`.
+Use this skill when an agent writes or changes Java code that uses `Optional`.
 
 It helps the agent keep the same behavior while making the code cleaner and easier to read.
 
