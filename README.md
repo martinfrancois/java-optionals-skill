@@ -87,7 +87,9 @@ fixed one antipattern by adding a different one:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-For example, one cleanup changed a simple coupon branch into a fake list:
+The snippets below use a simple store domain, but they mirror the real failure shapes from the issue.
+
+For example, one cleanup would have changed a simple coupon branch into a fake list:
 
 ```java
 // from
@@ -104,7 +106,7 @@ if (!coupons.isEmpty()) {
 return cart;
 ```
 
-Another changed a product discount fallback into local null control flow:
+Another would have changed a product discount fallback into local null control flow:
 
 ```java
 // from
@@ -121,7 +123,7 @@ if (value != null) {
 return price;
 ```
 
-And another changed a real free-shipping-code lookup into a harder-to-read loop:
+And another would have changed a real free-shipping-code lookup into a harder-to-read loop:
 
 ```java
 // from
