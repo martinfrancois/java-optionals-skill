@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.22](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.21...v0.1.22) (2026-05-30)
+
+
+### Bug Fixes
+
+* **skill:** clarify reference navigation ([f8c0c6c](https://github.com/martinfrancois/java-optionals-skill/commit/f8c0c6c7caa829123023e9aaffa9eea073763c02))
+
 ## [0.1.21](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.20...v0.1.21) (2026-05-30)
 
 
