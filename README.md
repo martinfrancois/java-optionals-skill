@@ -104,21 +104,21 @@ if (!coupons.isEmpty()) {
 return cart;
 ```
 
-Another changed a saved-cart fallback into local null control flow:
+Another changed a product discount fallback into local null control flow:
 
 ```java
 // from
-if (savedCart.isPresent()) {
-    return price(savedCart.get());
+if (discount.isPresent()) {
+    return price.minus(discount.get());
 }
-return price(newCart());
+return price;
 
 // to
-Cart cart = savedCart.orElse(null);
-if (cart != null) {
-    return price(cart);
+Money value = discount.orElse(null);
+if (value != null) {
+    return price.minus(value);
 }
-return price(newCart());
+return price;
 ```
 
 And another changed a real free-shipping-code lookup into a harder-to-read loop:
