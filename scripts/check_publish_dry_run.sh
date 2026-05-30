@@ -12,13 +12,14 @@ else
   status=$?
 fi
 
-cat "$output_file"
-
 if grep -q "already exists" "$output_file"; then
-  echo "Publish dry-run reached the registry; current version already exists."
   rm -f "$output_file"
+  echo "Current manifest version already exists in the registry; checking next patch version instead."
+  tessl plugin publish --dry-run --skip-evals --bump patch "$path"
+  echo "Publish dry-run reached the registry; next patch version is available."
   exit 0
 fi
 
+cat "$output_file"
 rm -f "$output_file"
 exit "$status"
