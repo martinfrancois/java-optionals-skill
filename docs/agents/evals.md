@@ -42,6 +42,10 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   benchmark claims.
 - Don't hide scenarios merely because the baseline solves them. Move them to `evals-reference/`
   only when they're better as broader regression coverage, and document why.
+- For transcript-derived cases, use the historical replay protocol before adding headline evals.
+  The reduced eval should reproduce the same without-skill vs with-skill difference seen in the
+  full repository. If the with-skill replay still fails, record it as a regression target instead of
+  promoting it as a passing eval.
 
 ## Checks
 
@@ -52,3 +56,4 @@ the criteria JSON check listed there.
 
 - [Workflow](workflow.md)
 - [Skill Behavior](skill-behavior.md)
+- [Historical Replay](replay/README.md)
