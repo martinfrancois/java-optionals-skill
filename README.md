@@ -73,8 +73,21 @@ Use $java-optionals to review this Java Optional code and suggest any cleanups.
 ## Why This Exists
 
 The motivation was real AI-written Java code. The agent already used `Optional`, but didn't follow
-best practices. When asked to clean up the code and follow Optional best practices, it often swapped
-one bad pattern for another:
+best practices.
+
+Sometimes the agent introduced weak Optional code while writing a new feature:
+
+```java
+// what an unassisted AI would write in new code
+Optional<Coupon> coupon = findCoupon(code);
+if (coupon.isPresent()) {
+    return applyCoupon(cart, coupon.get());
+}
+return cart;
+```
+
+Other times, when asked to clean up the code and follow Optional best practices, it swapped one bad
+pattern for another:
 
 - replacing `isPresent()` / `get()` with `orElse(null)` and local null checks;
 - using `isPresent()` or `isEmpty()` and then reading the same value with `get()` or
@@ -85,8 +98,9 @@ one bad pattern for another:
 - hiding checked IO or user prompts behind clever helper code;
 - changing the meaning of `findFirst()` / `findAny()` by accident.
 
-The examples below show Java `Optional` code an AI agent would write, followed by what it would
-change that code to when asked to follow Optional best practices without this skill.
+The examples below are anti-examples. They show Java `Optional` code an AI agent would write,
+followed by what it would change that code to when asked to follow Optional best practices without
+this skill.
 
 For example, one cleanup would have changed a simple coupon branch into a fake list:
 
@@ -247,9 +261,10 @@ Optional<DeliverySlot> deliverySlot(DeliveryWindow preferredWindow) {
 
 ## How It's Evaluated
 
-The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. Each task
-is run without the skill and with the skill, then scored against checks for both the requested Java
-behavior and the `Optional` cleanup.
+The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. The tasks
+cover both writing new Optional code and cleaning up existing Optional code. Each task is run without
+the skill and with the skill, then scored against checks for the requested Java behavior and the
+Optional shape.
 
 The evals check that agents:
 
@@ -269,8 +284,9 @@ Want to improve the skill, evals, or package metadata? See [CONTRIBUTING.md](CON
 
 ## Origin
 
-This skill is based on real-world failures where coding agents changed Java `Optional` code into
-different bad shapes while working on production-style tasks. The motivating discussion is
+This skill is based on real-world failures where coding agents wrote weak Java `Optional` code or
+changed existing Optional code into different bad shapes while working on production-style tasks. The
+motivating discussion is
 [`martin-francois/symphony-trello#96`](https://github.com/martin-francois/symphony-trello/issues/96).
 
 The skill is self-contained: using it doesn't require access to that issue, the original repository,

@@ -29,6 +29,17 @@ The skill guards against patterns agents have actually written or preserved in p
 - A real collection stream ending in an Optional result was first handled with
   `isPresent()`/`orElseThrow()`, then overcorrected into a loop. The final shape kept the readable
   collection stream and handled the Optional result directly.
+- A real stream mapped each payload to `Optional<Card>` and then used
+  `filter(Optional::isPresent).map(Optional::get)`. The final shape used
+  `flatMap(Optional::stream)`. This is the good use of `Optional::stream`, unlike making one
+  Optional into a fake list.
+- `OptionalInt` values were guarded with `isPresent()` and then reopened with `getAsInt()`. The
+  final shape used `ifPresent(...)` for the side-effecting map update.
+- `Optional<Boolean>` mode flags were used as three-state settings: explicit `false`, explicit
+  `true`, and absent all had different behavior. The final shape avoided reading the value with
+  `orElseThrow()` and didn't collapse absent to `false`.
+- Predicate-only Optional checks used `isPresent()` plus `orElseThrow()` only to compare the value.
+  The final shape used `filter(...).isPresent()` because no value needed to be returned.
 
 ## Iteration Histories
 
@@ -198,6 +209,189 @@ final class CommandRedactor {
 
 Why good: matching is centralized in a real collection stream, `findAny()` is correct because any
 match is equivalent, and the remaining loop only tracks real sequence state.
+
+### 2a. Stream Of Optionals Should Flatten Directly
+
+Starting point:
+
+```java
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+final class ProductFeed {
+    List<ProductCard> visibleCards(List<Map<String, Object>> payloads, StoreContext context) {
+        return payloads.stream()
+                .map(payload -> normalize(payload, context))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(card -> card.active() && !card.discontinued())
+                .toList();
+    }
+
+    Optional<ProductCard> normalize(Map<String, Object> payload, StoreContext context) {
+        return Optional.empty();
+    }
+
+    record StoreContext(List<String> activeCategoryIds) {}
+    record ProductCard(String id, boolean active, boolean discontinued) {}
+}
+```
+
+Better final shape:
+
+```java
+List<ProductCard> visibleCards(List<Map<String, Object>> payloads, StoreContext context) {
+    return payloads.stream()
+            .map(payload -> normalize(payload, context))
+            .flatMap(Optional::stream)
+            .filter(card -> card.active() && !card.discontinued())
+            .toList();
+}
+```
+
+Why good: `payloads` is a real collection, and each element may or may not normalize to a card.
+`flatMap(Optional::stream)` is the standard flattening boundary for that shape. Don't confuse this
+with `oneOptional.stream().toList()`, which creates a fake collection around a single value.
+
+### 2b. Primitive Optionals Should Use Their Terminals
+
+Starting point:
+
+```java
+import java.util.Map;
+import java.util.OptionalInt;
+
+final class PriorityLabels {
+    void apply(Map<String, Integer> values, String key, Object rawValue) {
+        OptionalInt priority = positiveInteger(rawValue);
+        if (priority.isPresent()) {
+            values.put(normalize(key), priority.getAsInt());
+        }
+    }
+
+    OptionalInt positiveInteger(Object value) { return OptionalInt.empty(); }
+    String normalize(String value) { return value.trim().toLowerCase(); }
+}
+```
+
+Better final shape:
+
+```java
+void apply(Map<String, Integer> values, String key, Object rawValue) {
+    positiveInteger(rawValue).ifPresent(priority -> values.put(normalize(key), priority));
+}
+```
+
+Why good: `OptionalInt` has its own terminal operations. Use those instead of reopening the value
+with `getAsInt()` after a presence guard.
+
+### 2c. Optional Boolean Mode Flags May Have Three States
+
+Starting point:
+
+```java
+import java.io.IOException;
+import java.util.Optional;
+
+final class GiftWrapConfigurator {
+    GiftWrapIntegration resolve(Options options, Prerequisites prerequisites, Terminal terminal)
+            throws IOException {
+        if (options.giftWrapMode().isPresent()) {
+            boolean enabled = options.giftWrapMode().orElseThrow();
+            if (!enabled) {
+                terminal.info("Gift wrap skipped");
+                return GiftWrapIntegration.DISABLED;
+            }
+            if (options.nonInteractive() && !prerequisites.giftWrapServiceAvailable()) {
+                throw new IllegalStateException("Gift wrap service is required");
+            }
+            return GiftWrapIntegration.ENABLED;
+        }
+        if (prerequisites.accountAlreadyConfigured()) {
+            return GiftWrapIntegration.ENABLED;
+        }
+        if (options.nonInteractive()) {
+            return GiftWrapIntegration.DISABLED;
+        }
+        return terminal.confirm("Enable gift wrap? ")
+                ? GiftWrapIntegration.ENABLED
+                : GiftWrapIntegration.DISABLED;
+    }
+
+    interface Options { Optional<Boolean> giftWrapMode(); boolean nonInteractive(); }
+    interface Prerequisites { boolean giftWrapServiceAvailable(); boolean accountAlreadyConfigured(); }
+    interface Terminal { void info(String message); boolean confirm(String prompt) throws IOException; }
+    enum GiftWrapIntegration { ENABLED, DISABLED }
+}
+```
+
+Better final shape:
+
+```java
+GiftWrapIntegration resolve(Options options, Prerequisites prerequisites, Terminal terminal)
+        throws IOException {
+    Optional<Boolean> mode = options.giftWrapMode();
+    if (mode.filter(enabled -> !enabled).isPresent()) {
+        terminal.info("Gift wrap skipped");
+        return GiftWrapIntegration.DISABLED;
+    }
+    if (mode.filter(Boolean::booleanValue).isPresent()) {
+        if (options.nonInteractive() && !prerequisites.giftWrapServiceAvailable()) {
+            throw new IllegalStateException("Gift wrap service is required");
+        }
+        return GiftWrapIntegration.ENABLED;
+    }
+    if (prerequisites.accountAlreadyConfigured()) {
+        return GiftWrapIntegration.ENABLED;
+    }
+    if (options.nonInteractive()) {
+        return GiftWrapIntegration.DISABLED;
+    }
+    return terminal.confirm("Enable gift wrap? ")
+            ? GiftWrapIntegration.ENABLED
+            : GiftWrapIntegration.DISABLED;
+}
+```
+
+Why good: `Optional.empty()` isn't the same as `Optional.of(false)` here. Empty means continue to
+auto-detect or prompt. Don't use `orElse(false)` before that fallback logic.
+
+### 2d. Predicate-Only Checks Shouldn't Open The Optional
+
+Starting point:
+
+```java
+import java.util.Optional;
+
+final class CustomerSessionCheck {
+    boolean belongsToCustomer(Optional<String> sessionCustomerId, String expectedCustomerId) {
+        if (sessionCustomerId.isPresent() && sessionCustomerId.orElseThrow().equals(expectedCustomerId)) {
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+Better final shape:
+
+```java
+boolean belongsToCustomer(Optional<String> sessionCustomerId, String expectedCustomerId) {
+    return sessionCustomerId.filter(id -> id.equals(expectedCustomerId)).isPresent();
+}
+```
+
+Also acceptable:
+
+```java
+boolean belongsToCustomer(Optional<String> sessionCustomerId, String expectedCustomerId) {
+    return sessionCustomerId.map(id -> id.equals(expectedCustomerId)).orElse(false);
+}
+```
+
+Why good: the code only needs a boolean answer. It doesn't need to read the optional value into a
+local variable or throw when the value is absent.
 
 ### 3. Checked Prompting Fallback Should Use Plain Branching
 
@@ -393,6 +587,8 @@ A good eval output:
 - avoids `orElse(null)` null-control-flow, fake single-Optional streams/lists, and ordinary
   presence-check/value-read replacements;
 - distinguishes single Optional values from real collection streams;
+- distinguishes fake single-Optional streams from real streams of Optional values that should use
+  `flatMap(Optional::stream)`;
 - distinguishes absence-as-error from fallback;
 - distinguishes checked-exception boundaries from ordinary Optional control flow;
 - stays readable to normal Java maintainers;
@@ -690,6 +886,49 @@ String greeting(Optional<String> name) {
 Reject loops over `optional.stream().toList()` when the source is one Optional, not a real
 collection.
 
+### Eval 10a: Flatten A Real Stream Of Optional Values
+
+Input:
+
+```java
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+final class CatalogFeed {
+    List<ProductCard> visibleCards(List<Map<String, Object>> payloads, StoreContext context) {
+        return payloads.stream()
+                .map(payload -> normalize(payload, context))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(card -> card.active() && !card.discontinued())
+                .toList();
+    }
+
+    Optional<ProductCard> normalize(Map<String, Object> payload, StoreContext context) {
+        return Optional.empty();
+    }
+
+    record StoreContext(List<String> activeCategoryIds) {}
+    record ProductCard(String id, boolean active, boolean discontinued) {}
+}
+```
+
+Expected:
+
+```java
+List<ProductCard> visibleCards(List<Map<String, Object>> payloads, StoreContext context) {
+    return payloads.stream()
+            .map(payload -> normalize(payload, context))
+            .flatMap(Optional::stream)
+            .filter(card -> card.active() && !card.discontinued())
+            .toList();
+}
+```
+
+Reject `filter(Optional::isPresent).map(Optional::get)` in a stream pipeline. Also reject treating
+this as a fake single-Optional stream case; the source is a real collection of payloads.
+
 ### Eval 11: Write First-Pass Optional Code With Lazy Creation
 
 Prompt:
@@ -903,3 +1142,29 @@ Review a proposed cleanup that preserves a guard followed by repeated `target.ge
 
 Expected: request a direct value-binding shape or bind the selected value once; reject repeated
 Optional reopening after the guard.
+
+### Eval 31: Primitive Optional Side Effect
+
+Ask the agent to improve `OptionalInt` handling in a loop that parses positive integer priority
+labels and writes them into a map.
+
+Expected: use `positiveInteger(value).ifPresent(priority -> values.put(..., priority))` or an
+equivalent `OptionalInt` terminal. Reject `isPresent()` followed by `getAsInt()`.
+
+### Eval 32: Tri-State Optional Boolean Mode
+
+Ask the agent to improve a configurator that accepts `Optional<Boolean>` where `true`, `false`, and
+empty each have different behavior.
+
+Expected: keep explicit `false`, explicit `true`, and absent branches separate. Reject
+`orElse(false)` before fallback logic and reject repeated `isPresent()` plus `orElseThrow()` value
+reads.
+
+### Eval 33: Predicate-Only Optional Check
+
+Ask the agent to improve code that returns whether an optional session customer id equals an
+expected id.
+
+Expected: use `filter(...).isPresent()`, `map(...).orElse(false)`, or an equivalent predicate-only
+Optional boundary. Reject `isPresent()` followed by `get()` or `orElseThrow()` just to compare the
+value.

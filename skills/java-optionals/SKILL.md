@@ -42,14 +42,21 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
    services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
 5. Collection lookup: keep real collections as streams and use `findAny()` unless order matters.
    Bind the match to one `Optional<T>`; avoid `Optional.of(arg).filter(collection::contains)` and
-   mutable capture flags.
+   mutable capture flags. When a real stream maps elements to `Optional<T>`, flatten it with
+   `flatMap(Optional::stream)`; this is different from making one Optional into a fake collection.
 6. Selectors: bind a value once if the code needs it; for priority selectors, map the first source
-   and lazy-fallback to later sources. Use presence checks only for boolean-only validation.
-7. Special boundaries: use a plain branch for checked IO/prompts; keep `orElse(null)` only at
+   and lazy-fallback to later sources. Treat `Optional<Boolean>` mode flags as three states when
+   absent has its own behavior; don't collapse absent to `false` before prompt or auto-detect logic.
+   Use presence checks only for boolean-only validation.
+7. Primitive Optionals: apply the same intent-based rules to `OptionalInt`, `OptionalLong`, and
+   `OptionalDouble`, using their terminals such as `ifPresent`, `orElse`, and `orElseThrow`.
+8. Special boundaries: use a plain branch for checked IO/prompts; keep `orElse(null)` only at
    null-based API boundaries; return an explicit decision for review-only tasks.
-8. Verify with relevant tests or a traced example for each changed branch: same return values,
-   exceptions, prompts, side effects, laziness, generated output, and branch order; scan sibling code
-   for the same Optional smell.
+9. Verify each changed branch. Run the repo's focused Java tests, such as `./mvnw test`,
+   `mvn test`, `./gradlew test`, or the existing task for the touched code. If no test exists,
+   trace a small present/absent/fallback case. Confirm the same return values, exceptions, prompts,
+   side effects, laziness, generated output, and branch order; scan sibling code for the same
+   Optional smell.
 
 ## References
 
