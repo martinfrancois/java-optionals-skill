@@ -13,13 +13,29 @@ and readability.
 Open [references/optional-examples.md](references/optional-examples.md) for worked examples and
 [references/java-optional-api.md](references/java-optional-api.md) for Java-version compatibility.
 
+## Hard Stops
+
+- Never make one `Optional` list-like or iterable just to avoid `isPresent()` / `get()`.
+  `optional.stream().toList()`, `optional.stream()::iterator`, `optionalValues(optional)`,
+  `presentValues(optional)`, and `for` loops over one Optional are replacement antipatterns.
+  Rewrite them before finalizing.
+- When replacing `if (optional.isPresent()) return optional.orElseThrow();`, do not replace it with
+  `for (T value : optional.stream().toList()) return value;`. Use `map(...).orElseGet(...)` when
+  both branches are ordinary value flow. If the empty branch performs checked IO or prompting, use a
+  narrow branch at that checked boundary; that is better than inventing a fake loop.
+- If a checked exception or prompt prevents a fluent Optional chain, keep a narrow explicit branch
+  at that exact boundary. Do not hide the checked operation behind generic helpers such as
+  `OptionalSupport`, `OptionalIo`, `CheckedOptionals`, throwing suppliers, or supplier `.get()`
+  tricks.
+- When a task asks to clean up Optional code, fix the specific Optional smell first, then scan the
+  touched Java files for new Optional smells before doing broader cleanup.
+
 ## Core Workflow
 
-0. Detect the Java baseline before choosing APIs. Check `pom.xml`, Maven compiler release/source/
-   target, Gradle toolchains/source/target, CI, Dockerfiles, `.sdkmanrc`, `.java-version`, and
-   README docs. If unclear, prefer Java 8-compatible code or state the assumption. Don't introduce
-   Java 9+ Optional APIs, Java 11 `isEmpty()`, Java 16 `Stream.toList()`, or Java 21 sequenced
-   collections unless build metadata shows support.
+0. Detect the Java baseline before choosing APIs. Check build files, toolchains, CI, Dockerfiles,
+   `.sdkmanrc`, `.java-version`, and README docs. If unclear, prefer Java 8-compatible code or
+   state the assumption. Don't introduce Java 9+ Optional APIs, Java 11 `isEmpty()`, Java 16
+   `Stream.toList()`, or Java 21 sequenced collections unless build metadata shows support.
 1. Classify the boundary first. For ordinary value flow, use an Optional terminal instead of
    `isPresent()`.
 2. Use the Optional API that matches the intent: `map`, `flatMap`, `filter`, `or`, `orElse` for
@@ -34,7 +50,7 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
    - `isPresent()` / `isEmpty()` followed by `get()` or `orElseThrow()`;
    - `orElse(null)` plus local null branching;
    - `map(x -> optionalReturningCall(x).orElse(null))` instead of `flatMap(...)`;
-   - `optional.stream().toList()` or another fake collection around one Optional;
+   - the fake one-Optional collection and iterable patterns named in Hard Stops;
    - loops, labels, or sentinel flags that only avoid an Optional terminal result.
 
    ```java
@@ -60,14 +76,19 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
    Prefer primitive terminals such as `ifPresent`, `orElse`, `orElseGet`, `orElseThrow`, and
    `stream`; avoid `isPresent()` plus `getAsInt()`, `getAsLong()`, or `getAsDouble()`.
 8. Special boundaries: use a plain branch for checked IO and prompts; use `orElse(null)` only at a
-   real null-based API boundary; use `orElseThrow` when absence is genuinely an error. For multiple
-   non-IO Optionals before a checked prompt, select one Optional first (`or(...)` on Java 9+ or
-   `map(Optional::of).orElseGet(...)` on Java 8), then branch only at the prompt.
+   real null-based API boundary; use `orElseThrow` when absence is genuinely an error. Don't add
+   the generic helper patterns named in Hard Stops just to force checked exceptions into Optional
+   chains. At the actual checked-IO or prompt boundary, an explicit branch is clearer, even if it
+   reads the already-checked value locally. For multiple non-IO Optionals before a checked prompt,
+   select one Optional first (`or(...)` on Java 9+ or `map(Optional::of).orElseGet(...)` on Java 8),
+   then branch only at the prompt.
 9. Verify each changed branch. Run the repo's focused Java tests, such as `./mvnw test`,
    `mvn test`, `./gradlew test`, or the existing task for the touched code. If no test exists,
    trace a small present/absent/fallback case. Confirm the same return values, exceptions, prompts,
    side effects, laziness, generated output, and branch order; scan sibling code for the same
-   Optional smell.
+   Optional smell. Before finalizing, scan touched Java code for the Hard Stops markers and fix any
+   fake collection/Iterable whose source is one Optional rather than a real collection or
+   `Stream<Optional<T>>` flattening pipeline.
 
 ## References
 
