@@ -619,6 +619,35 @@ private static <T> Iterable<T> optionalValues(Optional<T> optional) {
 
 The same helper is still bad under a softer name such as `presentValues(...)`.
 
+Also bad as a generic Optional-unwrapping helper:
+
+```java
+private static <T> Iterable<T> presentValues(Optional<T> optional) {
+    return optional.stream()::iterator;
+}
+```
+
+Small helpers are fine when they name domain work:
+
+```java
+return options.serverPort()
+        .map(port -> validateRequestedPort(port, reservedPorts))
+        .orElseGet(() -> nextAvailablePort(reservedPorts));
+```
+
+Why good: `validateRequestedPort(...)` and `nextAvailablePort(...)` name the domain behavior. They
+do not make `Optional<T>` iterable and do not hide checked exceptions inside a generic Optional
+utility.
+
+Before finalizing a cleanup like this, run a hard-stop scan in the touched files:
+
+```bash
+rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|CheckedOptionals|UncheckedIOException" src/main/java
+```
+
+The broader project may have unrelated matches. Any match introduced in the touched cleanup is a
+failure unless it is a real collection stream or `Stream<Optional<T>>` flattening pipeline.
+
 Better final shape:
 
 ```java

@@ -35,6 +35,12 @@ auto-selection wording.
 - Historical replay showed an agent may replace a presence-read smell with a fake one-Optional
   loop even after reading the rule. Keep exact examples for checked prompt/parser boundaries where a
   narrow explicit branch is better than `for (value : optional.stream().toList())`.
+- When saying a "small helper" is acceptable, distinguish domain helpers from generic Optional
+  unwrapping helpers. Helpers like `validateRequestedPort(...)` are fine; helpers accepting
+  `Optional<T>` only to unwrap, iterate, or tunnel checked exceptions are not.
+- The skill must require its own hard-stop scan. Historical prompts may ask for narrower scans that
+  only find `isPresent()` / `get()` / `orElseThrow()`; agents then miss newly introduced fake
+  Optional stream/list replacements.
 - The README may say: "agents that support skill auto-selection, such as Codex and Claude Code".
 - Before naming platforms that support auto-selection, verify against official docs and link those
   docs when possible.
