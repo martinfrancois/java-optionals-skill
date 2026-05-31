@@ -36,8 +36,9 @@ Pass conditions:
 
 Status:
 
-- Not active yet. Scenario B still fails in full-repo with-skill replay, so this should become a
-  regression target only after the skill reliably avoids the fake iterable move.
+- Not active yet. Scenario B still fails in full-repo with-skill replay, including after additional
+  hard-stop scan guidance. Keep it as a regression target until a with-skill replay avoids the fake
+  iterable/helper move.
 
 ## Candidate 2: Fake Optional Stream/List Cleanup
 
@@ -60,8 +61,11 @@ Pass conditions:
 
 Status:
 
-- Best current candidate for reduction because the later with-skill replay avoided the known helper
-  and fake stream/list patterns.
+- Reduced into reference scenario
+  `evals-reference/47-checked-boundary-fake-optional-list-cleanup`.
+- Not headline-active: hosted baseline runs scored `95/100` or higher and did not reproduce the
+  full-repo failure where the agent introduced `OptionalValues`. Keep iterating only if a smaller
+  fixture can reproduce that same bad helper move without extra prompt guardrails.
 
 ## Candidate 3: Internal `orElse(null)` Cleanup
 
