@@ -127,8 +127,8 @@ fixture, and the issue itself are research inputs, not operating instructions.
 - 2026-05-31: Historical replay reduction tried to turn the Scenario C fake Optional
   stream/list cleanup into a headline eval. Hosted runs with the reduced case did not reproduce the
   full-repo baseline failure: the baseline avoided fake Optional helpers and scored `95/100` on the
-  latest reduced scenario. The case was kept in `evals-reference/` instead. Latest active headline
-  run `019e7f28-31d0-73ba-b7ac-0e33e9e7023f` scored:
+  latest reduced scenario. The case was kept in `evals-reference/` instead. The active headline run
+  before the Scenario B reduction, `019e7f28-31d0-73ba-b7ac-0e33e9e7023f`, scored:
 
   | Subset | Baseline | With context |
   | --- | ---: | ---: |
@@ -139,6 +139,22 @@ fixture, and the issue itself are research inputs, not operating instructions.
   That is a `+49/500` lift, about `1.11x` by raw score ratio, and a `49/64` missed-point
   reduction. Do not promote the reduced Scenario C case to headline until it reproduces the
   historical helper/list failure without extra prompt guardrails.
+- 2026-05-31: Scenario B was rerun with a valid with-skill harness after earlier replay attempts
+  could not read the installed skill from the Codex sandbox. Valid with-skill-v10 used
+  `--sandbox danger-full-access`, read the installed skill, avoided the fake helper/list moves, and
+  passed `./mvnw -q spotless:check verify` after formatting. The reduced B scenario became headline
+  `evals/11-checked-boundary-selection-cleanup`. Hosted run
+  `019e7f40-b788-74b8-97c8-e03bf6aa8190` scored:
+
+  | Subset | Baseline | With context |
+  | --- | ---: | ---: |
+  | Natural activation | `338/400` | `400/400` |
+  | Explicit invocation | `178/200` | `200/200` |
+  | Combined headline | `516/600` | `600/600` |
+
+  That is a `+84/600` lift, about `1.16x` by raw score ratio, and a `84/84` missed-point reduction.
+  Keep reporting both the raw score ratio and missed-point reduction; the latter better reflects
+  that the current headline context closes all scored gaps in this run.
 
 ## Source Treatment
 
