@@ -15,8 +15,12 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep a table of contents.
 - Keep contributor-only details in `CONTRIBUTING.md`, not in the README.
 - Keep eval-development details in `CONTRIBUTING.md`. The README should explain how the skill is
-  evaluated and link to the Tessl tile for current scores instead of duplicating fixed benchmark
+  evaluated and link to the Tessl plugin for current scores instead of duplicating fixed benchmark
   numbers that can go stale.
+- Preserve maintainer-approved package-runner install examples such as `npx`, `yarn dlx`, `pnpx`,
+  and `bunx` when they remain valid. Tessl's deprecated global npm install is a separate issue.
+- Mention Java baseline detection as a user benefit, but keep deep compatibility tables in runtime
+  references or contributor docs.
 - Use contractions in docs, including `README.md`, unless a contraction would make a technical
   statement less clear.
 - Don't add random package-name blocks such as `martinfrancois/java-optionals` unless they're part
@@ -27,7 +31,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   to find possible Optional cleanups, not review a cleanup proposal they already wrote.
 - Structure Getting Started so readers can skim it: install first, then how automatic use works,
   then optional explicit prompts.
-- Once the Tessl tile is published, make the package install command the primary install path.
+- Once the Tessl plugin is published, make the package install command the primary install path.
 - Write the README as if the GitHub repository is public, even before it's actually public. Don't mention
   that the repo is private or add private-repo source install instructions.
 - Use simple words that non-native Java developers can understand.

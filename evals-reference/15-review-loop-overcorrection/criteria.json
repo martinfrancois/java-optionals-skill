@@ -22,5 +22,9 @@
       "max_score": 6,
       "description": "Does not claim all Optional-returning streams should become loops or that Optional terminal operations are inherently bad."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

@@ -22,5 +22,9 @@
       "max_score": 8,
       "description": "Does not suggest replacing repeated get() with orElse(null), null checks, Optional.stream().toList(), or a loop over one Optional."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

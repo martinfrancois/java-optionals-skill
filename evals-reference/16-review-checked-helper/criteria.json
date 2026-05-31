@@ -27,5 +27,9 @@
       "max_score": 6,
       "description": "Does not suggest adding a functional dependency for this narrow local cleanup."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

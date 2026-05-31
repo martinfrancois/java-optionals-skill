@@ -1,6 +1,6 @@
 # Extend command sanitization
 
-Use `$java-optionals` to create `CommandSanitizer.java` with the revised class.
+Create `CommandSanitizer.java` with the revised class. Assume Java 17.
 
 Current code:
 
@@ -44,4 +44,3 @@ Required changes:
 - Preserve non-secret arguments.
 - Keep the real option-set lookup readable and centralized.
 - Return `String.join(" ", sanitized)`.
-

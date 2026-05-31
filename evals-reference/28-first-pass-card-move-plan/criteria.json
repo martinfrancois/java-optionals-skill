@@ -27,6 +27,9 @@
       "max_score": 8,
       "description": "Returns the original card when target is absent or already current, and returns a new Card with the target id otherwise."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

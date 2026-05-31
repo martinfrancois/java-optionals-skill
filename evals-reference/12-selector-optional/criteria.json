@@ -27,5 +27,9 @@
       "max_score": 2,
       "description": "Does not convert either single Optional selector to stream().toList(), a list, or a loop."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  }
 }

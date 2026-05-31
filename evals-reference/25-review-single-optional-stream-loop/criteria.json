@@ -22,6 +22,9 @@
       "max_score": 8,
       "description": "Does not suggest orElse(null) plus local null branching as the alternative."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }
-

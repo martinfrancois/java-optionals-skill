@@ -42,5 +42,9 @@
       "max_score": 6,
       "description": "Returns WorkflowValidation.valid() when both board id and server port match."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

@@ -27,20 +27,6 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        if: ${{ steps.release.outputs.release_created == 'true' }}
-
-      - name: Setup Tessl CLI for release publish
-        if: ${{ steps.release.outputs.release_created == 'true' }}
-        uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
-        with:
-          version: "0.81.1"
-          token: ${{ secrets.TESSL_TOKEN }}
-
-      - name: Publish Tessl plugin
-        if: ${{ steps.release.outputs.release_created == 'true' }}
-        run: tessl plugin publish .
-
       - name: Find release PR
         id: release-pr
         env:
@@ -78,7 +64,7 @@ jobs:
         if: ${{ steps.release-pr.outputs.found == 'true' }}
         uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
         with:
-          version: "0.81.1"
+          version: "0.81.2"
           token: ${{ secrets.TESSL_TOKEN }}
 
       - name: Validate release PR
@@ -109,10 +95,13 @@ jobs:
 
           python3 scripts/validate_skill.py skills/java-optionals
           python3 scripts/validate_eval_criteria.py evals evals-reference
+          python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
+          bash -n scripts/check_publish_dry_run.sh
           tessl plugin lint .
 
           if [ -n "${TESSL_TOKEN:-}" ]; then
             bash scripts/check_publish_dry_run.sh .
+            tessl plugin publish --dry-run .
           else
             echo "TESSL_TOKEN isn't configured; skipping publish dry-run."
           fi

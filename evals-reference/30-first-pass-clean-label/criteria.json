@@ -27,6 +27,9 @@
       "max_score": 8,
       "description": "Returns the trimmed nonblank label when present and untitled for absent or blank labels."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

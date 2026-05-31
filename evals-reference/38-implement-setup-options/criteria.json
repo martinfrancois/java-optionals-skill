@@ -37,5 +37,9 @@
       "max_score": 10,
       "description": "Throws the exact server_port and board-name IllegalArgumentException messages for invalid explicit request values."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: publish-tessl-${{ github.event.release.tag_name }}
+  group: publish-tessl-${{ github.event.release.tag_name || github.run_id }}
   cancel-in-progress: false
 
 jobs:
@@ -21,11 +21,27 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
+      - name: Require Tessl token
+        run: |
+          if [ -z "${TESSL_TOKEN:-}" ]; then
+            echo "TESSL_TOKEN is required to publish the Tessl plugin." >&2
+            exit 1
+          fi
+
       - name: Setup Tessl CLI
         uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
         with:
-          version: "0.81.1"
+          version: "0.81.2"
           token: ${{ env.TESSL_TOKEN }}
+
+      - name: Validate plugin before publish
+        run: |
+          python3 scripts/validate_skill.py skills/java-optionals
+          python3 scripts/validate_eval_criteria.py evals evals-reference
+          python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
+          bash -n scripts/check_publish_dry_run.sh
+          tessl plugin lint .
+          tessl plugin publish --dry-run .
 
       - name: Publish plugin
         run: tessl plugin publish .

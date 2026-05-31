@@ -1,6 +1,7 @@
 # Add workpad safeguards while cleaning up the implementation
 
 Use `$java-optionals` to create `WorkpadService.java` with the revised class.
+Assume Java 17.
 
 The current implementation was written during an AI-assisted maintainability pass. It works for the
 happy path, but the new feature needs two safeguards and the method should be left maintainable.
@@ -50,4 +51,3 @@ Required changes:
 - If no workpad comment exists and `card.comments().size() >= 1000`, return `Result.failure("comment_window_incomplete")`.
 - Preserve the existing updated/created success status formats.
 - Keep create-side checks and creation lazy; they must not run when an existing workpad comment is present.
-

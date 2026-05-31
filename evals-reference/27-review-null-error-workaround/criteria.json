@@ -22,6 +22,9 @@
       "max_score": 8,
       "description": "Preserves IllegalArgumentException and the Missing config message."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }
-

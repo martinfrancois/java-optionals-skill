@@ -1,46 +1,40 @@
 {
-  "context": "Representative real-collection stream case: the option set is real data and should stay a centralized Optional-returning lookup while the outer loop handles redact-next state.",
+  "context": "Representative real-collection lookup case: the option set is real data and matching should stay centralized while the outer loop handles redact-next state.",
   "type": "weighted_checklist",
   "checklist": [
     {
-      "name": "Creates revised sanitizer",
-      "max_score": 4,
-      "description": "Creates CommandSanitizer.java with sanitize(List<String>) and the required secret option set."
+      "name": "Compiles and creates requested artifact",
+      "max_score": 15,
+      "description": "Creates a coherent CommandSanitizer.java with sanitize(List<String>) and the required secret option set, using APIs compatible with the stated Java 17 baseline."
     },
     {
-      "name": "Centralizes real collection lookup",
-      "max_score": 44,
-      "description": "Uses a small Optional-returning helper over SECRET_OPTIONS.stream().filter(...) for both exact matches and option=value matches."
+      "name": "Implements exact redaction behavior",
+      "max_score": 30,
+      "description": "Preserves exact-option behavior such as --token abc -> --token <redacted>, adds option=value behavior such as --key=abc -> --key=<redacted>, and preserves non-secret arguments exactly."
     },
     {
-      "name": "Uses findAny for equivalent matches",
-      "max_score": 24,
-      "description": "Uses findAny() because any matching secret option is equivalent."
+      "name": "Preserves output order and sequence state",
+      "max_score": 15,
+      "description": "Keeps output order, uses String.join(\" \", sanitized), and keeps redact-next behavior only for exact secret options."
     },
     {
-      "name": "Consumes Optional directly",
-      "max_score": 36,
-      "description": "Uses map/orElse or another direct Optional boundary for the match result rather than isPresent()/get() or orElseThrow() value reads."
+      "name": "Keeps option matching centralized",
+      "max_score": 10,
+      "description": "Keeps exact and option=value matching in one readable helper or direct lookup; a real Set stream, loop, or contains-based shape is acceptable when behavior remains clear."
     },
     {
-      "name": "Keeps loop only for sequence state",
-      "max_score": 22,
-      "description": "Avoids nested loops, labels, duplicated exact/prefix matching branches, or sentinel state beyond the necessary redactNext flag."
+      "name": "Consumes Optional result directly",
+      "max_score": 15,
+      "description": "Handles the match result with map/orElse or another direct Optional boundary rather than isPresent()/get() or orElseThrow() value reads."
     },
     {
-      "name": "Preserves exact-option behavior",
-      "max_score": 8,
-      "description": "Keeps exact options and redacts the following argument."
-    },
-    {
-      "name": "Adds option-value behavior",
-      "max_score": 8,
-      "description": "Rewrites option=value arguments to option=<redacted>."
-    },
-    {
-      "name": "Preserves non-secret output",
-      "max_score": 6,
-      "description": "Preserves non-secret arguments and joins sanitized arguments with spaces."
+      "name": "Avoids fake or noisy rewrites",
+      "max_score": 15,
+      "description": "Does not force a fake Optional collection, duplicate matching branches throughout the loop, local null sentinels, labels, or unnecessary nested loops."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation"
+  }
 }

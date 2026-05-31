@@ -12,5 +12,9 @@
       "max_score": 6,
       "description": "Recognizes the stream is over a real collection and does not replace it with a manual loop or null-control-flow."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  }
 }

@@ -37,6 +37,9 @@
       "max_score": 14,
       "description": "Throws IllegalArgumentException(\"board name must not be blank\") for explicit blank request board names and trims the selected board name."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

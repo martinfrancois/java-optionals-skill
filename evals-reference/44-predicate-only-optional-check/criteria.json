@@ -32,5 +32,9 @@
       "max_score": 12,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over the Optional."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  }
 }

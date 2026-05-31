@@ -111,6 +111,19 @@ fixture, and the issue itself are research inputs, not operating instructions.
   `evals-reference/`. The headline suite keeps the first-pass retry-header scenario because it still
   measures the motivating failure: AI-written code introducing `isPresent()` / `get()` in the first
   place.
+- 2026-05-31: Eval-integrity audit pass split every active scenario by local invocation metadata,
+  added `capability.txt`, moved maintainer-only answer keys out of runtime references, and rewrote
+  headline criteria around compile/artifact and behavior checks before Optional style. Hosted
+  headline run `019e7bf1-37ab-7608-9f98-fb00b6abb6ec` on the audit branch scored:
+
+  | Subset | Baseline | With context |
+  | --- | ---: | ---: |
+  | Natural activation | `239/300` | `300/300` |
+  | Explicit invocation | `140/200` | `200/200` |
+  | Combined headline | `379/500` | `500/500` |
+
+  The run used `tessl eval run --variant with-context --variant without-context .` against the
+  branch content. Keep future reports split by invocation style where possible.
 
 ## Source Treatment
 

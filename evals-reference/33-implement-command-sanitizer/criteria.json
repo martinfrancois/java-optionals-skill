@@ -32,6 +32,9 @@
       "max_score": 22,
       "description": "Correctly handles exact options, option=value forms, redacts the following value only after exact options, preserves non-secret arguments, and joins with spaces."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

@@ -12,6 +12,9 @@ This skill gives the agent a small decision guide before it writes or changes Op
 the Optional shape, run fallback work only when needed, keep real collection streams readable, and
 use a plain branch when checked IO makes that clearer.
 
+It also tells the agent to check the project Java version first. The right Optional code for a
+Java 8 project may be different from the right code for Java 17 or Java 21.
+
 ## Contents
 
 - [Getting Started](#getting-started)
@@ -28,7 +31,7 @@ use a plain branch when checked IO makes that clearer.
 
 ### 1. Install
 
-Install the published Tessl tile using the option that fits your setup:
+Install the published Tessl plugin using the option that fits your setup:
 
 | Tool | Command |
 | --- | --- |
@@ -114,7 +117,7 @@ return cart;
 // what an unassisted AI would have changed it to
 List<Coupon> coupons = selectedCoupon.stream().toList();
 if (!coupons.isEmpty()) {
-    return applyCoupon(cart, coupons.getFirst());
+    return applyCoupon(cart, coupons.get(0));
 }
 return cart;
 ```
@@ -193,8 +196,10 @@ Money total(Cart cart) {
 Good fit:
 
 - replacing `isPresent()` or `isEmpty()` followed by `get()` or `orElseThrow()`;
+- choosing APIs that fit the project Java baseline instead of assuming the newest JDK;
 - avoiding `orElse(null)` followed by local null checks;
 - choosing between `orElse(...)` and `orElseGet(...)`;
+- using `OptionalInt`, `OptionalLong`, and `OptionalDouble` without boxing or `getAs*()` reopening;
 - keeping checked exceptions, user prompts, IO, and side effects in the right place;
 - deciding whether `findFirst()` or `findAny()` keeps the same result;
 - keeping real collection streams instead of rewriting them as noisy loops;
@@ -242,10 +247,10 @@ Checked IO case where a plain branch is clearer:
 ```java
 String shippingAddress(Checkout checkout, Console console) throws IOException {
     Optional<String> saved = checkout.savedShippingAddress();
-    if (saved.isEmpty()) {
+    if (!saved.isPresent()) {
         return console.readLine("Shipping address: ");
     }
-    return saved.orElseThrow();
+    return saved.get();
 }
 ```
 
@@ -262,21 +267,31 @@ Optional<DeliverySlot> deliverySlot(DeliveryWindow preferredWindow) {
 ## How It's Evaluated
 
 The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. The tasks
-cover both writing new Optional code and cleaning up existing Optional code. Each task is run without
-the skill and with the skill, then scored against checks for the requested Java behavior and the
-Optional shape.
+cover both writing new Optional code and cleaning up existing Optional code. The headline suite uses
+a documented mix of natural prompts and explicit `Use $java-optionals` prompts. Each task is run
+without the skill and with the skill, then scored against behavior-first checks.
 
 The evals check that agents:
 
+- produce coherent Java for the stated baseline;
+- preserve exact outputs, errors, prompts, side effects, ordering, and fallback timing;
 - avoid `isPresent()` / `get()` for ordinary value reads;
 - don't replace `Optional` with `orElse(null)`;
 - run fallback work only when needed;
 - keep checked IO and user prompts clear;
 - keep real collection streams readable;
-- preserve outputs, errors, prompts, side effects, and when fallback work runs.
+- handle primitive Optionals and Optional-producing stream/collector APIs correctly.
+
+Results should be read by subset:
+
+- natural activation scenarios do not name the skill;
+- explicit invocation scenarios directly ask for `$java-optionals`;
+- the focused headline suite reports the representative mix;
+- `evals-reference/` keeps broader regression cases, including scenarios a strong baseline may
+  already solve.
 
 Current published scores are shown on the
-[Tessl tile](https://tessl.io/registry/martinfrancois/java-optionals).
+[Tessl plugin](https://tessl.io/registry/martinfrancois/java-optionals).
 
 ## Contributing
 

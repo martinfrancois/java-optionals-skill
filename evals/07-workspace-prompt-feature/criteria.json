@@ -3,39 +3,43 @@
   "type": "weighted_checklist",
   "checklist": [
     {
-      "name": "Creates revised resolver",
-      "max_score": 4,
-      "description": "Creates WorkspaceResolver.java with workspaceId(Options, Terminal) throws IOException and the requested interfaces."
+      "name": "Compiles and creates requested artifact",
+      "max_score": 15,
+      "description": "Creates a coherent WorkspaceResolver.java with workspaceId(Options, Terminal) throws IOException and the requested interfaces."
     },
     {
-      "name": "Uses Optional priority for configured values",
-      "max_score": 42,
+      "name": "Preserves workspace resolution order",
+      "max_score": 25,
+      "description": "Returns options.workspaceId() first, options.environmentWorkspaceId() second, and the prompt result only when both are absent."
+    },
+    {
+      "name": "Preserves prompt and checked exception behavior",
+      "max_score": 20,
+      "description": "Calls terminal.readLine(\"Workspace: \") exactly once only on the absent path and preserves throws IOException without wrapping it."
+    },
+    {
+      "name": "Uses Optional priority for non-IO values",
+      "max_score": 15,
       "description": "Uses options.workspaceId().or(options::environmentWorkspaceId) or an equivalent direct Optional priority boundary for non-IO values."
     },
     {
-      "name": "Keeps checked prompt explicit",
-      "max_score": 24,
-      "description": "Uses a narrow explicit branch for the absent prompting path and preserves throws IOException."
+      "name": "Limits plain branch to prompt boundary",
+      "max_score": 10,
+      "description": "Uses a narrow explicit branch only at the checked prompt boundary, not as general Optional value-read control flow."
     },
     {
-      "name": "No unchecked wrapper or helper",
-      "max_score": 18,
+      "name": "Avoids helper or dependency overreach",
+      "max_score": 10,
       "description": "Does not introduce RuntimeException, UncheckedIOException, CheckedSupplier, CheckedOptionals, or another helper/dependency to force fluent Optional syntax."
     },
     {
-      "name": "Avoids ordinary value-read antipattern",
-      "max_score": 30,
-      "description": "Does not keep isPresent()/get() for the ordinary configured/environment Optional priority selection."
-    },
-    {
-      "name": "Avoids null/list workaround",
-      "max_score": 18,
+      "name": "Avoids null or fake collection workarounds",
+      "max_score": 5,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional."
-    },
-    {
-      "name": "Preserves resolution behavior",
-      "max_score": 14,
-      "description": "Returns configured workspace first, environment workspace second, and prompts only when both are absent."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

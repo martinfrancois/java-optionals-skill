@@ -46,6 +46,8 @@ Checks most contributors can run:
 
 - [ ] `python3 scripts/validate_skill.py skills/java-optionals`
 - [ ] `python3 scripts/validate_eval_criteria.py evals evals-reference`
+- [ ] `python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py`
+- [ ] `bash -n scripts/check_publish_dry_run.sh`
 - [ ] `tessl plugin lint .`
 - [ ] `markdownlint`, if Markdown changed
 - [ ] Manual rendered-doc or example review, if docs or examples changed
@@ -53,7 +55,8 @@ Checks most contributors can run:
 Tessl-authenticated checks:
 
 - [ ] `bash scripts/check_publish_dry_run.sh .`
-- [ ] `tessl skill review --threshold 100 skills/java-optionals/SKILL.md`, if skill text or references changed
+- [ ] `tessl plugin publish --dry-run --bump patch .`
+- [ ] `tessl skill review --threshold 90 skills/java-optionals/SKILL.md`, if skill text or references changed
 - [ ] `tessl eval run --variant with-context --variant without-context .`, if skill behavior,
       evals, or benchmark claims changed
 
@@ -80,6 +83,22 @@ explain why.
 
 - [ ] Docs updated, or N/A
 - [ ] Evals updated, or N/A
+- [ ] Scenario directories include `task.md`, `criteria.json`, and `capability.txt`, or N/A
+- [ ] Scenario invocation style is classified as natural or explicit, or N/A
+- [ ] Natural activation prompts don't explicitly invoke the skill, or N/A
+- [ ] Explicit invocation prompts are labeled as explicit, or N/A
+- [ ] Headline criteria include compile/artifact checks, or N/A
+- [ ] Headline criteria include behavior correctness checks, or N/A
+- [ ] Runtime references contain no eval answer keys, scenario inventory, hosted run IDs, or fixed
+      score claims
+- [ ] Java baseline compatibility has been considered, or N/A
+- [ ] `OptionalInt`, `OptionalLong`, and `OptionalDouble` guidance has been considered, or N/A
+- [ ] Optional-producing stream terminals and collectors are covered, or N/A
+- [ ] Java 26 Javadocs were checked for Optional-family coverage, or N/A
+- [ ] Valid README package-runner instructions were preserved, or N/A
+- [ ] Tessl package commands match the verified plugin package format
+- [ ] Full/reference eval reporting is not hidden or cherry-picked
+- [ ] Tessl checks were run, or unavailability is documented
 - [ ] PR title or squash title uses Conventional Commits
 - [ ] Redaction checked: no Tessl tokens, GitHub tokens, package manager tokens, private repository
       links, private eval artifacts, private registry/workspace links, local host paths, or
