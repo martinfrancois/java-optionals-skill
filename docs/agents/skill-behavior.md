@@ -13,6 +13,9 @@ auto-selection wording.
   be `null`, fallback/default values, and code where a value may or may not exist.
 - Skill guidance must start by detecting the project Java baseline before selecting Optional,
   primitive Optional, stream, collector, record, or collection APIs.
+- Keep the highest-risk replay failures near the top of `SKILL.md`, before the normal workflow.
+  Agents have read the skill and still repeated fake one-Optional collection loops when that rule
+  appeared only as one item in a longer list.
 - Cover the full Optional family: `Optional<T>`, `OptionalInt`, `OptionalLong`, `OptionalDouble`,
   Optional-producing stream terminals, primitive stream terminals, and Optional-producing
   collectors.
@@ -20,6 +23,18 @@ auto-selection wording.
   ordering or priority contract depends on the first match.
 - Boundary exceptions should stay narrow: checked IO, prompts, legacy null APIs, external APIs,
   genuine absence-as-error, and predicate-only presence checks.
+- Checked IO and prompt boundaries must not be hidden behind generic Optional helpers such as
+  `OptionalSupport`, `OptionalIo`, `CheckedOptionals`, throwing suppliers, or supplier `.get()`
+  tricks. Prefer a narrow plain branch at the actual boundary.
+- The skill must make the `optional.stream().toList()` rule operational. Agents should scan touched
+  code before finalizing and rewrite any fake one-Optional collection or `for` loop over
+  `optional.stream().toList()`.
+- The same ban applies to disguised variants such as `optional.stream()::iterator`,
+  `optionalValues(Optional<T>)`, `presentValues(Optional<T>)`, or any helper that turns one Optional
+  into an `Iterable` just so a loop can read zero or one value.
+- Historical replay showed an agent may replace a presence-read smell with a fake one-Optional
+  loop even after reading the rule. Keep exact examples for checked prompt/parser boundaries where a
+  narrow explicit branch is better than `for (value : optional.stream().toList())`.
 - The README may say: "agents that support skill auto-selection, such as Codex and Claude Code".
 - Before naming platforms that support auto-selection, verify against official docs and link those
   docs when possible.

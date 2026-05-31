@@ -452,6 +452,9 @@ return CheckedOptionals.mapOrElseGet(
         () -> promptForWorkspace(terminal));
 ```
 
+Don't replace `CheckedOptionals` with the same idea under another name such as `OptionalSupport`,
+`OptionalIo`, or a throwing-supplier utility. The problem is the abstraction, not the name.
+
 Rejected helper internals:
 
 ```java
@@ -531,6 +534,21 @@ return promptForWorkspace(terminal);
 On Java 9+, `options.workspaceId().or(options::environmentWorkspaceId)` is the direct Optional
 fallback API for the first line.
 
+If a prompt, checked IO call, or checked parser forces a branch, keep the branch narrow. Do not turn
+the Optional into a one-item list or iterable to avoid the branch:
+
+```java
+Optional<String> configured = options.workspaceId();
+if (configured.isEmpty()) {
+    return promptForWorkspace(terminal);
+}
+return configured.orElseThrow();
+```
+
+Why acceptable: the empty branch is the checked prompt boundary. A narrow checked-boundary branch is
+clearer than a fake `for` loop over `configured.stream().toList()`. If both branches are ordinary
+value flow, prefer `map(...)`, `flatMap(...)`, or `orElseGet(...)` instead.
+
 ### 4. Selector And Output Optionals Need Different Boundaries
 
 Starting selector code:
@@ -570,6 +588,37 @@ if (!boards.isEmpty()) {
 }
 ```
 
+Also bad:
+
+```java
+for (String selector : board.stream().toList()) {
+    return byBoard(manifest, selector);
+}
+```
+
+Also bad for checked or prompting fallbacks:
+
+```java
+for (String workspaceId : options.workspaceId().stream().toList()) {
+    return workspaceId;
+}
+return promptForWorkspace(terminal);
+```
+
+Still bad under a helper name:
+
+```java
+for (String selector : optionalValues(board)) {
+    return byBoard(manifest, selector);
+}
+
+private static <T> Iterable<T> optionalValues(Optional<T> optional) {
+    return optional.stream()::iterator;
+}
+```
+
+The same helper is still bad under a softer name such as `presentValues(...)`.
+
 Better final shape:
 
 ```java
@@ -587,7 +636,9 @@ Selection select(Manifest manifest, Optional<String> board, Optional<Path> workf
 
 Why good: the mutual-exclusion check stays a boolean-only presence check, but each value-reading
 branch uses the Optional as the selector boundary. The no-selector branch stays lazy, and no fake
-collection or null workaround is introduced.
+collection or null workaround is introduced. If cleanup produces `optional.stream().toList()` around
+one Optional, `optional.stream()::iterator`, or an `optionalValues(...)` helper, stop and rewrite it
+before finalizing. Do the same for renamed variants such as `presentValues(...)`.
 
 Related output-sink starting code:
 
