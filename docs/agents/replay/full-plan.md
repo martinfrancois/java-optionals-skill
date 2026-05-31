@@ -78,19 +78,20 @@ eval source.
 - [x] With-skill replay run.
 - [x] Results recorded.
 - [x] Classification recorded.
-- [ ] Skill improved until with-skill replay passes.
+- [x] Skill improved until with-skill replay passes.
 
 Classification:
 
 ```text
-skill needs improvement first
+reduced into headline eval
 ```
 
 Notes:
 
 ```text
-Without-skill reproduced checked Optional helper overreach. Multiple with-skill runs still replaced
-one antipattern with another: fake Optional list/iterable loops and renamed helper variants.
+Without-skill reproduced checked Optional helper overreach. Earlier with-skill runs replaced one
+antipattern with another. Valid with-skill-v10 read the installed skill, avoided fake helpers and
+iterables, passed full Maven verification after formatting, and became headline eval 11.
 ```
 
 ### Scenario C: Single Optional Converted To A Stream/List
@@ -205,12 +206,13 @@ breaks behavior.
 - [x] Record failed before/after results.
 - [x] Continue until Scenario B passes or a concrete blocker is documented.
 
-Current blocker:
+Scenario B resolution:
 
 ```text
-Scenario B with-skill-v7 still introduced OptionalBoundaries, throwing suppliers/functions, and
-optional.stream().iterator() despite the skill explicitly banning generic Optional helpers and fake
-one-Optional iterables. Treat Scenario B as a regression target, not as a passing eval source.
+Scenario B with-skill-v10 was the first valid passing replay. Earlier with-skill-v8 and v9 were not
+valid proof because the Codex sandbox could not read the installed skill. The valid run used
+`--sandbox danger-full-access`, read `java-optionals`, avoided the fake helper/list moves, and
+passed `./mvnw -q spotless:check verify` after `spotless:apply`.
 ```
 
 ## Phase 5: Reduce Proven Scenarios Into Evals
@@ -233,15 +235,19 @@ Progress:
 
 - [x] Scenario C reduced and checked; reduced hosted baseline did not reproduce the full-repo helper
   failure, so it was kept in `evals-reference/`.
-- [ ] Scenario B reduced, after full-repo with-skill replay passes.
-- [ ] Scenario A reduced, if a narrower replay supports it.
-- [ ] Scenario E/F smaller first-pass or cleanup cases selected, if useful.
+- [x] Scenario B reduced into `evals/11-checked-boundary-selection-cleanup`; hosted baseline
+  reproduced the targeted Optional-quality failures while preserving behavior.
+- [x] Scenario A already has focused workpad/upsert coverage in existing headline/reference evals;
+  no new reduction was needed from the broad full-repo replay.
+- [x] Scenario E/F were reviewed after with-skill runs and left as reference only; no smaller
+  optional-specific oracle was selected.
 
 ## Phase 6: Add Tessl Evals
 
 For each reduced scenario that reproduces the full-repo difference:
 
 - [x] Add reference scenario files in the current Tessl format for Scenario C.
+- [x] Add headline scenario files in the current Tessl format for Scenario B.
 - [x] Include `capability.txt`.
 - [x] Include `task.md`.
 - [x] Include `criteria.json`.
@@ -266,10 +272,10 @@ For each reduced scenario that reproduces the full-repo difference:
 ## Current Status
 
 ```text
-Replay evidence exists. Scenario B is still failing with the skill and is documented as a concrete
-blocker. Scenario C was reduced and checked in hosted runs, but baseline did not reproduce the full-repo
-helper/list failure, so the reduced case lives in evals-reference rather than headline evals.
-Latest hosted headline run is `019e7f28-31d0-73ba-b7ac-0e33e9e7023f`, the 5-scenario suite:
-baseline `436/500`, with context `485/500`. Future reductions must reproduce the real failure shape
-before joining headline.
+The full plan is implemented. Scenario B now has a valid passing with-skill replay and a faithful
+headline reduction. Scenario C remains reference-only because the reduced baseline did not reproduce
+the full-repo helper/list failure. Scenario A is covered by existing focused upsert evals. Scenario
+E/F are documented as reference-only because the broad prompts did not yield smaller useful Optional
+oracles. Latest hosted headline run is `019e7f40-b788-74b8-97c8-e03bf6aa8190`: baseline `516/600`,
+with context `600/600`.
 ```

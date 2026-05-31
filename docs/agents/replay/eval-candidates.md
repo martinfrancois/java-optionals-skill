@@ -36,9 +36,11 @@ Pass conditions:
 
 Status:
 
-- Not active yet. Scenario B still fails in full-repo with-skill replay, including after additional
-  hard-stop scan guidance. Keep it as a regression target until a with-skill replay avoids the fake
-  iterable/helper move.
+- Active as headline scenario `evals/11-checked-boundary-selection-cleanup`.
+- Full-repo Scenario B passed in valid with-skill-v10 after Codex was allowed to read the installed
+  skill. Hosted reduced run `019e7f40-b788-74b8-97c8-e03bf6aa8190` scored baseline `80/100` and
+  with-context `100/100`, with the baseline losing the targeted Optional-quality criteria while
+  preserving behavior.
 
 ## Candidate 2: Fake Optional Stream/List Cleanup
 
@@ -94,5 +96,6 @@ Pass conditions:
 
 Status:
 
-- Useful, but the full-repo scenario is broad. Prefer a reduced eval based on this shape rather than
-  replaying the full prompt as a headline scenario.
+- Covered by existing focused upsert scenarios, including headline
+  `evals/01-workpad-feature-cleanup` and reference `evals-reference/02-lazy-upsert`. No new Scenario
+  A reduction was needed from the broad replay.
