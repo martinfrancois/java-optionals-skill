@@ -25,8 +25,12 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
   narrow branch at that checked boundary; that is better than inventing a fake loop.
 - If a checked exception or prompt prevents a fluent Optional chain, keep a narrow explicit branch
   at that exact boundary. Do not hide the checked operation behind generic helpers such as
-  `OptionalSupport`, `OptionalIo`, `CheckedOptionals`, throwing suppliers, or supplier `.get()`
-  tricks.
+  `OptionalSupport`, `OptionalIo`, `CheckedOptionals`, `OptionalBoundaries`, throwing suppliers,
+  throwing functions, `mapThrowing(...)`, `orElseGetThrowing(...)`, or supplier `.get()` tricks.
+- If a prompt asks to remove presence-read code but the empty branch throws a checked exception,
+  prompts, or calls a checked parser, do not chase a "zero presence-read" shape at any cost. Prefer
+  the narrow direct branch and explain it as a checked-boundary exception rather than replacing it
+  with a generic helper, fake iterable, or `orElse(null)` workaround.
 - A named helper is only acceptable when it names domain work, such as `validateRequestedPort(...)`
   or `promptForWorkspace(...)`. Do not add a generic `<T>` helper that accepts `Optional<T>` just to
   read the value, make it iterable, or route checked exceptions through Optional.
@@ -84,15 +88,17 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
    real null-based API boundary; use `orElseThrow` when absence is genuinely an error. Don't add
    the generic helper patterns named in Hard Stops just to force checked exceptions into Optional
    chains. At the actual checked-IO or prompt boundary, an explicit branch is clearer than a generic
-   Optional helper or fake iterable. For multiple non-IO Optionals before a checked prompt, select
-   one Optional first (`or(...)` on Java 9+ or `map(Optional::of).orElseGet(...)` on Java 8), then
-   branch only at the prompt.
+   Optional helper or fake iterable. If a strict "no presence read" request conflicts with checked
+   exception rules, preserve behavior and keep the direct branch instead of inventing another
+   antipattern. For multiple non-IO Optionals before a checked prompt, select one Optional first
+   (`or(...)` on Java 9+ or `map(Optional::of).orElseGet(...)` on Java 8), then branch only at the
+   prompt.
 9. Verify each changed branch. Run the repo's focused Java tests, such as `./mvnw test`,
    `mvn test`, `./gradlew test`, or the existing task for the touched code. If no test exists,
    trace a small present/absent/fallback case. Confirm the same return values, exceptions, prompts,
    side effects, laziness, generated output, and branch order; scan sibling code for the same
    Optional smell. Before finalizing, run a hard-stop scan such as
-   `rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|CheckedOptionals|UncheckedIOException" <touched Java files>`.
+   `rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|CheckedOptionals|OptionalBoundaries|UncheckedIOException|ThrowingSupplier|ThrowingFunction|mapThrowing|orElseGetThrowing" <touched Java files>`.
    Fix any hit where one Optional is made list-like/iterable, a checked exception is tunneled
    through Optional, or a generic Optional helper replaces the original smell. Do this even if the
    user-provided scan only searched for `isPresent()`, `get()`, or `orElseThrow()`.
