@@ -453,7 +453,8 @@ return CheckedOptionals.mapOrElseGet(
 ```
 
 Don't replace `CheckedOptionals` with the same idea under another name such as `OptionalSupport`,
-`OptionalIo`, or a throwing-supplier utility. The problem is the abstraction, not the name.
+`OptionalIo`, `OptionalBoundaries`, `mapThrowing(...)`, `orElseGetThrowing(...)`, or a
+throwing-supplier utility. The problem is the abstraction, not the name.
 
 Rejected helper internals:
 
@@ -549,6 +550,11 @@ Why acceptable: the empty branch is the checked prompt boundary. A narrow checke
 clearer than a fake `for` loop over `configured.stream().toList()`. If both branches are ordinary
 value flow, prefer `map(...)`, `flatMap(...)`, or `orElseGet(...)` instead.
 
+If the prompt says the final code must remove all presence-read shapes, but the only alternatives
+are a generic checked-Optional helper, a fake iterable, or local `orElse(null)` control flow, keep
+the narrow checked-boundary branch and say why. Preserving checked exception behavior is more
+important than satisfying the wording by creating a different Optional antipattern.
+
 ### 4. Selector And Output Optionals Need Different Boundaries
 
 Starting selector code:
@@ -642,7 +648,7 @@ utility.
 Before finalizing a cleanup like this, run a hard-stop scan in the touched files:
 
 ```bash
-rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|CheckedOptionals|UncheckedIOException" src/main/java
+rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|CheckedOptionals|OptionalBoundaries|UncheckedIOException|ThrowingSupplier|ThrowingFunction|mapThrowing|orElseGetThrowing" src/main/java
 ```
 
 The broader project may have unrelated matches. Any match introduced in the touched cleanup is a

@@ -38,6 +38,10 @@ auto-selection wording.
 - When saying a "small helper" is acceptable, distinguish domain helpers from generic Optional
   unwrapping helpers. Helpers like `validateRequestedPort(...)` are fine; helpers accepting
   `Optional<T>` only to unwrap, iterate, or tunnel checked exceptions are not.
+- If a user prompt demands removal of presence-read code at a checked-IO or prompt boundary, the
+  skill should still prefer a narrow direct branch over a generic checked-Optional helper, fake
+  iterable, or `orElse(null)` workaround. Document the checked-boundary exception instead of
+  swapping one antipattern for another.
 - The skill must require its own hard-stop scan. Historical prompts may ask for narrower scans that
   only find `isPresent()` / `get()` / `orElseThrow()`; agents then miss newly introduced fake
   Optional stream/list replacements.
