@@ -134,6 +134,18 @@ Because the reduced Scenario B case is now headline-active, the active headline 
 That is a `+84/600` absolute score lift. The score ratio is about `1.16x`; the missed-point
 reduction is `84/84`, or `100%`.
 
+Category subtotal:
+
+| Category | Baseline | With context |
+| --- | ---: | ---: |
+| Safety gates | `395/395` | `395/395` |
+| Optional quality | `98/180` | `180/180` |
+| Maintainability | `23/25` | `25/25` |
+
+The Optional-quality subtotal is the clearest skill-specific number: `+82/180`, about `1.84x` by
+raw score ratio, with `100%` missed-point reduction. Safety gates stay in the benchmark to prevent
+broken code from scoring well, but they should not be treated as the main value claim.
+
 ## Checks
 
 All completed replay commands stayed under the 30-minute cap.

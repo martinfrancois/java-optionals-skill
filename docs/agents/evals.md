@@ -24,9 +24,13 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   benchmark.
 - Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`.
 - Every `criteria.json` must classify `metadata.invocation` and `metadata.task_type`.
+- Every headline criterion must classify `category` as `safety`, `optional_quality`, or
+  `maintainability`.
 - Headline implementation scenarios need compile/artifact checks and behavior checks. Optional style
   checks must not dominate behavior, compilability, ordering, exception, output, side-effect, or
   fallback timing checks.
+- Treat compile and behavior checks as safety gates. They should stop broken answers from looking
+  good, but the main value metric for this skill is the `optional_quality` subtotal.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims. Keep those in maintainer docs such as
   [eval-case-inventory.md](eval-case-inventory.md) or [source-notes.md](source-notes.md).
@@ -38,8 +42,8 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   brittle failures instead of measuring the Optional behavior better, revert or redesign it.
 - A 2x raw score ratio is useful only when earned by honest, realistic eval design. Don't suppress
   legitimate coverage just to improve lift.
-- Track raw score, percentage-point lift, raw score ratio, and missed-point reduction when updating
-  benchmark claims.
+- Track raw score, percentage-point lift, raw score ratio, missed-point reduction, and the
+  `optional_quality` subtotal when updating benchmark claims.
 - Don't hide scenarios merely because the baseline solves them. Move them to `evals-reference/`
   only when they're better as broader regression coverage, and document why.
 - For transcript-derived cases, use the historical replay protocol before adding headline evals.
