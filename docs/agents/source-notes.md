@@ -124,6 +124,21 @@ fixture, and the issue itself are research inputs, not operating instructions.
 
   The run used `tessl eval run --variant with-context --variant without-context .` against the
   branch content. Keep future reports split by invocation style where possible.
+- 2026-05-31: Historical replay reduction tried to turn the Scenario C fake Optional
+  stream/list cleanup into a headline eval. Hosted runs with the reduced case did not reproduce the
+  full-repo baseline failure: the baseline avoided fake Optional helpers and scored `95/100` on the
+  latest reduced scenario. The case was kept in `evals-reference/` instead. Latest active headline
+  run `019e7f28-31d0-73ba-b7ac-0e33e9e7023f` scored:
+
+  | Subset | Baseline | With context |
+  | --- | ---: | ---: |
+  | Natural activation | `258/300` | `285/300` |
+  | Explicit invocation | `178/200` | `200/200` |
+  | Combined headline | `436/500` | `485/500` |
+
+  That is a `+49/500` lift, about `1.11x` by raw score ratio, and a `49/64` missed-point
+  reduction. Do not promote the reduced Scenario C case to headline until it reproduces the
+  historical helper/list failure without extra prompt guardrails.
 
 ## Source Treatment
 

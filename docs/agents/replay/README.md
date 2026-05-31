@@ -24,6 +24,7 @@ The replay evidence chain is:
 
 ## Files
 
+- [full-plan.md](full-plan.md): phase-by-phase progress tracker.
 - [protocol.md](protocol.md): repeatable replay procedure.
 - [results.md](results.md): current replay results and classifications.
 - [eval-candidates.md](eval-candidates.md): reduced eval ideas that are not yet active evals.
