@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.24](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.23...v0.1.24) (2026-05-31)
+
+
+### Features
+
+* **skill:** cover transcript-derived Optional patterns ([#49](https://github.com/martinfrancois/java-optionals-skill/issues/49)) ([112a314](https://github.com/martinfrancois/java-optionals-skill/commit/112a314ec85f2a5a85f3ac4bc59167a1017a3b7b))
+
 ## [0.1.23](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.22...v0.1.23) (2026-05-30)
 
 

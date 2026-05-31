@@ -1,6 +1,6 @@
 {
   "name": "martinfrancois/java-optionals",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "Help AI coding agents use Java Optional well in new code and cleanups, without replacing one antipattern with another.",
   "summary": "Help AI coding agents use Java Optional well in new code and cleanups, without replacing one antipattern with another.",
   "entrypoint": "README.md",
