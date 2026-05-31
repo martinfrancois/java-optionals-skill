@@ -27,5 +27,9 @@
       "max_score": 8,
       "description": "Returns @handle for present nonblank handles, displayName for present blank handles, and unassigned when absent."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

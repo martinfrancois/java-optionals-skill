@@ -27,5 +27,9 @@
       "max_score": 8,
       "description": "Does not use orElse(null), local null branching, stream().toList(), lists, or loops to unwrap either Optional selector."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

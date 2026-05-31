@@ -17,5 +17,9 @@
       "max_score": 6,
       "description": "Mentions findAny is appropriate because all matching options are equivalent."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

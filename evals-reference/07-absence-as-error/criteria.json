@@ -17,5 +17,9 @@
       "max_score": 3,
       "description": "Does not claim orElseThrow is always bad or replace it with null/fake collection control flow."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  }
 }

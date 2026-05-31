@@ -32,5 +32,9 @@
       "max_score": 10,
       "description": "Does not use orElse(null), local null branching, or Optional.stream().toList() for the workspace."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

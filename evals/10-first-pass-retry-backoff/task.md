@@ -1,6 +1,6 @@
 # Write retry backoff code
 
-Use `$java-optionals` to create `RetryBackoff.java`.
+Create `RetryBackoff.java`. Assume Java 17.
 
 Implement:
 

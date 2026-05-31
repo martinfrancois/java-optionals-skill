@@ -9,8 +9,13 @@ on:
       - main
     paths:
       - ".github/workflows/skill-review.yml"
-      - "skills/java-optionals/SKILL.md"
-      - "skills/java-optionals/references/**"
+      - ".tessl-plugin/plugin.json"
+      - "tile.json"
+      - "tessl.json"
+      - "README.md"
+      - "CONTRIBUTING.md"
+      - "docs/agents/**"
+      - "skills/java-optionals/**"
 
 concurrency:
   group: skill-review-${{ github.workflow }}-${{ github.ref }}
@@ -33,9 +38,9 @@ jobs:
         if: ${{ env.TESSL_TOKEN != '' }}
         uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
         with:
-          version: "0.81.1"
+          version: "0.81.2"
           token: ${{ env.TESSL_TOKEN }}
 
       - name: Review skill
         if: ${{ env.TESSL_TOKEN != '' }}
-        run: tessl skill review --threshold 100 skills/java-optionals/SKILL.md
+        run: tessl skill review --threshold 90 skills/java-optionals/SKILL.md

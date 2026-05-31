@@ -27,6 +27,9 @@
       "max_score": 6,
       "description": "Returns CLI before environment before default, without evaluating a later value as the winner when an earlier one is present."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

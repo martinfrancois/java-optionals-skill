@@ -42,6 +42,9 @@
       "max_score": 6,
       "description": "Keeps the BoardContext list lookup readable as a real collection lookup."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

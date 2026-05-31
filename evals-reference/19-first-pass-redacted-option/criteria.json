@@ -27,5 +27,9 @@
       "max_score": 6,
       "description": "Does not use null sentinels, orElse(null), or local null-control-flow."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

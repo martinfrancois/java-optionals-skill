@@ -32,5 +32,9 @@
       "max_score": 24,
       "description": "Does not use giftWrapMode().orElse(false) or another shape that treats absent mode the same as explicit false before fallback logic runs."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  }
 }

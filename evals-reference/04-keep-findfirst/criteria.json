@@ -17,5 +17,9 @@
       "max_score": 4,
       "description": "Does not introduce a manual loop or unrelated refactor."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

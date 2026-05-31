@@ -24,7 +24,7 @@ body:
         - Skill behavior
         - README or docs
         - Evals or scoring
-        - Tessl install or tile metadata
+        - Tessl install or plugin metadata
         - Tessl publish or registry display
         - CI, release, or dependency automation
         - Not sure
@@ -78,17 +78,17 @@ body:
       description: Paste sanitized command output, eval output, CI links, or Tessl output if useful.
       render: text
   - type: input
-    id: tile-version
+    id: plugin-version
     attributes:
-      label: Tessl tile version
-      description: Paste the published tile version, `tessl` output, or the commit SHA if known.
+      label: Tessl plugin version
+      description: Paste the published plugin version, `tessl` output, or the commit SHA if known.
       placeholder: "martinfrancois/java-optionals version or commit SHA: "
   - type: input
     id: model
     attributes:
       label: Model
       description: For agent-output bugs, name the model that produced the behavior.
-      placeholder: "For example: Claude Opus 4.8 or GPT-5.5"
+      placeholder: "For example: model name and version"
   - type: dropdown
     id: reasoning-effort
     attributes:

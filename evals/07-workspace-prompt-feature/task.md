@@ -1,6 +1,7 @@
 # Add environment fallback to workspace prompt
 
 Use `$java-optionals` to create `WorkspaceResolver.java` with the revised class.
+Assume Java 17.
 
 Current code:
 
@@ -35,4 +36,3 @@ Required changes:
 - Otherwise prompt with `terminal.readLine("Workspace: ")`.
 - Preserve `throws IOException`.
 - Do not add helper types or dependencies.
-

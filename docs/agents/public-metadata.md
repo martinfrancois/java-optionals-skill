@@ -15,6 +15,10 @@ topics.
 - Before calling the repo OSS-ready, check for a license, no private/secret references, a
   user-focused README, contributor docs, passing lint, and benchmark claims that match the current
   evals.
+- Tessl packaging currently uses `.tessl-plugin/plugin.json`. Keep docs, scripts, workflows, and
+  release config aligned with plugin terminology unless official docs and CLI behavior change.
+- This repository currently uses `.tessl-plugin/plugin.json` as the active manifest. Do not add
+  `tile.json` unless current Tessl docs and CLI behavior require it.
 
 ## References
 

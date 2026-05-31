@@ -1,6 +1,6 @@
 # Add string support to workflow port lookup
 
-Use `$java-optionals` to create `WorkflowPortLookup.java` with the revised class.
+Create `WorkflowPortLookup.java` with the revised class. Use only Java 8-compatible Optional APIs.
 
 Current code:
 
@@ -30,4 +30,3 @@ Required changes:
 - Return `Optional.empty()` for absent front matter, missing values, blank strings, malformed strings, and unsupported types.
 - Do not throw for malformed values.
 - Do not expose `workflowPath` in output; it is included for parity with the real method.
-

@@ -22,5 +22,9 @@
       "max_score": 8,
       "description": "Does not claim every orElse(null) is forbidden regardless of boundary context."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

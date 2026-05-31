@@ -27,5 +27,9 @@
       "max_score": 8,
       "description": "Calls sendWebhook only when the webhook URI is present and enqueueLocal only when absent, with the same message."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

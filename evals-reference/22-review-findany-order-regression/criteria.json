@@ -22,5 +22,9 @@
       "max_score": 4,
       "description": "Mentions testing two verified contacts where the earlier one must win, or otherwise notes the priority behavior."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }

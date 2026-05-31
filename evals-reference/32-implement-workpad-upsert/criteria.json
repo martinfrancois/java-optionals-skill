@@ -32,6 +32,9 @@
       "max_score": 18,
       "description": "Returns missing_action_id, comment_window_incomplete, updated:id:text, and created:cardId:text in the required cases."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

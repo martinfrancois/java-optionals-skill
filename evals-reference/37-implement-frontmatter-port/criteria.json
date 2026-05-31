@@ -32,6 +32,9 @@
       "max_score": 16,
       "description": "Returns Optional.empty() for absent front matter, missing key, blank strings, non-numeric strings, and unsupported value types without throwing."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }
-

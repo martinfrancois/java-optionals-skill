@@ -22,6 +22,9 @@
       "max_score": 10,
       "description": "Suggests find(key).orElseGet(() -> createAndStore(key)) or an equivalent lazy branch."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }
-

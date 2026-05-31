@@ -5,12 +5,26 @@ from __future__ import annotations
 
 import re
 import sys
+import json
 from pathlib import Path
 
 
 ALLOWED_FRONTMATTER_KEYS = {"name", "description", "license", "allowed-tools", "metadata"}
 MAX_SKILL_NAME_LENGTH = 64
 MAX_DESCRIPTION_LENGTH = 1024
+ANSWER_KEY_MARKERS = (
+    "Eval Cases",
+    "Eval Scoring Rubric",
+    "Scoring Rubric",
+    "Expected:",
+    "Rejected:",
+    "hosted run",
+    "run id",
+    "scenario inventory",
+    "baseline score",
+    "uplift",
+    "answer key",
+)
 
 
 def error(message: str) -> int:
@@ -93,6 +107,57 @@ def validate_skill(skill_path: Path) -> list[str]:
         target = skill_path / link
         if not target.is_file():
             failures.append(f"{skill_md}: missing referenced file {link}")
+
+    license_value = frontmatter.get("license")
+    if license_value and license_value != "MIT":
+        failures.append(f"{skill_md}: license must be MIT for this repository")
+
+    references_dir = skill_path / "references"
+    if references_dir.is_dir():
+        for reference in sorted(references_dir.glob("*.md")):
+            reference_text = reference.read_text(encoding="utf-8")
+            for marker in ANSWER_KEY_MARKERS:
+                if marker.lower() in reference_text.lower():
+                    failures.append(
+                        f"{reference}: runtime reference contains answer-key marker {marker!r}"
+                    )
+
+    stale_eval = skill_path / "evals" / "evals.json"
+    if stale_eval.exists():
+        failures.append(f"{stale_eval}: legacy eval file must not live inside runtime skill package")
+
+    agent_metadata = skill_path / "agents" / "openai.yaml"
+    if agent_metadata.exists():
+        try:
+            import yaml  # type: ignore
+        except Exception:
+            if not re.search(r"^name:\s*.+", agent_metadata.read_text(encoding="utf-8"), re.MULTILINE):
+                failures.append(f"{agent_metadata}: missing simple name field")
+        else:
+            try:
+                yaml.safe_load(agent_metadata.read_text(encoding="utf-8"))
+            except Exception as exc:  # pragma: no cover - depends on optional PyYAML
+                failures.append(f"{agent_metadata}: invalid YAML: {exc}")
+
+    package_manifests = [Path(".tessl-plugin/plugin.json"), Path("tile.json")]
+    existing_manifests = [path for path in package_manifests if path.exists()]
+    if not existing_manifests:
+        failures.append("missing Tessl package manifest: .tessl-plugin/plugin.json or tile.json")
+    for manifest in existing_manifests:
+        try:
+            data = json.loads(manifest.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            failures.append(f"{manifest}: invalid JSON: {exc}")
+            continue
+        if not isinstance(data, dict):
+            failures.append(f"{manifest}: manifest root must be an object")
+            continue
+        for key in ("name", "version"):
+            if not isinstance(data.get(key), str) or not data[key].strip():
+                failures.append(f"{manifest}: missing non-empty {key}")
+        description = data.get("description") or data.get("summary")
+        if not isinstance(description, str) or not description.strip():
+            failures.append(f"{manifest}: missing non-empty description/summary")
 
     return failures
 

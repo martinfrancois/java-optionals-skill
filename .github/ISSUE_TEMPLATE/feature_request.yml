@@ -19,7 +19,7 @@ body:
         - Optional example or reference material
         - Evals or scoring
         - README or docs
-        - Tessl install or tile metadata
+        - Tessl install or plugin metadata
         - CI, release, or dependency automation
         - Other
     validations:

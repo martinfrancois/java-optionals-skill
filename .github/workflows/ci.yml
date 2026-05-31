@@ -28,7 +28,7 @@ jobs:
       - name: Setup Tessl CLI
         uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
         with:
-          version: "0.81.1"
+          version: "0.81.2"
           token: ${{ env.TESSL_TOKEN }}
 
       - name: Validate skill metadata
@@ -37,13 +37,47 @@ jobs:
       - name: Validate eval criteria
         run: python3 scripts/validate_eval_criteria.py evals evals-reference
 
+      - name: Compile validation scripts
+        run: python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
+
+      - name: Check shell scripts
+        run: bash -n scripts/check_publish_dry_run.sh
+
+      - name: Parse JSON files
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          for path in pathlib.Path('.').rglob('*.json'):
+              json.load(open(path, encoding='utf-8'))
+          print('JSON ok')
+          PY
+
+      - name: Parse YAML files
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          try:
+              import yaml
+          except ImportError:
+              print('PyYAML unavailable; skipping YAML parse')
+              raise SystemExit(0)
+          for path in list(pathlib.Path('.').rglob('*.yml')) + list(pathlib.Path('.').rglob('*.yaml')):
+              yaml.safe_load(open(path, encoding='utf-8'))
+          print('YAML ok')
+          PY
+
       - name: Lint Tessl plugin
         run: tessl plugin lint .
 
-      - name: Check publish dry-run
+      - name: Check fast publish dry-run
         if: ${{ env.TESSL_TOKEN != '' }}
         run: bash scripts/check_publish_dry_run.sh .
 
+      - name: Check eval publish dry-run
+        if: ${{ env.TESSL_TOKEN != '' }}
+        run: tessl plugin publish --dry-run --bump patch .
+
       - name: Skip publish dry-run when Tessl token is unavailable
         if: ${{ env.TESSL_TOKEN == '' }}
-        run: echo "TESSL_TOKEN isn't configured; skipping publish dry-run."
+        run: echo "TESSL_TOKEN isn't configured; skipping Tessl publish dry-runs."

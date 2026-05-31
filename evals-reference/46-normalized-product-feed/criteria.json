@@ -37,5 +37,9 @@
       "max_score": 16,
       "description": "When context.allowedCategoryIds() is not empty, returns only cards whose categoryId is in that list; when it is empty, keeps all otherwise visible cards."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  }
 }

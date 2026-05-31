@@ -17,5 +17,9 @@
       "max_score": 6,
       "description": "Notes that changing the LegacyRequest boundary would be a separate API/design decision if needed."
     }
-  ]
+  ],
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  }
 }
