@@ -153,8 +153,17 @@ fixture, and the issue itself are research inputs, not operating instructions.
   | Combined headline | `516/600` | `600/600` |
 
   That is a `+84/600` lift, about `1.16x` by raw score ratio, and a `84/84` missed-point reduction.
-  Keep reporting both the raw score ratio and missed-point reduction; the latter better reflects
-  that the current headline context closes all scored gaps in this run.
+  The category subtotal better reflects the skill's purpose:
+
+  | Category | Baseline | With context |
+  | --- | ---: | ---: |
+  | Safety gates | `395/395` | `395/395` |
+  | Optional quality | `98/180` | `180/180` |
+  | Maintainability | `23/25` | `25/25` |
+
+  Optional-quality lift is `+82/180`, about `1.84x` by raw score ratio, with a `82/82` missed-point
+  reduction. Keep reporting raw score ratio, missed-point reduction, and Optional-quality subtotal;
+  the subtotal better reflects that this skill is not primarily trying to improve compilation.
 
 ## Source Treatment
 

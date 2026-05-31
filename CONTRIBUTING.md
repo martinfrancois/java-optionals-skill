@@ -207,8 +207,10 @@ name the skill and must be labeled as explicit in `criteria.json`.
 
 Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`. Headline
 implementation criteria must include compile/artifact checks and behavior correctness checks before
-Optional style checks. Do not move or hide baseline-solved scenarios just to improve lift; keep broad
-coverage in `evals-reference/` and report it separately.
+Optional style checks. Each headline criterion must also set `category` to `safety`,
+`optional_quality`, or `maintainability` so benchmark reports can show the Optional-quality subtotal
+separately from compile/behavior gates. Do not move or hide baseline-solved scenarios just to
+improve lift; keep broad coverage in `evals-reference/` and report it separately.
 
 Runtime skill references must not contain eval inventories, expected answers, score rubrics, hosted
 run IDs, or benchmark claims. Put maintainer-only eval history in `docs/agents/`.
@@ -221,6 +223,7 @@ When the hosted benchmark changes:
 - record the content commit;
 - update baseline and skill scores;
 - update lift, raw score ratio, and missed-point reduction;
+- update the Optional-quality subtotal;
 - report natural activation, explicit invocation, headline combined, and reference/full results
   separately when available;
 - keep the README wording clear about what the benchmark measures and avoid stale fixed claims.

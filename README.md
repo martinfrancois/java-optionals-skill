@@ -282,10 +282,15 @@ The evals check that agents:
 - keep real collection streams readable;
 - handle primitive Optionals and Optional-producing stream/collector APIs correctly.
 
+Compile and behavior checks are safety gates. The skill's main value is the Optional-quality
+subtotal: whether the agent keeps the same behavior while avoiding Optional antipatterns and
+readability regressions.
+
 Results should be read by subset:
 
 - natural activation scenarios do not name the skill;
 - explicit invocation scenarios directly ask for `$java-optionals`;
+- Optional-quality subtotal shows the skill-specific effect;
 - the focused headline suite reports the representative mix;
 - `evals-reference/` keeps broader regression cases, including scenarios a strong baseline may
   already solve.

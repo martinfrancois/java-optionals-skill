@@ -4,36 +4,43 @@
   "checklist": [
     {
       "name": "Compiles and creates requested artifact",
+      "category": "safety",
       "max_score": 15,
       "description": "Creates a coherent WorkflowPortLookup.java with workflowServerPortReservation(Optional<Map<String,Object>>, Path) that uses only Java 8-compatible Optional APIs."
     },
     {
       "name": "Implements Number and String behavior",
+      "category": "safety",
       "max_score": 30,
       "description": "Returns Optional.of(number.intValue()) for Number values and Optional.of(parsed) for trimmed numeric String values."
     },
     {
       "name": "Handles absent and invalid values",
+      "category": "safety",
       "max_score": 20,
       "description": "Returns Optional.empty() without throwing for absent front matter, missing key, null values, blank strings, malformed strings, and unsupported types."
     },
     {
       "name": "Preserves public contract",
+      "category": "safety",
       "max_score": 10,
       "description": "Does not expose workflowPath in output and keeps the method signature and Optional<Integer> return contract."
     },
     {
       "name": "Uses Optional boundary without reopening",
+      "category": "optional_quality",
       "max_score": 15,
       "description": "Moves map access into an Optional map/flatMap helper or equivalent value-binding shape instead of guarding then reading frontMatter.get()."
     },
     {
       "name": "Avoids null or fake collection workarounds",
+      "category": "optional_quality",
       "max_score": 5,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional."
     },
     {
       "name": "Keeps parser readable",
+      "category": "maintainability",
       "max_score": 5,
       "description": "Keeps parsing small and local, with clear Number/String handling and no broad exception swallowing beyond malformed numeric input."
     }

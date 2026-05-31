@@ -53,6 +53,7 @@ STYLE_WORDS = (
     "getasdouble",
     "stream().tolist",
 )
+CRITERION_CATEGORIES = {"safety", "optional_quality", "maintainability"}
 EXPLICIT_INVOCATION_PATTERNS = (
     r"\$java-optionals\b",
     r"\buse\s+\$",
@@ -129,11 +130,13 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         failures.append(f"{criteria_file}: checklist must be a non-empty array")
         checklist = []
 
+    is_headline = headline_root is not None and scenario.parent.resolve() == headline_root.resolve()
     names: set[str] = set()
     total_score = 0
     style_score = 0
     compile_score = 0
     behavior_score = 0
+    category_scores = {category: 0 for category in CRITERION_CATEGORIES}
     for index, item in enumerate(checklist, start=1):
         if not isinstance(item, dict):
             failures.append(f"{criteria_file}: checklist item {index} must be an object")
@@ -152,7 +155,20 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         if not isinstance(max_score, int) or max_score <= 0:
             failures.append(f"{criteria_file}: checklist item {index} needs a positive integer max_score")
             max_score = 0
+        category = item.get("category")
+        if category is not None and category not in CRITERION_CATEGORIES:
+            failures.append(
+                f"{criteria_file}: checklist item {index} has unsupported category {category!r}; "
+                f"use one of {sorted(CRITERION_CATEGORIES)}"
+            )
+        if is_headline and category not in CRITERION_CATEGORIES:
+            failures.append(
+                f"{criteria_file}: headline checklist item {index} needs category "
+                f"safety, optional_quality, or maintainability"
+            )
         total_score += max_score
+        if category in category_scores:
+            category_scores[category] += max_score
         haystack = text_of(item)
         if any(word in haystack for word in STYLE_WORDS):
             style_score += max_score
@@ -179,17 +195,20 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
     if invocation == "explicit" and not has_explicit_invocation:
         failures.append(f"{criteria_file}: explicit scenario task does not invoke the skill")
 
-    is_headline = headline_root is not None and scenario.parent.resolve() == headline_root.resolve()
     if is_headline and task_type == "implementation":
         if compile_score <= 0:
             failures.append(f"{criteria_file}: headline implementation scenario needs compile/artifact criteria")
         if behavior_score <= 0:
             failures.append(f"{criteria_file}: headline implementation scenario needs behavior criteria")
+        if category_scores["optional_quality"] <= 0:
+            failures.append(f"{criteria_file}: headline implementation scenario needs optional_quality criteria")
         if total_score and style_score > total_score * 0.45:
             failures.append(
                 f"{criteria_file}: Optional/style criteria appear to dominate headline scoring "
                 f"({style_score}/{total_score})"
             )
+    elif is_headline and task_type == "cleanup" and category_scores["optional_quality"] <= 0:
+        failures.append(f"{criteria_file}: headline cleanup scenario needs optional_quality criteria")
 
     if "optionalint" in task_text.lower() or "optionalint" in str(data).lower():
         primitive_text = (task_text + json.dumps(data)).lower()
