@@ -41,8 +41,10 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
 - Keep the review threshold below 100 unless the maintainer explicitly wants a hard 100 gate. Don't
   remove useful Java guidance only to improve the review score.
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
-  `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases. Tessl publishing happens only in
-  `.github/workflows/publish-tessl.yml` on `release: published` or manual dispatch.
+  `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases. When Release Please creates a
+  release with `GITHUB_TOKEN`, the normal `release: published` trigger does not fire, so the Release
+  Please workflow dispatches `.github/workflows/publish-tessl.yml` with the created tag. Tessl
+  publishing still happens only in `.github/workflows/publish-tessl.yml`.
 - Renovate manages GitHub Actions, action digests, commitlint packages, and the pinned Tessl CLI
   version in workflows. Keep `minimumReleaseAge` at 7 days with `internalChecksFilter: "strict"` so
   Renovate waits before creating branches or PRs for updates that haven't passed the age gate. Keep
