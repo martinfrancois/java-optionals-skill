@@ -110,9 +110,11 @@ tessl plugin publish --dry-run --bump patch .
 ```
 
 The script runs the fast skipped-eval package smoke check and retries with a patch bump if the
-current version already exists. `tessl plugin publish --dry-run --bump patch .` is a PR-safe full
-eval-ingesting dry-run when the current manifest version may already exist. Release publishing uses
-exact-version `tessl plugin publish --dry-run .` immediately before the real publish command.
+current version already exists. `tessl plugin publish --dry-run --bump patch .` is a PR-safe
+local/manual full eval-ingesting dry-run when the current manifest version may already exist.
+PR CI runs tokenless validation and plugin lint. Authenticated Tessl publish dry-runs run only on
+trusted `main` pushes and release/publish workflows. Release publishing uses exact-version
+`tessl plugin publish --dry-run .` immediately before `tessl plugin publish .`.
 
 `tessl skill review`, `bash scripts/check_publish_dry_run.sh .`, and hosted evals require Tessl
 authentication. Hosted evals also require a linked Tessl project. If you don't have access, include

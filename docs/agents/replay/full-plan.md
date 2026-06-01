@@ -25,7 +25,8 @@ Evidence chain:
 - Cap every Codex execution at 30 minutes.
 - Do not promote a scenario to an eval until full-repository replay proves it is useful.
 - Do not tune evals for a prettier score.
-- Behavior and compilation matter more than Optional style.
+- Behavior and compilation must remain credible safety checks; Optional-quality is the
+  skill-specific signal.
 
 ## Phase 1: Prepare Replay Workspace
 

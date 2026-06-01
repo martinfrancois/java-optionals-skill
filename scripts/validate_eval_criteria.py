@@ -331,7 +331,7 @@ def main() -> int:
                 )
             if safety < headline_total * 0.2:
                 failures.append(
-                    "evals: headline suite needs enough safety-gate scoring for compile/behavior "
+                    "evals: headline suite needs enough safety-check scoring for compile/behavior "
                     f"({safety}/{headline_total})"
                 )
             if maintainability > headline_total * 0.15:
