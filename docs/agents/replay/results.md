@@ -122,8 +122,8 @@ The latest 6-scenario temporary headline run was:
 | Explicit invocation | `178/200` | `200/200` |
 | Combined temporary suite | `531/600` | `585/600` |
 
-Because the reduced Scenario B case is now headline-active, the active headline suite is the
-6-scenario mix from hosted run `019e7f40-b788-74b8-97c8-e03bf6aa8190`:
+Because the reduced Scenario B case is now headline-active, the completed pre-reweight headline run
+is the 6-scenario mix from hosted run `019e7f40-b788-74b8-97c8-e03bf6aa8190`:
 
 | Subset | Baseline | With context |
 | --- | ---: | ---: |
@@ -145,6 +145,13 @@ Category subtotal:
 The Optional-quality subtotal is the clearest skill-specific number: `+82/180`, about `1.84x` by
 raw score ratio, with `100%` missed-point reduction. Safety gates stay in the benchmark to prevent
 broken code from scoring well, but they should not be treated as the main value claim.
+
+After commit `4c7fb58`, headline criteria were reweighted to make each 100-point scenario score
+`35` safety, `60` Optional quality, and `5` maintainability. Across the six-scenario headline suite,
+that is `210` safety points, `360` Optional-quality points, and `30` maintainability points. Hosted
+run `019e80aa-4b2b-75af-9ce3-502c45d76c4e` was started against the dirty pre-commit working tree
+with those weights, but one baseline score was still pending when checked. Do not use that run as a
+final release claim until it finishes or is rerun from a clean commit.
 
 ## Checks
 

@@ -284,16 +284,45 @@ def main() -> int:
     if headline_root and any(path.resolve() == headline_root.resolve() for path in paths if path.exists()):
         headline_dirs = [d for d in dirs if d.parent.resolve() == headline_root.resolve()]
         headline_invocations = {"natural": 0, "explicit": 0}
+        headline_category_scores = {category: 0 for category in CRITERION_CATEGORIES}
         for scenario in headline_dirs:
             data, _ = load_json(scenario / "criteria.json")
             if data and isinstance(data.get("metadata"), dict):
                 invocation = data["metadata"].get("invocation")
                 if invocation in headline_invocations:
                     headline_invocations[invocation] += 1
+            if data and isinstance(data.get("checklist"), list):
+                for item in data["checklist"]:
+                    if not isinstance(item, dict):
+                        continue
+                    category = item.get("category")
+                    max_score = item.get("max_score")
+                    if category in headline_category_scores and isinstance(max_score, int):
+                        headline_category_scores[category] += max_score
         if headline_dirs and not all(headline_invocations.values()):
             failures.append(
                 "evals: headline suite must include both natural and explicit invocation scenarios"
             )
+        headline_total = sum(headline_category_scores.values())
+        if headline_total:
+            optional_quality = headline_category_scores["optional_quality"]
+            safety = headline_category_scores["safety"]
+            maintainability = headline_category_scores["maintainability"]
+            if optional_quality < headline_total * 0.5:
+                failures.append(
+                    "evals: headline suite should be primarily Optional-quality scoring "
+                    f"({optional_quality}/{headline_total})"
+                )
+            if safety < headline_total * 0.25:
+                failures.append(
+                    "evals: headline suite needs enough safety-gate scoring for compile/behavior "
+                    f"({safety}/{headline_total})"
+                )
+            if maintainability > headline_total * 0.15:
+                failures.append(
+                    "evals: headline maintainability scoring should not obscure skill behavior "
+                    f"({maintainability}/{headline_total})"
+                )
 
     for path in paths:
         if path.is_dir():

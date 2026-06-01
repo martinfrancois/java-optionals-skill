@@ -164,6 +164,14 @@ fixture, and the issue itself are research inputs, not operating instructions.
   Optional-quality lift is `+82/180`, about `1.84x` by raw score ratio, with a `82/82` missed-point
   reduction. Keep reporting raw score ratio, missed-point reduction, and Optional-quality subtotal;
   the subtotal better reflects that this skill is not primarily trying to improve compilation.
+- 2026-06-01 00:51 UTC: Headline criteria were reweighted so each active 100-point scenario now uses
+  `35` safety points, `60` Optional-quality points, and `5` maintainability points. Across the
+  six-scenario headline suite, that is `210/600` safety, `360/600` Optional quality, and `30/600`
+  maintainability. Hosted run `019e80aa-4b2b-75af-9ce3-502c45d76c4e` used these weights from the
+  dirty pre-commit working tree and showed stronger score separation on the completed scenarios, but
+  one baseline score was still pending when checked. Treat the previous completed run as historical
+  and do not publish a new official lift claim until a completed run is available from a clean
+  commit.
 
 ## Source Treatment
 
