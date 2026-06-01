@@ -269,7 +269,8 @@ Optional<DeliverySlot> deliverySlot(DeliveryWindow preferredWindow) {
 The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. The tasks
 cover both writing new Optional code and cleaning up existing Optional code. The headline suite uses
 a documented mix of natural prompts and explicit `Use $java-optionals` prompts. Each task is run
-without the skill and with the skill, then scored against behavior-first checks.
+without the skill and with the skill, then scored mainly on Optional-specific quality, with compile
+and behavior checks kept as safety gates.
 
 The evals check that agents:
 
@@ -282,9 +283,9 @@ The evals check that agents:
 - keep real collection streams readable;
 - handle primitive Optionals and Optional-producing stream/collector APIs correctly.
 
-Compile and behavior checks are safety gates. The skill's main value is the Optional-quality
-subtotal: whether the agent keeps the same behavior while avoiding Optional antipatterns and
-readability regressions.
+Compile and behavior checks are safety gates. They stop broken answers from looking good, but the
+headline score is intentionally weighted toward Optional quality: whether the agent keeps the same
+behavior while avoiding Optional antipatterns and readability regressions.
 
 Results should be read by subset:
 

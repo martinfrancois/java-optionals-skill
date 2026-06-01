@@ -26,11 +26,11 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - Every `criteria.json` must classify `metadata.invocation` and `metadata.task_type`.
 - Every headline criterion must classify `category` as `safety`, `optional_quality`, or
   `maintainability`.
-- Headline implementation scenarios need compile/artifact checks and behavior checks. Optional style
-  checks must not dominate behavior, compilability, ordering, exception, output, side-effect, or
-  fallback timing checks.
+- Headline implementation scenarios need compile/artifact checks and behavior checks as safety
+  gates, but the headline score should mainly measure Optional-specific quality.
 - Treat compile and behavior checks as safety gates. They should stop broken answers from looking
-  good, but the main value metric for this skill is the `optional_quality` subtotal.
+  good, but this skill's public benchmark should be weighted toward the `optional_quality` subtotal
+  because the skill is not primarily trying to improve compilation.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims. Keep those in maintainer docs such as
   [eval-case-inventory.md](eval-case-inventory.md) or [source-notes.md](source-notes.md).
