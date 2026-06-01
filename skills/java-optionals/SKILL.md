@@ -54,6 +54,7 @@ Before finalizing touched Optional flow:
    baseline-compatible empty-guard shape from [hard-stops.md](references/hard-stops.md).
 
    ```java
+   // Java 11+; use !value.isPresent() on Java 8.
    if (value.isEmpty()) return readCheckedFallback();
    // Checked fallback is handled above; read the present value once.
    return value.get();
