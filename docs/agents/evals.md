@@ -7,8 +7,10 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 ## Rules
 
 - Don't cheat. Don't leak the diagnosis or desired fix in eval prompts.
-- Keep eval prompts neutral. Avoid clue words that tell the model the exact failure, such as
-  "order-independent" or "preserving laziness", unless those words are truly part of the user task.
+- Keep natural activation prompts neutral. Avoid clue words that tell the model the exact failure,
+  such as "order-independent" or "preserving laziness", unless those words are truly part of the
+  user task. Explicit invocation prompts may name `$java-optionals`, but they should not leak the
+  diagnosis or desired fix beyond invoking the skill.
 - The headline eval should mirror the real failure mode: tasks where an agent writes or changes Java
   Optional code and may introduce Optional antipatterns.
 - Keep a documented mix of invocation styles:
@@ -27,10 +29,10 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - Every headline criterion must classify `category` as `safety`, `optional_quality`, or
   `maintainability`.
 - Headline implementation scenarios need compile/artifact checks and behavior checks as safety
-  gates, but the headline score should mainly measure Optional-specific quality.
-- Treat compile and behavior checks as safety gates. They should stop broken answers from looking
-  good, but this skill's public benchmark should be weighted toward the `optional_quality` subtotal
-  because the skill is not primarily trying to improve compilation.
+  checks, but the headline score should mainly measure Optional-specific quality.
+- Treat compile and behavior checks as safety-category checks. They make broken answers visible in
+  the score, but this skill's public benchmark should be weighted toward the `optional_quality`
+  subtotal because the skill is not primarily trying to improve compilation.
 - For headline scenarios, use roughly `25` safety points, `70` Optional-quality points, and `5`
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,

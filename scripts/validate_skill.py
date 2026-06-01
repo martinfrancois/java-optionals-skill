@@ -131,8 +131,11 @@ def validate_skill(skill_path: Path) -> list[str]:
         try:
             import yaml  # type: ignore
         except Exception:
-            if not re.search(r"^name:\s*.+", agent_metadata.read_text(encoding="utf-8"), re.MULTILINE):
-                failures.append(f"{agent_metadata}: missing simple name field")
+            agent_text = agent_metadata.read_text(encoding="utf-8")
+            if not agent_text.strip():
+                failures.append(f"{agent_metadata}: metadata file is empty")
+            elif not re.search(r"^\s*display_name:\s*.+", agent_text, re.MULTILINE):
+                failures.append(f"{agent_metadata}: missing display_name field")
         else:
             try:
                 yaml.safe_load(agent_metadata.read_text(encoding="utf-8"))

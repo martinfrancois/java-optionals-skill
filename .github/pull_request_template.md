@@ -97,6 +97,8 @@ explain why.
 - [ ] Java 26 Javadocs were checked for Optional-family coverage, or N/A
 - [ ] Valid README package-runner instructions were preserved, or N/A
 - [ ] Tessl package commands match the verified plugin package format
+- [ ] I did not change the Tessl publishing format unless the pinned Tessl CLI or registry policy
+      requires it
 - [ ] Full/reference eval reporting is not hidden or cherry-picked
 - [ ] Tessl checks were run, or unavailability is documented
 - [ ] PR title or squash title uses Conventional Commits

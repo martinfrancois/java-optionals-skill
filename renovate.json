@@ -12,7 +12,7 @@
   "minimumReleaseAge": "7 days",
   "minimumReleaseAgeBehaviour": "timestamp-required",
   "internalChecksFilter": "strict",
-  "automerge": true,
+  "automerge": false,
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": ["security"]
@@ -44,6 +44,16 @@
     }
   ],
   "packageRules": [
+    {
+      "description": "Require review for GitHub Actions and pinned action digest updates",
+      "matchManagers": ["github-actions"],
+      "automerge": false
+    },
+    {
+      "description": "Require review for workflow-managed tooling such as Tessl CLI and commitlint",
+      "matchManagers": ["custom.regex"],
+      "automerge": false
+    },
     {
       "matchUpdateTypes": ["major"],
       "automerge": false,

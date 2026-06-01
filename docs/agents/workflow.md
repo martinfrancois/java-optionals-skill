@@ -34,6 +34,9 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   workflow runs `tessl skill review --threshold 90` when `TESSL_TOKEN` is configured.
 - Use bumped publish dry-runs for PR convenience when the current manifest version is already
   published. Use exact-version dry-runs in release publishing before the real publish command.
+- Tessl release publishing runs in the `tessl-release` GitHub environment. Configure required
+  reviewers or other environment protection rules in the repository settings when the plan supports
+  them.
 - Keep the review threshold below 100 unless the maintainer explicitly wants a hard 100 gate. Don't
   remove useful Java guidance only to improve the review score.
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update

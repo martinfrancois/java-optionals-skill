@@ -247,12 +247,17 @@ Checked IO case where a plain branch is clearer:
 ```java
 String shippingAddress(Checkout checkout, Console console) throws IOException {
     Optional<String> saved = checkout.savedShippingAddress();
+    // Presence read is intentional here because the empty branch performs checked IO.
     if (!saved.isPresent()) {
         return console.readLine("Shipping address: ");
     }
     return saved.get();
 }
 ```
+
+This is a narrow checked-IO boundary exception. Don't copy this shape for ordinary in-memory value
+flow; use `map`, `flatMap`, `orElseGet`, or `orElseThrow` when both branches are ordinary Optional
+value flow.
 
 Real collection lookup:
 
@@ -270,7 +275,7 @@ The skill is tested on implementation tasks based on real AI-written `Optional` 
 cover both writing new Optional code and cleaning up existing Optional code. The headline suite uses
 a documented mix of natural prompts and explicit `Use $java-optionals` prompts. Each task is run
 without the skill and with the skill, then scored mainly on Optional-specific quality, with compile
-and behavior checks kept as safety gates.
+and behavior checks included as safety checks.
 
 The evals check that agents:
 
@@ -283,9 +288,9 @@ The evals check that agents:
 - keep real collection streams readable;
 - handle primitive Optionals and Optional-producing stream/collector APIs correctly.
 
-Compile and behavior checks are safety gates. They stop broken answers from looking good, but the
-headline score is intentionally weighted toward Optional quality: whether the agent keeps the same
-behavior while avoiding Optional antipatterns and readability regressions.
+Compile and behavior checks make regressions visible in the score, but the headline score is
+intentionally weighted toward Optional quality: whether the agent keeps the same behavior while
+avoiding Optional antipatterns and readability regressions.
 
 Results should be read by subset:
 
