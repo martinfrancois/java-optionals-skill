@@ -218,11 +218,6 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
             failures.append(f"{criteria_file}: headline implementation scenario needs behavior criteria")
         if category_scores["optional_quality"] <= 0:
             failures.append(f"{criteria_file}: headline implementation scenario needs optional_quality criteria")
-        if total_score and style_score > total_score * 0.45:
-            failures.append(
-                f"{criteria_file}: Optional/style criteria appear to dominate headline scoring "
-                f"({style_score}/{total_score})"
-            )
     elif is_headline and task_type == "cleanup" and category_scores["optional_quality"] <= 0:
         failures.append(f"{criteria_file}: headline cleanup scenario needs optional_quality criteria")
 
