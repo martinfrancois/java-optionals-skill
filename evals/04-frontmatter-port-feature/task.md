@@ -1,6 +1,6 @@
 # Add string support to workflow port lookup
 
-Create `WorkflowPortLookup.java` with the revised class. Use only Java 8-compatible Optional APIs.
+Create `WorkflowPortLookup.java` with the revised class. Assume Java 8.
 The current method was written in a quick pass; add the new parsing behavior and leave the method
 cleaner than you found it.
 
@@ -13,11 +13,12 @@ import java.util.Optional;
 
 final class WorkflowPortLookup {
     Optional<Integer> workflowServerPortReservation(Optional<Map<String, Object>> frontMatter, Path workflowPath) {
-        if (frontMatter.isEmpty()) {
+        if (!frontMatter.isPresent()) {
             return Optional.empty();
         }
         Object value = frontMatter.get().get("server_port");
-        if (value instanceof Number number) {
+        if (value instanceof Number) {
+            Number number = (Number) value;
             return Optional.of(number.intValue());
         }
         return Optional.empty();

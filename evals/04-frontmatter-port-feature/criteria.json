@@ -6,7 +6,7 @@
       "name": "Compiles and creates requested artifact",
       "category": "safety",
       "max_score": 5,
-      "description": "Creates a coherent WorkflowPortLookup.java with workflowServerPortReservation(Optional<Map<String,Object>>, Path) that uses only Java 8-compatible Optional APIs."
+      "description": "Creates a coherent Java 8-compatible WorkflowPortLookup.java with workflowServerPortReservation(Optional<Map<String,Object>>, Path)."
     },
     {
       "name": "Implements Number and String behavior",
