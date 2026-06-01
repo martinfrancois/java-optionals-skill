@@ -53,10 +53,23 @@ STYLE_WORDS = (
     "getasdouble",
     "stream().tolist",
 )
+OPTIONAL_ANTIPATTERN_WORDS = (
+    "optional support",
+    "optionalsupport",
+    "checkedoptionals",
+    "optionalboundaries",
+    "optionalio",
+    "mapthrowing",
+    "throwingsupplier",
+    "optionalvalues",
+    "presentvalues",
+    "stream of optional",
+    "optional.stream",
+    "orelse(null)",
+)
 CRITERION_CATEGORIES = {"safety", "optional_quality", "maintainability"}
 EXPLICIT_INVOCATION_PATTERNS = (
     r"\$java-optionals\b",
-    r"\buse\s+\$",
     r"\buse\s+java-optionals\b",
     r"\buse\s+the\s+java-optionals\s+skill\b",
     r"\bjava-optionals\s+skill\b",
@@ -170,7 +183,7 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         if category in category_scores:
             category_scores[category] += max_score
         haystack = text_of(item)
-        if any(word in haystack for word in STYLE_WORDS):
+        if any(word in haystack for word in STYLE_WORDS + OPTIONAL_ANTIPATTERN_WORDS):
             style_score += max_score
         if any(word in haystack for word in COMPILE_WORDS):
             compile_score += max_score

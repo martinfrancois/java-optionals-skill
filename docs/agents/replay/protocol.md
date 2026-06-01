@@ -20,7 +20,7 @@ runs is skill availability.
 Use separate disposable worktrees:
 
 ```bash
-git -C /home/server/git-projects/symphony-trello worktree add --detach \
+git -C <source-repo-checkout> worktree add --detach \
   /tmp/java-optionals-replay/<scenario>/<variant> <starting-commit>
 ```
 

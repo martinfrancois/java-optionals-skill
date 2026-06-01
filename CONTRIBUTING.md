@@ -110,9 +110,9 @@ tessl plugin publish --dry-run --bump patch .
 ```
 
 The script runs the fast skipped-eval package smoke check and retries with a patch bump if the
-current version already exists. The full `tessl plugin publish --dry-run --bump patch .` command is
-a PR-safe full eval-ingesting dry-run. Release publishing uses an exact-version dry-run before the
-real publish command.
+current version already exists. `tessl plugin publish --dry-run --bump patch .` is a PR-safe full
+eval-ingesting dry-run when the current manifest version may already exist. Release publishing uses
+exact-version `tessl plugin publish --dry-run .` immediately before the real publish command.
 
 `tessl skill review`, `bash scripts/check_publish_dry_run.sh .`, and hosted evals require Tessl
 authentication. Hosted evals also require a linked Tessl project. If you don't have access, include
@@ -207,13 +207,13 @@ name the skill and must be labeled as explicit in `criteria.json`.
 
 Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`. Headline
 implementation criteria must include compile/artifact checks and behavior correctness checks as
-safety gates, but the headline score should mainly measure Optional-specific quality. Each headline
+safety checks, but the headline score should mainly measure Optional-specific quality. Each headline
 criterion must also set `category` to `safety`, `optional_quality`, or `maintainability` so
-benchmark reports can separate Optional quality from compile/behavior gates. For headline scenarios,
-use roughly `25` safety points, `70` Optional-quality points, and `5` maintainability points per
-100-point scenario unless a scenario has a documented reason to differ. Do not hide baseline-solved
-scenarios just to improve lift; move them to `evals-reference/` when they're better as regression
-coverage and report that separately.
+benchmark reports can separate Optional quality from compile/behavior checks. For headline
+scenarios, use roughly `25` safety points, `70` Optional-quality points, and `5` maintainability
+points per 100-point scenario unless a scenario has a documented reason to differ. Do not hide
+baseline-solved scenarios just to improve lift; move them to `evals-reference/` when they're better
+as regression coverage and report that separately.
 
 Runtime skill references must not contain eval inventories, expected answers, score rubrics, hosted
 run IDs, or benchmark claims. Put maintainer-only eval history in `docs/agents/`.

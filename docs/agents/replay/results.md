@@ -41,7 +41,7 @@ With skill attempts:
 | `with-skill-v6` | Still used `for (... : optional.stream().toList())` loops and attempted checked parsing cleanup through Optional flow. |
 | `with-skill-v7` | Introduced `OptionalBoundaries` with throwing suppliers/functions and `optional.stream().iterator()`, despite the skill banning generic Optional helpers. |
 | `with-skill-v8` | Invalid replay: sandbox prevented the agent from reading the installed skill. |
-| `with-skill-v9` | Invalid replay: adding `/root/.tessl` as a writable dir broke sandbox setup before edits. |
+| `with-skill-v9` | Invalid replay: adding the local Tessl skill directory as a writable dir broke sandbox setup before edits. |
 | `with-skill-v10` | Valid replay: used `--sandbox danger-full-access`, read the installed skill, avoided fake helpers/iterables, and passed `./mvnw -q spotless:check verify` after formatting. |
 
 This proved the skill guidance needed two additions:

@@ -70,7 +70,7 @@ When flattening streams of primitive optionals on Java 9+, use primitive stream 
 | `List.of`, `Set.of`, `Map.of` | 9 | Adjacent examples only; not Optional-specific. |
 | `List.copyOf`, `Set.copyOf`, `Map.copyOf` | 10 | Adjacent examples only; not Optional-specific. |
 | `Stream.mapMulti` and primitive `mapMulti` variants | 16 | Adjacent stream-heavy alternative in some code. |
-| `Stream.toList()` | 16 | Returns an unmodifiable list. Don't use in Java 8-15 examples. |
+| `Stream.toList()` | 16 | Returns an unmodifiable list. It isn't a drop-in replacement for `Collectors.toList()` when later code mutates the list. Don't use in Java 8-15 examples. |
 | records | 16 | Adjacent examples only. |
 | `SequencedCollection`, `List.getFirst()`, `List.getLast()`, `List.reversed()` | 21 | Don't use in generic examples unless Java 21+ is stated. |
 | `Stream.gather(Gatherer)` | 24 | Adjacent stream extension point; don't use for Optional cleanup unless the project baseline supports it and it is clearly simpler. |

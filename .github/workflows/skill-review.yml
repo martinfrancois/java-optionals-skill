@@ -24,6 +24,7 @@ concurrency:
 jobs:
   review:
     name: Tessl skill review
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     env:
       TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}

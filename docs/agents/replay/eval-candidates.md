@@ -96,6 +96,7 @@ Pass conditions:
 
 Status:
 
-- Covered by existing focused upsert scenarios, including headline
-  `evals/01-workpad-feature-cleanup` and reference `evals-reference/02-lazy-upsert`. No new Scenario
-  A reduction was needed from the broad replay.
+- Covered by reference upsert/workpad scenarios rather than the current focused headline suite,
+  including `evals-reference/02-lazy-upsert` and
+  `evals-reference/48-baseline-solved-workpad-feature-cleanup`. No new Scenario A reduction was
+  needed from the broad replay.

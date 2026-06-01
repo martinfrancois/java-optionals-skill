@@ -50,9 +50,15 @@ jobs:
           title="$(printf '%s\n' "$pr_json" | jq -r '.title')"
           branch="$(printf '%s\n' "$pr_json" | jq -r '.headRefName')"
 
-          echo "found=true" >> "$GITHUB_OUTPUT"
-          echo "title=$title" >> "$GITHUB_OUTPUT"
-          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          {
+            echo "found=true"
+            echo "title<<EOF"
+            printf '%s\n' "$title"
+            echo "EOF"
+            echo "branch<<EOF"
+            printf '%s\n' "$branch"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         if: ${{ steps.release-pr.outputs.found == 'true' }}

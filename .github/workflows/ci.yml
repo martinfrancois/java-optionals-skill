@@ -20,8 +20,6 @@ jobs:
   validate:
     name: Validate skill and plugin
     runs-on: ubuntu-latest
-    env:
-      TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -29,7 +27,6 @@ jobs:
         uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
         with:
           version: "0.81.2"
-          token: ${{ env.TESSL_TOKEN }}
 
       - name: Validate skill metadata
         run: python3 scripts/validate_skill.py skills/java-optionals
@@ -70,14 +67,36 @@ jobs:
       - name: Lint Tessl plugin
         run: tessl plugin lint .
 
+  tessl-dry-run:
+    name: Tessl publish dry-run
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Check Tessl token
+        id: tessl-token
+        env:
+          TESSL_TOKEN: ${{ secrets.TESSL_TOKEN }}
+        run: |
+          if [ -n "${TESSL_TOKEN:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "TESSL_TOKEN isn't configured; skipping Tessl publish dry-runs."
+          fi
+
+      - name: Setup Tessl CLI
+        if: ${{ steps.tessl-token.outputs.available == 'true' }}
+        uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
+        with:
+          version: "0.81.2"
+          token: ${{ secrets.TESSL_TOKEN }}
+
       - name: Check fast publish dry-run
-        if: ${{ env.TESSL_TOKEN != '' }}
+        if: ${{ steps.tessl-token.outputs.available == 'true' }}
         run: bash scripts/check_publish_dry_run.sh .
 
       - name: Check eval publish dry-run
-        if: ${{ env.TESSL_TOKEN != '' }}
+        if: ${{ steps.tessl-token.outputs.available == 'true' }}
         run: tessl plugin publish --dry-run --bump patch .
-
-      - name: Skip publish dry-run when Tessl token is unavailable
-        if: ${{ env.TESSL_TOKEN == '' }}
-        run: echo "TESSL_TOKEN isn't configured; skipping Tessl publish dry-runs."

@@ -20,6 +20,8 @@ else
   status=$?
 fi
 
+# Tessl currently reports existing versions with "already exists". If the CLI adds structured
+# output for registry conflicts, prefer that over text matching.
 if grep -q "already exists" "$output_file"; then
   echo "Current manifest version already exists in the registry; checking next patch version instead."
   tessl plugin publish --dry-run --skip-evals --bump patch "$path"
