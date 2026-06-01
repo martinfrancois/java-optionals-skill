@@ -1,5 +1,7 @@
 # Write first-pass Optional formatting code
 
+Assume Java 17.
+
 Use `$java-optionals` to create `AssigneeFormatter.java`.
 
 Implement a small Java class `AssigneeFormatter` with:

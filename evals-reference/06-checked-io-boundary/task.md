@@ -1,5 +1,7 @@
 # Refactor workspace selection
 
+Assume Java 17.
+
 Use `$java-optionals` to improve this method's Optional handling without changing its exception
 contract:
 

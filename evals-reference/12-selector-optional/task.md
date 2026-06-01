@@ -1,5 +1,7 @@
 # Refactor diagnostic selection
 
+Assume Java 17.
+
 Use `$java-optionals` to improve this selection code without changing behavior:
 
 ```java

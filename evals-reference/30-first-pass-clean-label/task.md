@@ -1,5 +1,7 @@
 # Write first-pass clean label code
 
+Assume Java 17.
+
 Use `$java-optionals` to create `LabelFormatter.java`.
 
 Implement:

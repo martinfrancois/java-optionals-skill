@@ -1,5 +1,7 @@
 # Write first-pass redacted option matcher
 
+Assume Java 17.
+
 Use `$java-optionals` to create `CommandOptionMatcher.java`.
 
 Implement:

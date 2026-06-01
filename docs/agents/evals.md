@@ -37,8 +37,9 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.
-- Java scenarios should state a baseline when API compatibility matters, and criteria should catch
-  accidental use of APIs newer than that baseline.
+- Every Java scenario, including temporary candidate scenarios, must state the Java version to
+  assume, such as `Assume Java 17.`. Criteria should catch accidental use of APIs newer than that
+  baseline.
 - If the baseline is too high, first check whether the eval is too generic or too easy before
   changing the skill. The baseline should reveal the real failures from the issue.
 - Be careful when tightening prompts or scoring. If a change mainly increases empty-output noise or

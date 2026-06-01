@@ -1,5 +1,7 @@
 # Add validation to setup defaults
 
+Assume Java 17.
+
 Use `$java-optionals` to create `SetupOptions.java` with the revised class.
 
 Current code:

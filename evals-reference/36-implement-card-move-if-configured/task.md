@@ -1,5 +1,7 @@
 # Implement card move if configured
 
+Assume Java 17.
+
 Use `$java-optionals` to create `CardMover.java`.
 
 Implement:

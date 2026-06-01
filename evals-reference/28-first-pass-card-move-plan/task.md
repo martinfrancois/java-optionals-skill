@@ -1,5 +1,7 @@
 # Write first-pass card move plan
 
+Assume Java 17.
+
 Use `$java-optionals` to create `CardMovePlanner.java`.
 
 Implement:

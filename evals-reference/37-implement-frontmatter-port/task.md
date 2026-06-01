@@ -1,5 +1,7 @@
 # Implement front matter port lookup
 
+Assume Java 17.
+
 Use `$java-optionals` to create `WorkflowPortLookup.java`.
 
 Implement:

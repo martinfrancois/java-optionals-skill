@@ -1,5 +1,7 @@
 # Implement setup option selection
 
+Assume Java 17.
+
 Use `$java-optionals` to create `SetupOptions.java`.
 
 Implement:

@@ -205,6 +205,8 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         failures.append(f"{criteria_file}: metadata.task_type must be implementation, cleanup, or review")
 
     task_text = task_file.read_text(encoding="utf-8") if task_file.is_file() else ""
+    if task_text and not re.search(r"\bAssume Java\s+\d+\b", task_text):
+        failures.append(f"{task_file}: task must state the Java version to assume, e.g. 'Assume Java 17.'")
     has_explicit_invocation = invocation_from_task(task_text)
     if invocation == "natural" and has_explicit_invocation:
         failures.append(f"{task_file}: natural scenario explicitly invokes the skill")
