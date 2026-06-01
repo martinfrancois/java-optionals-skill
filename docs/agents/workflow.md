@@ -29,11 +29,12 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   bump the version. For skill, eval, or package changes that should be published, bump the
   version before publishing again.
 
-- CI mirrors the portable validation checks. When `TESSL_TOKEN` is configured, it also runs a fast
-  skipped-eval publish dry-run and a full eval-ingesting publish dry-run. The optional skill review
-  workflow runs `tessl skill review --threshold 90` when `TESSL_TOKEN` is configured.
-- Use bumped publish dry-runs for PR convenience when the current manifest version is already
-  published. Use exact-version dry-runs in release publishing before the real publish command.
+- PR CI runs tokenless validation and plugin lint. Authenticated Tessl publish dry-runs run only on
+  trusted `main` pushes and release/publish workflows. The optional skill review workflow runs
+  `tessl skill review --threshold 90` when `TESSL_TOKEN` is configured.
+- Use `tessl plugin publish --dry-run --bump patch .` as a PR-safe local/manual dry-run when the
+  current manifest version is already published. Release publishing uses exact-version
+  `tessl plugin publish --dry-run .` immediately before `tessl plugin publish .`.
 - Tessl release publishing runs in the `tessl-release` GitHub environment. Configure required
   reviewers or other environment protection rules in the repository settings when the plan supports
   them.
