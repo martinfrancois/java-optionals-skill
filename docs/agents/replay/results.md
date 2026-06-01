@@ -138,13 +138,13 @@ Category subtotal:
 
 | Category | Baseline | With context |
 | --- | ---: | ---: |
-| Safety gates | `395/395` | `395/395` |
+| Safety checks | `395/395` | `395/395` |
 | Optional quality | `98/180` | `180/180` |
 | Maintainability | `23/25` | `25/25` |
 
 The Optional-quality subtotal is the clearest skill-specific number: `+82/180`, about `1.84x` by
-raw score ratio, with `100%` missed-point reduction. Safety gates stay in the benchmark to prevent
-broken code from scoring well, but they should not be treated as the main value claim.
+raw score ratio, with `100%` missed-point reduction. Safety checks stay in the benchmark so broken
+code is visible in the score, but they should not be treated as the main value claim.
 
 After commit `4c7fb58`, headline criteria were reweighted to make each 100-point scenario score
 `35` safety, `60` Optional quality, and `5` maintainability. Across the six-scenario headline suite,
@@ -156,27 +156,29 @@ final release claim until it finishes or is rerun from a clean commit.
 The current focused headline suite keeps only direct evidence for the plugin summary: helping AI
 coding agents use Java Optional well in new code and cleanups without replacing one antipattern with
 another. Baseline-solved and less central scenarios remain in `evals-reference/`. Hosted run
-`019e817f-eb50-75fe-94eb-d28754b7af7d` was run from clean commit `0fb51da`, after making the
-frontmatter fixture consistently assume Java 8:
+`019e817f-eb50-75fe-94eb-d28754b7af7d` was run from clean commit `0fb51da` and scored `124/300` to
+`300/300`. A later final-hardening run, `019e8383-de44-7521-8b66-9424f9ad63c1`, was run from clean
+commit `8c5c74c` after CI/docs/validator hardening and scored:
 
 | Subset | Baseline | With context |
 | --- | ---: | ---: |
 | Natural activation | `74/200` | `200/200` |
-| Explicit invocation | `50/100` | `100/100` |
-| Combined headline | `124/300` | `300/300` |
+| Explicit invocation | `50/100` | `85/100` |
+| Combined headline | `124/300` | `285/300` |
 
-That is a `+176/300` absolute score lift. The raw score ratio is `2.42x`; missed-point reduction is
-`176/176`, or `100%`.
+That is a `+161/300` absolute score lift. The raw score ratio is `2.30x`; missed-point reduction is
+`161/176`, or `91.5%`. The lower with-context score came from partial scoring in the checked-boundary
+cleanup scenario; the focused headline result remains above the `2x` target.
 
 Category subtotal:
 
 | Category | Baseline | With context |
 | --- | ---: | ---: |
-| Safety gates | `75/75` | `75/75` |
-| Optional quality | `34/210` | `210/210` |
+| Safety checks | `75/75` | `75/75` |
+| Optional quality | `34/210` | `195/210` |
 | Maintainability | `15/15` | `15/15` |
 
-The Optional-quality subtotal is `6.18x` by raw score ratio. The headline result should be read
+The Optional-quality subtotal is `5.74x` by raw score ratio. The headline result should be read
 with the reference suite: moved scenarios still matter as regression coverage, but they're not the
 best public evidence for this plugin's stated purpose.
 
