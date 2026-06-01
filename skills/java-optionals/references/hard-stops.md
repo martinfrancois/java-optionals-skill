@@ -29,7 +29,16 @@ If checked IO, prompting, or a checked parser blocks a fluent Optional chain:
 3. If Java's checked-exception rules force an explicit branch, prefer an empty guard:
 
    ```java
+   // Java 11+
    if (value.isEmpty()) {
+       return readCheckedFallback();
+   }
+   return value.get();
+   ```
+
+   ```java
+   // Java 8
+   if (!value.isPresent()) {
        return readCheckedFallback();
    }
    return value.get();
@@ -48,7 +57,16 @@ If checked IO, prompting, or a checked parser blocks a fluent Optional chain:
    Apply the same rule to checked parsers:
 
    ```java
+   // Java 11+
    if (text.isEmpty()) {
+       return Optional.empty();
+   }
+   return Optional.of(parser.readValue(text.get()));
+   ```
+
+   ```java
+   // Java 8
+   if (!text.isPresent()) {
        return Optional.empty();
    }
    return Optional.of(parser.readValue(text.get()));
@@ -64,7 +82,7 @@ unwrap `Optional<T>` or route checked exceptions through Optional.
 Run a hard-stop scan over touched Java files before finalizing:
 
 ```bash
-rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|OptionalIo|CheckedOptionals|OptionalBoundaries|UncheckedIOException|ThrowingSupplier|ThrowingFunction|mapThrowing|orElseGetThrowing" <touched Java files>
+rg -n "orElse\\(null\\)|getAsInt\\(\\)|getAsLong\\(\\)|getAsDouble\\(\\)|stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|OptionalIo|CheckedOptionals|OptionalBoundaries|UncheckedIOException|ThrowingSupplier|ThrowingFunction|mapThrowing|orElseGetThrowing" <touched Java files>
 ```
 
 For each hit, decide whether it is part of Optional value flow, fake Optional iteration, fallback

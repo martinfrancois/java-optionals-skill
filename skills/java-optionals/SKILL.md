@@ -45,13 +45,13 @@ Before finalizing touched Optional flow:
    `flatMap(Optional::stream)` on Java 9+.
 4. Selectors: bind a selected value once and keep fallback lazy. Treat `Optional<Boolean>` as three
    states when absence differs from `false`. Predicate-only presence checks are fine when the value
-   is not read afterward.
+   is not read afterward. Use `ifPresent` or Java 9+ `ifPresentOrElse` for side-effect boundaries.
 5. Primitive Optionals: keep `OptionalInt`, `OptionalLong`, and `OptionalDouble` primitive. Avoid
    boxing and avoid `isPresent()` plus `getAsInt()`/`getAsLong()`/`getAsDouble()`.
 6. Special boundaries: use a plain branch only at a real checked IO, prompt, checked parser, or
    null-based API boundary. Before checked prompts, select any non-IO Optional value first. At the
-   checked branch, don't leave `isEmpty()`/`orElseThrow()` as the present read; use the hard-stop
-   empty-guard shape and add a short comment if the `get()` could be mistaken for ordinary flow.
+   checked branch, don't leave `isEmpty()`/`orElseThrow()` as the present read; use the
+   baseline-compatible empty-guard shape from [hard-stops.md](references/hard-stops.md).
 
    ```java
    if (value.isEmpty()) return readCheckedFallback();

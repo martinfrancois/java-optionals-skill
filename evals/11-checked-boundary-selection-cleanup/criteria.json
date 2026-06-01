@@ -36,7 +36,7 @@
       "name": "Handles checked boundaries without generic Optional helpers",
       "category": "optional_quality",
       "max_score": 20,
-      "description": "Keeps checked prompt/parser boundaries readable without introducing OptionalSupport, OptionalValues, OptionalBoundaries, CheckedOptionals, throwing suppliers/functions, mapThrowing, or orElseGetThrowing helpers. Award full credit for a narrow checked-boundary empty guard followed by one local present-value read, such as if (value.isEmpty()) { ...checked branch... } return value.get();."
+      "description": "Keeps checked prompt/parser boundaries readable without introducing OptionalSupport, OptionalValues, OptionalBoundaries, CheckedOptionals, throwing suppliers/functions, mapThrowing, or orElseGetThrowing helpers. Award full credit for a narrow checked-boundary empty guard followed by one local present-value read, such as `if (value.isEmpty()) { ...checked branch... } return value.get();`."
     },
     {
       "name": "Avoids replacement Optional antipatterns",
