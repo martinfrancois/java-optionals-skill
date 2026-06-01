@@ -499,9 +499,10 @@ final class WorkspaceSelector {
     String workspaceId(Options options, Terminal terminal) throws IOException {
         Optional<String> configured = options.workspaceId();
         if (!configured.isPresent()) {
+            // Empty branch performs checked IO, so the branch is intentional.
             return promptForWorkspace(terminal);
         }
-        return configured.get();
+        return configured.orElseThrow(() -> new IllegalStateException("workspace id disappeared"));
     }
 
     String promptForWorkspace(Terminal terminal) throws IOException {
@@ -527,7 +528,7 @@ Optional<String> selected = options.workspaceId()
         .orElseGet(options::environmentWorkspaceId);
 
 if (selected.isPresent()) {
-    return selected.get();
+    return selected.orElseThrow(() -> new IllegalStateException("workspace id disappeared"));
 }
 return promptForWorkspace(terminal);
 ```
@@ -541,6 +542,7 @@ the Optional into a one-item list or iterable to avoid the branch:
 ```java
 Optional<String> configured = options.workspaceId();
 if (configured.isEmpty()) {
+    // Empty branch performs checked IO, so the branch is intentional.
     return promptForWorkspace(terminal);
 }
 return configured.orElseThrow();

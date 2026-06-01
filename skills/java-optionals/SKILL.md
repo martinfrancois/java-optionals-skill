@@ -31,6 +31,10 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
   prompts, or calls a checked parser, do not chase a "zero presence-read" shape at any cost. Prefer
   the narrow direct branch and explain it as a checked-boundary exception rather than replacing it
   with a generic helper, fake iterable, or `orElse(null)` workaround.
+- Before accepting a checked-boundary branch, reduce every non-checked Optional branch first. Keep
+  only the branch that actually performs checked IO, prompting, or checked parsing. If that leaves a
+  present-value read after an empty-branch check, make the checked-boundary reason obvious in code
+  and read the value once.
 - A named helper is only acceptable when it names domain work, such as `validateRequestedPort(...)`
   or `promptForWorkspace(...)`. Do not add a generic `<T>` helper that accepts `Optional<T>` just to
   read the value, make it iterable, or route checked exceptions through Optional.
@@ -92,7 +96,9 @@ Open [references/optional-examples.md](references/optional-examples.md) for work
    exception rules, preserve behavior and keep the direct branch instead of inventing another
    antipattern. For multiple non-IO Optionals before a checked prompt, select one Optional first
    (`or(...)` on Java 9+ or `map(Optional::of).orElseGet(...)` on Java 8), then branch only at the
-   prompt.
+   prompt. When a checked-boundary branch must return the present value after the empty branch,
+   keep that read local, read it once, and add a short comment if otherwise it looks like ordinary
+   `isEmpty()` followed by `orElseThrow()` value flow.
 9. Verify each changed branch. Run the repo's focused Java tests, such as `./mvnw test`,
    `mvn test`, `./gradlew test`, or the existing task for the touched code. If no test exists,
    trace a small present/absent/fallback case. Confirm the same return values, exceptions, prompts,
