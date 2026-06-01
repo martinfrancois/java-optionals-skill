@@ -87,8 +87,11 @@ def scenario_dirs(paths: list[Path]) -> list[Path]:
         if path.is_file() and path.name == "criteria.json":
             dirs.append(path.parent)
         elif path.is_dir():
-            children = sorted(child for child in path.iterdir() if child.is_dir())
-            dirs.extend(children)
+            if (path / "criteria.json").is_file():
+                dirs.append(path)
+            else:
+                children = sorted(child for child in path.iterdir() if child.is_dir())
+                dirs.extend(children)
         else:
             raise FileNotFoundError(path)
     return sorted(dict.fromkeys(dirs))
