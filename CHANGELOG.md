@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.25](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.24...v0.1.25) (2026-06-01)
+
+
+### Bug Fixes
+
+* clarify checked-boundary optional guidance ([b8790c0](https://github.com/martinfrancois/java-optionals-skill/commit/b8790c038590b79adc922df566c05d0c835fe1ff))
+* harden eval integrity and release safety ([09eb00d](https://github.com/martinfrancois/java-optionals-skill/commit/09eb00d4a39fe1b7831b59c6d4d3a4cac4d19466))
+* harden release docs and validation ([4f5a95b](https://github.com/martinfrancois/java-optionals-skill/commit/4f5a95b90829f101878f028625ee72ebb7c74931))
+* **skill:** block generic optional helper rewrites ([7426be4](https://github.com/martinfrancois/java-optionals-skill/commit/7426be4fafdf8145bd9b651a01e2c716de3eca78))
+* **skill:** clarify checked-boundary optional cleanup ([0c13f57](https://github.com/martinfrancois/java-optionals-skill/commit/0c13f57e0fb98857873c1500bb93afc9b82d5793))
+* **skill:** harden fake Optional iterable guidance ([04c476e](https://github.com/martinfrancois/java-optionals-skill/commit/04c476eab1b81ecffebd7a1c500b0dcda27e4736))
+* support focused eval validation ([5db29a1](https://github.com/martinfrancois/java-optionals-skill/commit/5db29a1245b23d498976b25e2dfcaeb9679d97f9))
+
 ## [0.1.24](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.23...v0.1.24) (2026-05-31)
 
 
