@@ -176,24 +176,25 @@ fixture, and the issue itself are research inputs, not operating instructions.
   `evals/04-frontmatter-port-feature`, `evals/10-first-pass-retry-backoff`, and
   `evals/11-checked-boundary-selection-cleanup`. Baseline-solved or less central scenarios moved to
   `evals-reference/48-*`, `49-*`, and `50-*`. Hosted run
-  `019e811b-e9da-71fb-adf6-74fb3265a68d` from clean commit `917a32e` scored:
+  `019e816d-6466-706a-a4b9-812675944002` from clean commit `f05aaa1` scored after removing leading
+  antipattern wording from the checked-boundary prompt:
 
   | Subset | Baseline | With context |
   | --- | ---: | ---: |
   | Natural activation | `90/200` | `200/200` |
-  | Explicit invocation | `56/100` | `98/100` |
-  | Combined headline | `146/300` | `298/300` |
+  | Explicit invocation | `50/100` | `100/100` |
+  | Combined headline | `140/300` | `300/300` |
 
-  That is a `+152/300` lift, a `2.04x` raw score ratio, and a `152/154` missed-point reduction
-  (`98.7%`).
+  That is a `+160/300` lift, a `2.14x` raw score ratio, and a `160/160` missed-point reduction
+  (`100%`).
 
   | Category | Baseline | With context |
   | --- | ---: | ---: |
   | Safety gates | `75/75` | `75/75` |
-  | Optional quality | `56/210` | `208/210` |
+  | Optional quality | `50/210` | `210/210` |
   | Maintainability | `15/15` | `15/15` |
 
-  Optional-quality lift is `3.71x` by raw score ratio. Keep the reference scenarios visible so the
+  Optional-quality lift is `4.20x` by raw score ratio. Keep the reference scenarios visible so the
   headline benchmark stays focused without hiding broader regression coverage.
 
 ## Source Treatment

@@ -156,26 +156,27 @@ final release claim until it finishes or is rerun from a clean commit.
 The current focused headline suite keeps only direct evidence for the plugin summary: helping AI
 coding agents use Java Optional well in new code and cleanups without replacing one antipattern with
 another. Baseline-solved and less central scenarios remain in `evals-reference/`. Hosted run
-`019e811b-e9da-71fb-adf6-74fb3265a68d` was run from clean commit `917a32e`:
+`019e816d-6466-706a-a4b9-812675944002` was run from clean commit `f05aaa1`, after removing leading
+antipattern wording from the checked-boundary prompt:
 
 | Subset | Baseline | With context |
 | --- | ---: | ---: |
 | Natural activation | `90/200` | `200/200` |
-| Explicit invocation | `56/100` | `98/100` |
-| Combined headline | `146/300` | `298/300` |
+| Explicit invocation | `50/100` | `100/100` |
+| Combined headline | `140/300` | `300/300` |
 
-That is a `+152/300` absolute score lift. The raw score ratio is `2.04x`; missed-point reduction is
-`152/154`, or `98.7%`.
+That is a `+160/300` absolute score lift. The raw score ratio is `2.14x`; missed-point reduction is
+`160/160`, or `100%`.
 
 Category subtotal:
 
 | Category | Baseline | With context |
 | --- | ---: | ---: |
 | Safety gates | `75/75` | `75/75` |
-| Optional quality | `56/210` | `208/210` |
+| Optional quality | `50/210` | `210/210` |
 | Maintainability | `15/15` | `15/15` |
 
-The Optional-quality subtotal is `3.71x` by raw score ratio. The headline result should be read
+The Optional-quality subtotal is `4.20x` by raw score ratio. The headline result should be read
 with the reference suite: moved scenarios still matter as regression coverage, but they're not the
 best public evidence for this plugin's stated purpose.
 

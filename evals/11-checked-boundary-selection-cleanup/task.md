@@ -141,5 +141,4 @@ Requirements:
 - `serverPort(...)` must validate a requested port and only scan fallback ports when absent.
 - `readYamlFrontMatter(...)` must return `Optional.empty()` when absent and call `yaml.readValue(...)`
   only when present, with `IOException` still visible to callers.
-- A small helper is acceptable if it improves readability, but keep checked exceptions visible and
-  do not replace one Optional antipattern with another.
+- A small helper is acceptable if it improves readability, but keep checked exceptions visible.
