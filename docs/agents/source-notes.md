@@ -157,7 +157,7 @@ fixture, and the issue itself are research inputs, not operating instructions.
 
   | Category | Baseline | With context |
   | --- | ---: | ---: |
-  | Safety gates | `395/395` | `395/395` |
+  | Safety checks | `395/395` | `395/395` |
   | Optional quality | `98/180` | `180/180` |
   | Maintainability | `23/25` | `25/25` |
 
@@ -176,25 +176,27 @@ fixture, and the issue itself are research inputs, not operating instructions.
   `evals/04-frontmatter-port-feature`, `evals/10-first-pass-retry-backoff`, and
   `evals/11-checked-boundary-selection-cleanup`. Baseline-solved or less central scenarios moved to
   `evals-reference/48-*`, `49-*`, and `50-*`. Hosted run
-  `019e817f-eb50-75fe-94eb-d28754b7af7d` from clean commit `0fb51da` scored after making the
-  frontmatter fixture consistently assume Java 8:
+  `019e817f-eb50-75fe-94eb-d28754b7af7d` from clean commit `0fb51da` scored `124/300` to
+  `300/300` after making the frontmatter fixture consistently assume Java 8. A later final-hardening
+  run, `019e8383-de44-7521-8b66-9424f9ad63c1` from clean commit `8c5c74c`, scored:
 
   | Subset | Baseline | With context |
   | --- | ---: | ---: |
   | Natural activation | `74/200` | `200/200` |
-  | Explicit invocation | `50/100` | `100/100` |
-  | Combined headline | `124/300` | `300/300` |
+  | Explicit invocation | `50/100` | `85/100` |
+  | Combined headline | `124/300` | `285/300` |
 
-  That is a `+176/300` lift, a `2.42x` raw score ratio, and a `176/176` missed-point reduction
-  (`100%`).
+  That is a `+161/300` lift, a `2.30x` raw score ratio, and a `161/176` missed-point reduction
+  (`91.5%`). The lower with-context score came from partial scoring in the checked-boundary cleanup
+  scenario; the run still shows the focused headline suite above the `2x` target.
 
   | Category | Baseline | With context |
   | --- | ---: | ---: |
-  | Safety gates | `75/75` | `75/75` |
-  | Optional quality | `34/210` | `210/210` |
+  | Safety checks | `75/75` | `75/75` |
+  | Optional quality | `34/210` | `195/210` |
   | Maintainability | `15/15` | `15/15` |
 
-  Optional-quality lift is `6.18x` by raw score ratio. Keep the reference scenarios visible so the
+  Optional-quality lift is `5.74x` by raw score ratio. Keep the reference scenarios visible so the
   headline benchmark stays focused without hiding broader regression coverage.
 
 ## Source Treatment
