@@ -277,6 +277,6 @@ headline reduction. Scenario C remains reference-only because the reduced baseli
 the full-repo helper/list failure. Scenario A is preserved as reference coverage because the focused
 headline suite now keeps only direct evidence for the plugin summary. Scenario E/F are documented as
 reference-only because the broad prompts did not yield smaller useful Optional oracles. Latest
-hosted focused headline run is `019e811b-e9da-71fb-adf6-74fb3265a68d`: baseline `146/300`, with
-context `298/300`, `2.04x`.
+hosted focused headline run is `019e816d-6466-706a-a4b9-812675944002`: baseline `140/300`, with
+context `300/300`, `2.14x`.
 ```
