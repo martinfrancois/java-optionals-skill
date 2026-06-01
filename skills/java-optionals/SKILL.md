@@ -10,109 +10,55 @@ Use this skill before writing Java code that may introduce `Optional`, and when 
 refactoring existing Optional code. Preserve behavior, exception contracts, public output, laziness,
 and readability.
 
-Open [references/optional-examples.md](references/optional-examples.md) for worked examples and
-[references/java-optional-api.md](references/java-optional-api.md) for Java-version compatibility.
+References: [hard-stops.md](references/hard-stops.md) for replacement antipatterns,
+[optional-examples.md](references/optional-examples.md) for worked examples, and
+[java-optional-api.md](references/java-optional-api.md) for Java-version compatibility.
 
 ## Hard Stops
 
-- Never make one `Optional` list-like or iterable just to avoid `isPresent()` / `get()`.
-  `optional.stream().toList()`, `optional.stream()::iterator`, `optionalValues(optional)`,
-  `presentValues(optional)`, and `for` loops over one Optional are replacement antipatterns.
-  Rewrite them before finalizing.
-- When replacing `if (optional.isPresent()) return optional.orElseThrow();`, do not replace it with
-  `for (T value : optional.stream().toList()) return value;`. Use `map(...).orElseGet(...)` when
-  both branches are ordinary value flow. If the empty branch performs checked IO or prompting, use a
-  narrow branch at that checked boundary; that is better than inventing a fake loop.
-- If a checked exception or prompt prevents a fluent Optional chain, keep a narrow explicit branch
-  at that exact boundary. Do not hide the checked operation behind generic helpers such as
-  `OptionalSupport`, `OptionalIo`, `CheckedOptionals`, `OptionalBoundaries`, throwing suppliers,
-  throwing functions, `mapThrowing(...)`, `orElseGetThrowing(...)`, or supplier `.get()` tricks.
-- If a prompt asks to remove presence-read code but the empty branch throws a checked exception,
-  prompts, or calls a checked parser, do not chase a "zero presence-read" shape at any cost. Prefer
-  the narrow direct branch and explain it as a checked-boundary exception rather than replacing it
-  with a generic helper, fake iterable, or `orElse(null)` workaround.
-- Before accepting a checked-boundary branch, reduce every non-checked Optional branch first. Keep
-  only the branch that actually performs checked IO, prompting, or checked parsing. If that leaves a
-  present-value read after an empty-branch check, make the checked-boundary reason obvious in code
-  and read the value once.
-- A named helper is only acceptable when it names domain work, such as `validateRequestedPort(...)`
-  or `promptForWorkspace(...)`. Do not add a generic `<T>` helper that accepts `Optional<T>` just to
-  read the value, make it iterable, or route checked exceptions through Optional.
-- When a task asks to clean up Optional code, fix the specific Optional smell first, then scan the
-  touched Java files for new Optional smells before doing broader cleanup.
-- The task's requested scan may be too narrow. Always run a separate hard-stop scan for the markers
-  above, and do not finish while any hit remains in touched Java code.
+Before finalizing touched Optional flow:
+
+- No presence check plus value read for ordinary value flow; use value-binding Optional operations.
+- No eager fallback computation before checking the Optional; keep non-trivial fallback work lazy.
+- No fake one-Optional collection, iterable, loop, local `orElse(null)` branch, or generic helper.
+- For checked IO, prompt, or parser branches, use the Step 6 shape and run the scan in
+  [hard-stops.md](references/hard-stops.md).
 
 ## Core Workflow
 
-0. Detect the Java baseline before choosing APIs. Check build files, toolchains, CI, Dockerfiles,
-   `.sdkmanrc`, `.java-version`, and README docs. If unclear, prefer Java 8-compatible code or
-   state the assumption. Don't introduce Java 9+ Optional APIs, Java 11 `isEmpty()`, Java 16
-   `Stream.toList()`, or Java 21 sequenced collections unless build metadata shows support.
+0. Detect the Java baseline before choosing APIs. Check build/toolchain docs; if unclear, prefer
+   Java 8-compatible code or state the assumption. Don't introduce Java 9+ Optional APIs, Java 11
+   `isEmpty()`, Java 16 `Stream.toList()`, or Java 21 sequenced collections into older projects.
 1. Classify the boundary first. For ordinary value flow, use an Optional terminal instead of
-   `isPresent()`.
-2. Use the Optional API that matches the intent: `map`, `flatMap`, `filter`, `or`, `orElse` for
-   cheap values, `orElseGet` for lazy fallback work, `orElseThrow` for true absence errors, and
-   `ifPresent` or `ifPresentOrElse` for side effects.
+   `isPresent()`. When a nullable input starts an Optional flow, enter it directly with
+   `Optional.ofNullable(...)` before chaining.
+2. Use the Optional API that matches the intent: transform or chain with `map`/`flatMap`; use
+   `orElseGet` or an explicit absent branch for non-trivial fallback work; use `orElseThrow` only
+   when absence is truly an error. Don't precompute fallback results before checking the Optional.
 
    ```java
-   return findCart(cartId).map(this::toSummary).orElseGet(() -> createSummary(cartId));
+   return Optional.ofNullable(input).flatMap(this::lookup).orElseGet(this::fallback);
    ```
 
-3. Reject ordinary-control-flow workarounds:
-   - `isPresent()` / `isEmpty()` followed by `get()` or `orElseThrow()`;
-   - `orElse(null)` plus local null branching;
-   - `map(x -> optionalReturningCall(x).orElse(null))` instead of `flatMap(...)`;
-   - the fake one-Optional collection and iterable patterns named in Hard Stops;
-   - loops, labels, or sentinel flags that only avoid an Optional terminal result.
+3. Collection lookup: keep real streams readable. Preserve `findFirst()` when order matters; use
+   `findAny()` only when all matches are equivalent. Flatten `Stream<Optional<T>>` with
+   `flatMap(Optional::stream)` on Java 9+.
+4. Selectors: bind a selected value once and keep fallback lazy. Treat `Optional<Boolean>` as three
+   states when absence differs from `false`. Predicate-only presence checks are fine when the value
+   is not read afterward.
+5. Primitive Optionals: keep `OptionalInt`, `OptionalLong`, and `OptionalDouble` primitive. Avoid
+   boxing and avoid `isPresent()` plus `getAsInt()`/`getAsLong()`/`getAsDouble()`.
+6. Special boundaries: use a plain branch only at a real checked IO, prompt, checked parser, or
+   null-based API boundary. Before checked prompts, select any non-IO Optional value first. At the
+   checked branch, don't leave `isEmpty()`/`orElseThrow()` as the present read; use the hard-stop
+   empty-guard shape and add a short comment if the `get()` could be mistaken for ordinary flow.
 
    ```java
-   // avoid
-   if (cart.isPresent()) return summarize(cart.get());
-   return createSummary(cartId);
-
-   // prefer
-   return cart.map(this::summarize).orElseGet(() -> createSummary(cartId));
+   if (value.isEmpty()) return readCheckedFallback();
+   // Checked fallback is handled above; read the present value once.
+   return value.get();
    ```
 
-4. Preserve laziness. If fallback work creates state, performs IO, mutates data, calls external
-   services, or is expensive, use `orElseGet(...)` or an explicit lazy branch.
-5. Collection lookup: keep real streams readable. Use `findAny()` only when all matches are
-   equivalent; keep `findFirst()` for first-match contracts. Avoid fake Optional collections,
-   mutable flags, and `Optional.of(arg).filter(collection::contains)`. For `Stream<Optional<T>>`,
-   use `flatMap(Optional::stream)` on Java 9+.
-6. Selectors: bind a selected value once. For priority selectors, map the first source and lazily
-   fall back to later sources. Treat `Optional<Boolean>` as three states when absent has separate
-   meaning. A presence check is fine when it only answers a predicate and the value isn't read.
-7. Primitive Optionals: use `OptionalInt`, `OptionalLong`, and `OptionalDouble` directly when the
-   domain or primitive stream already returns them. Don't box just to reuse generic examples.
-   Prefer primitive terminals such as `ifPresent`, `orElse`, `orElseGet`, `orElseThrow`, and
-   `stream`; avoid `isPresent()` plus `getAsInt()`, `getAsLong()`, or `getAsDouble()`.
-8. Special boundaries: use a plain branch for checked IO and prompts; use `orElse(null)` only at a
-   real null-based API boundary; use `orElseThrow` when absence is genuinely an error. Don't add
-   the generic helper patterns named in Hard Stops just to force checked exceptions into Optional
-   chains. At the actual checked-IO or prompt boundary, an explicit branch is clearer than a generic
-   Optional helper or fake iterable. If a strict "no presence read" request conflicts with checked
-   exception rules, preserve behavior and keep the direct branch instead of inventing another
-   antipattern. For multiple non-IO Optionals before a checked prompt, select one Optional first
-   (`or(...)` on Java 9+ or `map(Optional::of).orElseGet(...)` on Java 8), then branch only at the
-   prompt. When a checked-boundary branch must return the present value after the empty branch,
-   keep that read local, read it once, and add a short comment if otherwise it looks like ordinary
-   `isEmpty()` followed by `orElseThrow()` value flow.
-9. Verify each changed branch. Run the repo's focused Java tests, such as `./mvnw test`,
-   `mvn test`, `./gradlew test`, or the existing task for the touched code. If no test exists,
-   trace a small present/absent/fallback case. Confirm the same return values, exceptions, prompts,
-   side effects, laziness, generated output, and branch order; scan sibling code for the same
-   Optional smell. Before finalizing, run a hard-stop scan such as
-   `rg -n "stream\\(\\)\\.toList\\(\\)|stream\\(\\)::iterator|optionalValues|presentValues|OptionalSupport|OptionalValues|CheckedOptionals|OptionalBoundaries|UncheckedIOException|ThrowingSupplier|ThrowingFunction|mapThrowing|orElseGetThrowing" <touched Java files>`.
-   Fix any hit where one Optional is made list-like/iterable, a checked exception is tunneled
-   through Optional, or a generic Optional helper replaces the original smell. Do this even if the
-   user-provided scan only searched for `isPresent()`, `get()`, or `orElseThrow()`.
-
-## References
-
-- [optional-examples.md](references/optional-examples.md): use when the workflow needs a concrete
-  pattern. It contains worked Java examples for non-trivial edits, side-effecting fallbacks,
-  priority selectors, checked IO, `findFirst()` / `findAny()`, and primitive Optionals.
-- [java-optional-api.md](references/java-optional-api.md): use when choosing APIs across Java 8
-  through Java 26 or when primitive Optional or adjacent stream/collection APIs are involved.
+7. Verify each changed branch. Run focused tests or trace present/absent/fallback cases. Confirm
+   return values, exceptions, prompts, side effects, laziness, output, and branch order. Run the
+   marker scan from [hard-stops.md](references/hard-stops.md); fix relevant hits and re-scan.
