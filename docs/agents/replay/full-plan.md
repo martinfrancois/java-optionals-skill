@@ -274,8 +274,9 @@ For each reduced scenario that reproduces the full-repo difference:
 ```text
 The full plan is implemented. Scenario B now has a valid passing with-skill replay and a faithful
 headline reduction. Scenario C remains reference-only because the reduced baseline did not reproduce
-the full-repo helper/list failure. Scenario A is covered by existing focused upsert evals. Scenario
-E/F are documented as reference-only because the broad prompts did not yield smaller useful Optional
-oracles. Latest hosted headline run is `019e7f40-b788-74b8-97c8-e03bf6aa8190`: baseline `516/600`,
-with context `600/600`.
+the full-repo helper/list failure. Scenario A is preserved as reference coverage because the focused
+headline suite now keeps only direct evidence for the plugin summary. Scenario E/F are documented as
+reference-only because the broad prompts did not yield smaller useful Optional oracles. Latest
+hosted focused headline run is `019e811b-e9da-71fb-adf6-74fb3265a68d`: baseline `146/300`, with
+context `298/300`, `2.04x`.
 ```

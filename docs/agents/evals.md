@@ -31,6 +31,8 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - Treat compile and behavior checks as safety gates. They should stop broken answers from looking
   good, but this skill's public benchmark should be weighted toward the `optional_quality` subtotal
   because the skill is not primarily trying to improve compilation.
+- For headline scenarios, use roughly `25` safety points, `70` Optional-quality points, and `5`
+  maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims. Keep those in maintainer docs such as
   [eval-case-inventory.md](eval-case-inventory.md) or [source-notes.md](source-notes.md).
@@ -45,7 +47,7 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - Track raw score, percentage-point lift, raw score ratio, missed-point reduction, and the
   `optional_quality` subtotal when updating benchmark claims.
 - Don't hide scenarios merely because the baseline solves them. Move them to `evals-reference/`
-  only when they're better as broader regression coverage, and document why.
+  only when they're better as broader regression coverage than headline evidence, and document why.
 - For transcript-derived cases, use the historical replay protocol before adding headline evals.
   The reduced eval should reproduce the same without-skill vs with-skill difference seen in the
   full repository. If the with-skill replay still fails, record it as a regression target instead of
