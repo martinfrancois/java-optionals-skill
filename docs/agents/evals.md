@@ -33,7 +33,7 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - Treat compile and behavior checks as safety-category checks. They make broken answers visible in
   the score, but this skill's public benchmark should be weighted toward the `optional_quality`
   subtotal because the skill is not primarily trying to improve compilation.
-- For headline scenarios, use roughly `25` safety points, `70` Optional-quality points, and `5`
+- For headline scenarios, use roughly `15` safety points, `80` Optional-quality points, and `5`
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.

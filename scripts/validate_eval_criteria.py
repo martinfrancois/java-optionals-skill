@@ -324,15 +324,20 @@ def main() -> int:
             optional_quality = headline_category_scores["optional_quality"]
             safety = headline_category_scores["safety"]
             maintainability = headline_category_scores["maintainability"]
-            if optional_quality < headline_total * 0.6:
+            if optional_quality < headline_total * 0.8:
                 failures.append(
                     "evals: headline suite should be primarily Optional-quality scoring "
                     f"({optional_quality}/{headline_total})"
                 )
-            if safety < headline_total * 0.2:
+            if safety < headline_total * 0.05:
                 failures.append(
                     "evals: headline suite needs enough safety-check scoring for compile/behavior "
                     f"({safety}/{headline_total})"
+                )
+            if maintainability < headline_total * 0.05:
+                failures.append(
+                    "evals: headline suite needs enough maintainability scoring "
+                    f"({maintainability}/{headline_total})"
                 )
             if maintainability > headline_total * 0.15:
                 failures.append(

@@ -5,31 +5,31 @@
     {
       "name": "Compiles and creates requested artifact",
       "category": "safety",
-      "max_score": 5,
+      "max_score": 3,
       "description": "Creates a coherent StoreSetup.java with the requested class, constructor, interfaces, records, method signatures, imports, and Java 25-compatible code."
     },
     {
       "name": "Preserves warehouse selection behavior",
       "category": "safety",
-      "max_score": 5,
+      "max_score": 3,
       "description": "Returns a matching configured warehouse when present, throws the same setup_warehouse_required missing-id exception and message when absent from the manifest, auto-selects a single warehouse, preserves non-interactive behavior, and prompts only when needed."
     },
     {
       "name": "Preserves workspace selection behavior",
       "category": "safety",
-      "max_score": 5,
+      "max_score": 3,
       "description": "Returns a configured workspace id without inspecting workspaces, auto-selects exactly one workspace with the same info message, preserves empty and non-interactive exceptions, and preserves interactive prompt behavior."
     },
     {
       "name": "Preserves port and YAML behavior",
       "category": "safety",
-      "max_score": 10,
+      "max_score": 6,
       "description": "Validates requested ports before returning them, scans fallback ports only when absent, preserves port exceptions, returns Optional.empty() for absent front matter, parses present text with yaml.readValue(...), and keeps IOException visible."
     },
     {
       "name": "Uses direct Optional boundaries for ordinary values",
       "category": "optional_quality",
-      "max_score": 25,
+      "max_score": 30,
       "description": "Uses value-binding Optional flow such as map(...).orElseGet(...) for ordinary non-checked branches like serverPort, without duplicate lookup work."
     },
     {
@@ -41,7 +41,7 @@
     {
       "name": "Avoids replacement Optional antipatterns",
       "category": "optional_quality",
-      "max_score": 25,
+      "max_score": 30,
       "description": "Does not use isPresent()/isEmpty() followed by get()/orElseThrow() for ordinary value flow, orElse(null) for local control flow, Optional.stream().toList(), stream()::iterator, optionalValues, presentValues, loops over one Optional, or other fake one-Optional iterable workarounds."
     },
     {

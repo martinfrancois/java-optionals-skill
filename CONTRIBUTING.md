@@ -210,7 +210,7 @@ implementation criteria must include compile/artifact checks and behavior correc
 safety checks, but the headline score should mainly measure Optional-specific quality. Each headline
 criterion must also set `category` to `safety`, `optional_quality`, or `maintainability` so
 benchmark reports can separate Optional quality from compile/behavior checks. For headline
-scenarios, use roughly `25` safety points, `70` Optional-quality points, and `5` maintainability
+scenarios, use roughly `15` safety points, `80` Optional-quality points, and `5` maintainability
 points per 100-point scenario unless a scenario has a documented reason to differ. Do not hide
 baseline-solved scenarios just to improve lift; move them to `evals-reference/` when they're better
 as regression coverage and report that separately.
