@@ -1,6 +1,8 @@
 # Add string support to workflow port lookup
 
 Create `WorkflowPortLookup.java` with the revised class. Use only Java 8-compatible Optional APIs.
+The current method was written in a quick pass; add the new parsing behavior and leave the method
+cleaner than you found it.
 
 Current code:
 

@@ -1,6 +1,6 @@
 # Clean up Optional value reads at checked boundaries
 
-Refactor `StoreSetup.java`. Assume Java 25.
+Use `$java-optionals` to refactor `StoreSetup.java`. Assume Java 25.
 
 The code was changed in a cleanup pass, but it still checks an `Optional` and then immediately reads
 the same value with `orElseThrow()`. Fix those cases while preserving behavior.

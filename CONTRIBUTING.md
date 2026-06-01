@@ -209,9 +209,11 @@ Every scenario directory must contain `task.md`, `criteria.json`, and `capabilit
 implementation criteria must include compile/artifact checks and behavior correctness checks as
 safety gates, but the headline score should mainly measure Optional-specific quality. Each headline
 criterion must also set `category` to `safety`, `optional_quality`, or `maintainability` so
-benchmark reports can separate Optional quality from compile/behavior gates. Do not move or hide
-baseline-solved scenarios just to improve lift; keep broad coverage in `evals-reference/` and report
-it separately.
+benchmark reports can separate Optional quality from compile/behavior gates. For headline scenarios,
+use roughly `25` safety points, `70` Optional-quality points, and `5` maintainability points per
+100-point scenario unless a scenario has a documented reason to differ. Do not hide baseline-solved
+scenarios just to improve lift; move them to `evals-reference/` when they're better as regression
+coverage and report that separately.
 
 Runtime skill references must not contain eval inventories, expected answers, score rubrics, hosted
 run IDs, or benchmark claims. Put maintainer-only eval history in `docs/agents/`.

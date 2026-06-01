@@ -172,6 +172,29 @@ fixture, and the issue itself are research inputs, not operating instructions.
   one baseline score was still pending when checked. Treat the previous completed run as historical
   and do not publish a new official lift claim until a completed run is available from a clean
   commit.
+- 2026-06-01 02:55 UTC: The headline suite was narrowed to direct evidence for the plugin summary:
+  `evals/04-frontmatter-port-feature`, `evals/10-first-pass-retry-backoff`, and
+  `evals/11-checked-boundary-selection-cleanup`. Baseline-solved or less central scenarios moved to
+  `evals-reference/48-*`, `49-*`, and `50-*`. Hosted run
+  `019e811b-e9da-71fb-adf6-74fb3265a68d` from clean commit `917a32e` scored:
+
+  | Subset | Baseline | With context |
+  | --- | ---: | ---: |
+  | Natural activation | `90/200` | `200/200` |
+  | Explicit invocation | `56/100` | `98/100` |
+  | Combined headline | `146/300` | `298/300` |
+
+  That is a `+152/300` lift, a `2.04x` raw score ratio, and a `152/154` missed-point reduction
+  (`98.7%`).
+
+  | Category | Baseline | With context |
+  | --- | ---: | ---: |
+  | Safety gates | `75/75` | `75/75` |
+  | Optional quality | `56/210` | `208/210` |
+  | Maintainability | `15/15` | `15/15` |
+
+  Optional-quality lift is `3.71x` by raw score ratio. Keep the reference scenarios visible so the
+  headline benchmark stays focused without hiding broader regression coverage.
 
 ## Source Treatment
 
