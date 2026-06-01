@@ -236,7 +236,7 @@ When the hosted benchmark changes:
 Releases are handled by maintainers. Release Please opens or updates a release pull request after
 changes land on `main`. Merging that release pull request updates `CHANGELOG.md`, bumps
 `.tessl-plugin/plugin.json`, creates the GitHub release, and then publishes the Tessl plugin from the
-release workflow.
+publish workflow.
 
 Before merging a release pull request:
 
