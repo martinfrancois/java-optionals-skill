@@ -39,9 +39,9 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 │       ├── java-optional-api.md
 │       └── optional-examples.md
 ├── docs/agents/
-│   ├── eval-case-inventory.md
-│   ├── legacy-evals.json
-│   └── source-notes.md
+│   ├── evals.md
+│   ├── workflow.md
+│   └── ...
 ├── AI_CONTRIBUTION_POLICY.md
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
@@ -56,9 +56,7 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 - `skills/java-optionals/references/optional-examples.md` contains runtime-safe examples.
 - `skills/java-optionals/references/java-optional-api.md` records Java 8 through Java 26
   Optional-family compatibility guidance.
-- `docs/agents/eval-case-inventory.md`, `docs/agents/legacy-evals.json`, and
-  `docs/agents/source-notes.md` are maintainer-only material and must not be linked from runtime
-  skill references.
+- `docs/agents/` contains current maintainer policy and workflow guidance.
 - `evals/` contains the hosted Tessl implementation-regression benchmark used for headline
   reporting.
 - `evals-reference/` keeps extra review and test scenarios that are useful during development but

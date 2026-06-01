@@ -36,8 +36,7 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - For headline scenarios, use roughly `25` safety points, `70` Optional-quality points, and `5`
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
-  hosted run IDs, or fixed score claims. Keep those in maintainer docs such as
-  [eval-case-inventory.md](eval-case-inventory.md) or [source-notes.md](source-notes.md).
+  hosted run IDs, or fixed score claims.
 - Java scenarios should state a baseline when API compatibility matters, and criteria should catch
   accidental use of APIs newer than that baseline.
 - If the baseline is too high, first check whether the eval is too generic or too easy before
@@ -54,6 +53,9 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   The reduced eval should reproduce the same without-skill vs with-skill difference seen in the
   full repository. If the with-skill replay still fails, record it as a regression target instead of
   promoting it as a passing eval.
+- Historical eval inventories, replay plans, hosted-run notes, and legacy eval formats are not kept
+  as active documentation. Keep current policy in these docs and use git history for old answer
+  keys, replay logs, and one-off run details.
 
 ## Checks
 
@@ -64,4 +66,3 @@ the criteria JSON check listed there.
 
 - [Workflow](workflow.md)
 - [Skill Behavior](skill-behavior.md)
-- [Historical Replay](replay/README.md)
