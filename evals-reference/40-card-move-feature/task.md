@@ -1,5 +1,7 @@
 # Add no-op handling to configured card move
 
+Assume Java 17.
+
 Use `$java-optionals` to create `CardMover.java` with the revised class.
 
 Current code:

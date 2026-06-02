@@ -1,5 +1,7 @@
 # Refactor report output
 
+Assume Java 17.
+
 Use `$java-optionals` to improve this output handling. Create `ReportCommand.java` containing the
 revised class:
 

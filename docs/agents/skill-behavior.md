@@ -45,6 +45,9 @@ auto-selection wording.
 - The skill must require its own hard-stop scan. Historical prompts may ask for narrower scans that
   only find `isPresent()` / `get()` / `orElseThrow()`; agents then miss newly introduced fake
   Optional stream/list replacements.
+- `skills/java-optionals/references/hard-stops.md` is the runtime reference for replacement
+  antipatterns and the final hard-stop scan. Keep it linked from `SKILL.md` when moving detailed
+  hard-stop guidance out of the main skill file.
 - The README may say: "agents that support skill auto-selection, such as Codex and Claude Code".
 - Before naming platforms that support auto-selection, verify against official docs and link those
   docs when possible.

@@ -1,5 +1,7 @@
 # Refactor comment upsert
 
+Assume Java 17.
+
 Use `$java-optionals` to make this upsert method easier to maintain without changing when
 `update(...)` or `create(...)` are called:
 

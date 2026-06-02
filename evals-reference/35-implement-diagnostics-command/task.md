@@ -1,5 +1,7 @@
 # Implement diagnostics command helpers
 
+Assume Java 17.
+
 Use `$java-optionals` to create `DiagnosticsCommand.java`.
 
 Implement two methods:

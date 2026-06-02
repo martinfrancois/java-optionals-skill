@@ -1,5 +1,7 @@
 # Write first-pass output routing
 
+Assume Java 17.
+
 Use `$java-optionals` to create `DeliveryRouter.java`.
 
 Implement:

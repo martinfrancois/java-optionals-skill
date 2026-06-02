@@ -1,5 +1,7 @@
 # Refactor greeting fallback
 
+Assume Java 17.
+
 Use `$java-optionals` to improve this Optional-based fallback:
 
 ```java

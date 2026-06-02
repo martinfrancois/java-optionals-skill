@@ -1,5 +1,7 @@
 # Finish product feed cleanup
 
+Assume Java 17.
+
 Use `$java-optionals` to create `CatalogFeed.java` with the revised class.
 
 This is adapted from a real AI-written Java method that normalized raw records before filtering

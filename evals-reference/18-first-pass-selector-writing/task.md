@@ -1,5 +1,7 @@
 # Write first-pass selector code
 
+Assume Java 17.
+
 Use `$java-optionals` to create `DiagnosticSelector.java`.
 
 Implement:

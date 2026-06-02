@@ -1,5 +1,7 @@
 # Implement command sanitizer
 
+Assume Java 17.
+
 Use `$java-optionals` to create `CommandSanitizer.java`.
 
 Implement:

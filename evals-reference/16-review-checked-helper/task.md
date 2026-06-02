@@ -1,5 +1,7 @@
 # Review proposed checked Optional helper
 
+Assume Java 17.
+
 Use `$java-optionals` to review this proposed helper-based refactor. Create `review.md` with a short
 review decision and rationale.
 

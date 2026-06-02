@@ -1,5 +1,7 @@
 # Review proposed single Optional stream loop
 
+Assume Java 17.
+
 Use `$java-optionals` to review this proposed cleanup. Create `review.md` with a short review
 decision and rationale.
 

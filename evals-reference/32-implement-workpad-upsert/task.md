@@ -1,5 +1,7 @@
 # Implement workpad upsert
 
+Assume Java 17.
+
 Use `$java-optionals` to create `WorkpadService.java`.
 
 Implement a small service that updates an existing workpad comment on a card, or creates one when

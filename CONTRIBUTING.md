@@ -36,6 +36,7 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 │   ├── SKILL.md
 │   ├── agents/openai.yaml
 │   └── references/
+│       ├── hard-stops.md
 │       ├── java-optional-api.md
 │       └── optional-examples.md
 ├── docs/agents/
@@ -53,6 +54,8 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
   requests.
 - `skills/java-optionals/SKILL.md` is the runtime instruction file loaded by agents.
 - `skills/java-optionals/agents/openai.yaml` provides display metadata.
+- `skills/java-optionals/references/hard-stops.md` lists replacement antipatterns and the final
+  scan agents should run before finishing Optional cleanup.
 - `skills/java-optionals/references/optional-examples.md` contains runtime-safe examples.
 - `skills/java-optionals/references/java-optional-api.md` records Java 8 through Java 26
   Optional-family compatibility guidance.

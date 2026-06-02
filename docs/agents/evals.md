@@ -35,10 +35,18 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   subtotal because the skill is not primarily trying to improve compilation.
 - For headline scenarios, use roughly `15` safety points, `80` Optional-quality points, and `5`
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
+- `evals/11-checked-boundary-selection-cleanup` is intentionally weighted as a 60-point headline
+  case because checked-boundary scoring is noisier and should not dominate the combined headline
+  score. Its category ratio still follows the headline policy: roughly 15% safety, 80%
+  Optional-quality, and 5% maintainability.
+- `evals-reference/45-workflow-validation-cleanup` remains reference/regression coverage. It is
+  intentionally not part of the focused headline suite because the active headline set should stay
+  concentrated on the clearest Optional-quality signal.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.
-- Java scenarios should state a baseline when API compatibility matters, and criteria should catch
-  accidental use of APIs newer than that baseline.
+- Every Java scenario, including temporary candidate scenarios, must state the Java version to
+  assume, such as `Assume Java 17.`. Criteria should catch accidental use of APIs newer than that
+  baseline.
 - If the baseline is too high, first check whether the eval is too generic or too easy before
   changing the skill. The baseline should reveal the real failures from the issue.
 - Be careful when tightening prompts or scoring. If a change mainly increases empty-output noise or
@@ -49,10 +57,10 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   `optional_quality` subtotal when updating benchmark claims.
 - Don't hide scenarios merely because the baseline solves them. Move them to `evals-reference/`
   only when they're better as broader regression coverage than headline evidence, and document why.
-- For transcript-derived cases, use the historical replay protocol before adding headline evals.
-  The reduced eval should reproduce the same without-skill vs with-skill difference seen in the
-  full repository. If the with-skill replay still fails, record it as a regression target instead of
-  promoting it as a passing eval.
+- For transcript-derived cases, compare the reduced scenario against available replay evidence, PR
+  notes, or git history before adding headline evals. The reduced eval should reproduce the same
+  without-skill vs with-skill difference seen in the full repository. If the with-skill replay still
+  fails, record it as a regression target instead of promoting it as a passing eval.
 - Historical eval inventories, replay plans, hosted-run notes, and legacy eval formats are not kept
   as active documentation. Keep current policy in these docs and use git history for old answer
   keys, replay logs, and one-off run details.

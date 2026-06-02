@@ -44,29 +44,6 @@ BEHAVIOR_WORDS = (
     "parse",
     "redact",
 )
-STYLE_WORDS = (
-    "ispresent",
-    "isempty",
-    "orelse(null)",
-    "getasint",
-    "getaslong",
-    "getasdouble",
-    "stream().tolist",
-)
-OPTIONAL_ANTIPATTERN_WORDS = (
-    "optional support",
-    "optionalsupport",
-    "checkedoptionals",
-    "optionalboundaries",
-    "optionalio",
-    "mapthrowing",
-    "throwingsupplier",
-    "optionalvalues",
-    "presentvalues",
-    "stream of optional",
-    "optional.stream",
-    "orelse(null)",
-)
 CRITERION_CATEGORIES = {"safety", "optional_quality", "maintainability"}
 EXPLICIT_INVOCATION_PATTERNS = (
     r"\$java-optionals\b",
@@ -149,7 +126,6 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
     is_headline = headline_root is not None and scenario.parent.resolve() == headline_root.resolve()
     names: set[str] = set()
     total_score = 0
-    style_score = 0
     compile_score = 0
     behavior_score = 0
     category_scores = {category: 0 for category in CRITERION_CATEGORIES}
@@ -186,8 +162,6 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         if category in category_scores:
             category_scores[category] += max_score
         haystack = text_of(item)
-        if any(word in haystack for word in STYLE_WORDS + OPTIONAL_ANTIPATTERN_WORDS):
-            style_score += max_score
         if any(word in haystack for word in COMPILE_WORDS):
             compile_score += max_score
         if any(word in haystack for word in BEHAVIOR_WORDS):
@@ -205,6 +179,8 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         failures.append(f"{criteria_file}: metadata.task_type must be implementation, cleanup, or review")
 
     task_text = task_file.read_text(encoding="utf-8") if task_file.is_file() else ""
+    if task_text and not re.search(r"\bAssume Java\s+\d+\b", task_text):
+        failures.append(f"{task_file}: task must state the Java version to assume, e.g. 'Assume Java 17.'")
     has_explicit_invocation = invocation_from_task(task_text)
     if invocation == "natural" and has_explicit_invocation:
         failures.append(f"{task_file}: natural scenario explicitly invokes the skill")
@@ -218,11 +194,6 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
             failures.append(f"{criteria_file}: headline implementation scenario needs behavior criteria")
         if category_scores["optional_quality"] <= 0:
             failures.append(f"{criteria_file}: headline implementation scenario needs optional_quality criteria")
-        if total_score and style_score > total_score * 0.45:
-            failures.append(
-                f"{criteria_file}: Optional/style criteria appear to dominate headline scoring "
-                f"({style_score}/{total_score})"
-            )
     elif is_headline and task_type == "cleanup" and category_scores["optional_quality"] <= 0:
         failures.append(f"{criteria_file}: headline cleanup scenario needs optional_quality criteria")
 

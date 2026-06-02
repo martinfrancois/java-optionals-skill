@@ -1,5 +1,7 @@
 # Review proposed null error workaround
 
+Assume Java 17.
+
 Use `$java-optionals` to review this proposed cleanup. Create `review.md` with a short review
 decision and rationale.
 
