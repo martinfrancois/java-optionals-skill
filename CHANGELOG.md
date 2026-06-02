@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.27](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.26...v0.1.27) (2026-06-02)
+
+
+### Bug Fixes
+
+* improve optional skill review quality ([#57](https://github.com/martinfrancois/java-optionals-skill/issues/57)) ([8854855](https://github.com/martinfrancois/java-optionals-skill/commit/88548554a2e2df5fce59a802402376830dbbc393))
+
 ## [0.1.26](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.25...v0.1.26) (2026-06-02)
 
 
