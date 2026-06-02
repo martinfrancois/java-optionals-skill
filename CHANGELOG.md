@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.26](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.25...v0.1.26) (2026-06-02)
+
+
+### Bug Fixes
+
+* tighten optional skill disclosure ([#54](https://github.com/martinfrancois/java-optionals-skill/issues/54)) ([915235d](https://github.com/martinfrancois/java-optionals-skill/commit/915235d1b43f052d8bb3a59f4bf9d7e4df7c907b))
+
 ## [0.1.25](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.24...v0.1.25) (2026-06-01)
 
 
