@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.28](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.27...v0.1.28) (2026-06-02)
+
+
+### Bug Fixes
+
+* structure optional skill references ([#59](https://github.com/martinfrancois/java-optionals-skill/issues/59)) ([9d8c602](https://github.com/martinfrancois/java-optionals-skill/commit/9d8c602e1bf54b4083087ab266981ab8203fcf9f))
+
 ## [0.1.27](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.26...v0.1.27) (2026-06-02)
 
 
