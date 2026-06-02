@@ -44,29 +44,6 @@ BEHAVIOR_WORDS = (
     "parse",
     "redact",
 )
-STYLE_WORDS = (
-    "ispresent",
-    "isempty",
-    "orelse(null)",
-    "getasint",
-    "getaslong",
-    "getasdouble",
-    "stream().tolist",
-)
-OPTIONAL_ANTIPATTERN_WORDS = (
-    "optional support",
-    "optionalsupport",
-    "checkedoptionals",
-    "optionalboundaries",
-    "optionalio",
-    "mapthrowing",
-    "throwingsupplier",
-    "optionalvalues",
-    "presentvalues",
-    "stream of optional",
-    "optional.stream",
-    "orelse(null)",
-)
 CRITERION_CATEGORIES = {"safety", "optional_quality", "maintainability"}
 EXPLICIT_INVOCATION_PATTERNS = (
     r"\$java-optionals\b",
@@ -149,7 +126,6 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
     is_headline = headline_root is not None and scenario.parent.resolve() == headline_root.resolve()
     names: set[str] = set()
     total_score = 0
-    style_score = 0
     compile_score = 0
     behavior_score = 0
     category_scores = {category: 0 for category in CRITERION_CATEGORIES}
@@ -186,8 +162,6 @@ def validate_scenario(scenario: Path, headline_root: Path | None) -> list[str]:
         if category in category_scores:
             category_scores[category] += max_score
         haystack = text_of(item)
-        if any(word in haystack for word in STYLE_WORDS + OPTIONAL_ANTIPATTERN_WORDS):
-            style_score += max_score
         if any(word in haystack for word in COMPILE_WORDS):
             compile_score += max_score
         if any(word in haystack for word in BEHAVIOR_WORDS):
