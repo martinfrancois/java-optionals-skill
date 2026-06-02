@@ -90,3 +90,5 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - [Skill Behavior](skill-behavior.md)
 - [Public Metadata And OSS Readiness](public-metadata.md)
 - [Maintaining Agent Docs](maintaining-agent-docs.md)
+- Runtime reference: `skills/java-optionals/references/hard-stops.md` lists replacement
+  antipatterns and the final scan agents should run before finishing Optional cleanup.
