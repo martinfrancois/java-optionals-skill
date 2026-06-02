@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.28...v1.0.0) (2026-06-02)
+
+
+### Miscellaneous Chores
+
+* request 1.0.0 release ([f333834](https://github.com/martinfrancois/java-optionals-skill/commit/f333834c6f038ac55ac1cc44db5def85202b4e44))
+
 ## [0.1.28](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.27...v0.1.28) (2026-06-02)
 
 
