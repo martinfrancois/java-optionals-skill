@@ -21,37 +21,47 @@ Before finalizing touched Optional flow:
 - No presence check plus value read for ordinary value flow; use value-binding Optional operations.
 - No eager fallback computation before checking the Optional; keep non-trivial fallback work lazy.
 - No fake one-Optional collection, iterable, loop, local `orElse(null)` branch, or generic helper.
-- For checked IO, prompt, or parser branches, use the Step 6 shape and run the scan in
-  [hard-stops.md](references/hard-stops.md).
+- For checked IO, prompt, or parser branches, use the Step 6 shape and run the final scan.
 
 ## Core Workflow
 
-0. Detect the Java baseline before choosing APIs. Check build/toolchain docs; if unclear, prefer
-   Java 8-compatible code or state the assumption. Don't introduce Java 9+ Optional APIs, Java 11
-   `isEmpty()`, Java 16 `Stream.toList()`, or Java 21 sequenced collections into older projects.
-1. Classify the boundary first. For ordinary value flow, use an Optional terminal instead of
-   `isPresent()`. When a nullable input starts an Optional flow, enter it directly with
-   `Optional.ofNullable(...)` before chaining.
-2. Use the Optional API that matches the intent: transform or chain with `map`/`flatMap`; use
-   `orElseGet` or an explicit absent branch for non-trivial fallback work; use `orElseThrow` only
-   when absence is truly an error. Don't precompute fallback results before checking the Optional.
+0. Check the Java baseline before choosing APIs. Read build/toolchain docs; if unclear, use Java
+   8-compatible code or state the assumption. Don't add Java 9+ Optional APIs, Java 11 `isEmpty()`,
+   Java 16 `Stream.toList()`, or Java 21 sequenced collections to older projects.
+1. For ordinary value flow, replace guard/read code with one Optional result. Start nullable input
+   with `Optional.ofNullable(...)`; don't reopen the value with `get()`.
 
    ```java
-   return Optional.ofNullable(input).flatMap(this::lookup).orElseGet(this::fallback);
+   // avoid
+   if (cart.isPresent()) return summarize(cart.get());
+   return createSummary(cartId);
+
+   // prefer
+   return cart.map(this::summarize).orElseGet(() -> createSummary(cartId));
    ```
 
-3. Collection lookup: keep real streams readable. Preserve `findFirst()` when order matters; use
+2. Match the API to the operation: `map` for transforms, `flatMap` for Optional-returning calls,
+   `orElseGet` for non-trivial fallback work, and `orElseThrow` only when absence is an error. Keep
+   fallback computation inside the supplier; don't assign or return it before checking the Optional.
+
+   ```java
+   return Optional.ofNullable(source)
+       .map(Source::rawValue)
+       .flatMap(this::parseValue)
+       .orElseGet(() -> computeFallback(request));
+   ```
+
+3. Keep real streams readable. Preserve `findFirst()` when order matters; use
    `findAny()` only when all matches are equivalent. Flatten `Stream<Optional<T>>` with
    `flatMap(Optional::stream)` on Java 9+.
-4. Selectors: bind a selected value once and keep fallback lazy. Treat `Optional<Boolean>` as three
-   states when absence differs from `false`. Predicate-only presence checks are fine when the value
-   is not read afterward. Use `ifPresent` or Java 9+ `ifPresentOrElse` for side-effect boundaries.
-5. Primitive Optionals: keep `OptionalInt`, `OptionalLong`, and `OptionalDouble` primitive. Avoid
-   boxing and avoid `isPresent()` plus `getAsInt()`/`getAsLong()`/`getAsDouble()`.
-6. Special boundaries: use a plain branch only at a real checked IO, prompt, checked parser, or
-   null-based API boundary. Before checked prompts, select any non-IO Optional value first. At the
-   checked branch, don't leave `isEmpty()`/`orElseThrow()` as the present read; use the
-   baseline-compatible empty-guard shape from [hard-stops.md](references/hard-stops.md).
+4. Bind selectors once and keep fallback lazy. Treat `Optional<Boolean>` as three states when
+   absence differs from `false`. Predicate-only presence checks are fine when the value isn't read.
+   Use `ifPresent` or Java 9+ `ifPresentOrElse` for side-effect boundaries.
+5. Keep primitive Optionals primitive. Use `OptionalInt`, `OptionalLong`, or `OptionalDouble`
+   directly; don't box or use `isPresent()` plus `getAsInt()`/`getAsLong()`/`getAsDouble()`.
+6. Use a plain branch only at a real checked IO, prompt, checked parser, or null-based API boundary.
+   Before checked prompts, select any non-IO Optional value first. At the checked branch, use the
+   baseline-compatible empty-guard shape:
 
    ```java
    // Java 11+; use !value.isPresent() on Java 8.
