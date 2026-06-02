@@ -10,13 +10,18 @@ Use this skill before writing Java code that may introduce `Optional`, and when 
 refactoring existing Optional code. Preserve behavior, exception contracts, public output, laziness,
 and readability.
 
-References: [hard-stops.md](references/hard-stops.md) for replacement antipatterns,
-[optional-examples.md](references/optional-examples.md) for worked examples, and
-[java-optional-api.md](references/java-optional-api.md) for Java-version compatibility.
+## Reference Bundle
+
+| File | Purpose |
+|---|---|
+| [hard-stops.md](references/hard-stops.md) | Replacement antipatterns and the marker scan to run |
+| [optional-examples.md](references/optional-examples.md) | Worked before/after examples |
+| [java-optional-api.md](references/java-optional-api.md) | Java-version compatibility for Optional APIs |
 
 ## Hard Stops
 
-Before finalizing touched Optional flow:
+Before finalizing touched Optional flow, check these quick rules (see
+[hard-stops.md](references/hard-stops.md) for the full antipattern list and marker scan):
 
 - No presence check plus value read for ordinary value flow; use value-binding Optional operations.
 - No eager fallback computation before checking the Optional; keep non-trivial fallback work lazy.
