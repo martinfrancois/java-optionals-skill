@@ -87,8 +87,8 @@ explain why.
 - [ ] Scenario invocation style is classified as natural or explicit, or N/A
 - [ ] Natural activation prompts don't explicitly invoke the skill, or N/A
 - [ ] Explicit invocation prompts are labeled as explicit, or N/A
-- [ ] Headline criteria include compile/artifact checks, or N/A
-- [ ] Headline criteria include behavior correctness checks, or N/A
+- [ ] Main eval criteria include compile/artifact checks, or N/A
+- [ ] Main eval criteria include behavior correctness checks, or N/A
 - [ ] Runtime references contain no eval answer keys, scenario inventory, hosted run IDs, or fixed
       score claims
 - [ ] Java baseline compatibility has been considered, or N/A

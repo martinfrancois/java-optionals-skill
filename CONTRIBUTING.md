@@ -60,10 +60,9 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 - `skills/java-optionals/references/java-optional-api.md` records Java 8 through Java 26
   Optional-family compatibility guidance.
 - `docs/agents/` contains current maintainer policy and workflow guidance.
-- `evals/` contains the hosted Tessl implementation-regression benchmark used for headline
-  reporting.
+- `evals/` contains the hosted Tessl main eval set used for lift reporting.
 - `evals-reference/` keeps extra review and test scenarios that are useful during development but
-  aren't part of the headline benchmark.
+  aren't part of the main eval set.
 - `scripts/` contains portable validation checks used by CI.
 - `.github/workflows/ci.yml` validates skill metadata, eval criteria, Tessl linting, and the
   publish dry-run when `TESSL_TOKEN` is configured.
@@ -203,20 +202,20 @@ tessl eval run --variant with-context --variant without-context .
 If you don't have a Tessl workspace, that's fine. Open the pull request with the local check results,
 and a maintainer can run the hosted evals before release.
 
-In this repository, the headline benchmark is the small main eval set in `evals/` used for public
-lift reporting. `evals-reference/` contains broader regression coverage that helps catch regressions
-but does not directly drive the main lift claim.
+In this repository, the main eval set lives in `evals/` and is used for public lift reporting.
+`evals-reference/` contains broader regression coverage that helps catch regressions but does not
+directly drive the main lift claim.
 
-The headline benchmark should stay focused on realistic tasks that mirror the motivating failures.
+The main eval set should stay focused on realistic tasks that mirror the motivating failures.
 It must include a documented mix of natural activation prompts and explicit invocation prompts.
 Natural scenarios must not mention `$java-optionals` or ask to use the skill. Explicit scenarios may
 name the skill and must be labeled as explicit in `criteria.json`.
 
-Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`. Headline
+Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`. Main eval
 implementation criteria must include compile/artifact checks and behavior correctness checks as
-safety checks, but the headline score should mainly measure Optional-specific quality. Each headline
+safety checks, but the main score should mainly measure Optional-specific quality. Each main eval
 criterion must also set `category` to `safety`, `optional_quality`, or `maintainability` so
-benchmark reports can separate Optional quality from compile/behavior checks. For headline
+eval reports can separate Optional quality from compile/behavior checks. For main eval
 scenarios, use roughly `15` safety points, `80` Optional-quality points, and `5` maintainability
 points per 100-point scenario unless a scenario has a documented reason to differ. Do not hide
 baseline-solved scenarios just to improve lift; move them to `evals-reference/` when they're better
@@ -234,7 +233,7 @@ When the hosted benchmark changes:
 - update baseline and skill scores;
 - update lift, raw score ratio, and missed-point reduction;
 - update the Optional-quality subtotal;
-- report natural activation, explicit invocation, headline combined, and reference/full results
+- report natural activation, explicit invocation, main eval combined, and reference/full results
   separately when available;
 - keep the README wording clear about what the benchmark measures and avoid stale fixed claims.
 

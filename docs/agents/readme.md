@@ -17,8 +17,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep eval-development details in `CONTRIBUTING.md`. The README should explain how the skill is
   evaluated and link to the Tessl plugin for current scores instead of duplicating fixed benchmark
   numbers that can go stale.
-- In the public README, prefer user-facing terms such as `main score` or `main eval set`; avoid
-  internal eval-design terms such as `headline`.
+- Use `main score` and `main eval set` consistently in public and maintainer docs.
 - Preserve maintainer-approved package-runner install examples such as `npx`, `yarn dlx`, `pnpx`,
   and `bunx` when they remain valid. Tessl's deprecated global npm install is a separate issue.
 - Mention Java baseline detection as a user benefit, but keep deep compatibility tables in runtime
