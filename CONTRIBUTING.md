@@ -203,6 +203,10 @@ tessl eval run --variant with-context --variant without-context .
 If you don't have a Tessl workspace, that's fine. Open the pull request with the local check results,
 and a maintainer can run the hosted evals before release.
 
+In this repository, the headline benchmark is the small main eval set in `evals/` used for public
+lift reporting. `evals-reference/` contains broader regression coverage that helps catch regressions
+but does not directly drive the main lift claim.
+
 The headline benchmark should stay focused on realistic tasks that mirror the motivating failures.
 It must include a documented mix of natural activation prompts and explicit invocation prompts.
 Natural scenarios must not mention `$java-optionals` or ask to use the skill. Explicit scenarios may

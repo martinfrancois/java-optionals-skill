@@ -272,8 +272,8 @@ Optional<DeliverySlot> deliverySlot(DeliveryWindow preferredWindow) {
 ## How It's Evaluated
 
 The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. The tasks
-cover both writing new Optional code and cleaning up existing Optional code. The headline suite uses
-a documented mix of natural prompts and explicit `Use $java-optionals` prompts. Each task is run
+cover both writing new Optional code and cleaning up existing Optional code. The main eval set uses a
+documented mix of natural prompts and explicit `Use $java-optionals` prompts. Each task is run
 without the skill and with the skill, then scored mainly on Optional-specific quality, with compile
 and behavior checks included as safety checks.
 
@@ -288,16 +288,16 @@ The evals check that agents:
 - keep real collection streams readable;
 - handle primitive Optionals and Optional-producing stream/collector APIs correctly.
 
-Compile and behavior checks make regressions visible in the score, but the headline score is
-intentionally weighted toward Optional quality: whether the agent keeps the same behavior while
-avoiding Optional antipatterns and readability regressions.
+Compile and behavior checks make regressions visible in the score, but the main score gives extra
+weight to Optional quality: whether the agent keeps the same behavior while avoiding Optional
+antipatterns and readability regressions.
 
 Results should be read by subset:
 
 - natural activation scenarios do not name the skill;
 - explicit invocation scenarios directly ask for `$java-optionals`;
 - Optional-quality subtotal shows the skill-specific effect;
-- the focused headline suite reports the representative mix;
+- the main eval set reports the representative mix;
 - `evals-reference/` keeps broader regression cases, including scenarios a strong baseline may
   already solve.
 
