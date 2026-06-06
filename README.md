@@ -277,6 +277,13 @@ documented mix of natural prompts and explicit `Use $java-optionals` prompts. Ea
 without the skill and with the skill, then scored mainly on Optional-specific quality, with compile
 and behavior checks included as safety checks.
 
+The Java Optional skill is broadly about Optional correctness, readability, fallback timing,
+boundary handling, stream interop, primitive Optional usage, and avoiding cleanup changes that
+replace one antipattern with another. The main eval set is evidence-weighted: it covers core skill
+capabilities and gives more weight to scenario families where hosted runs show the largest
+improvement with the skill versus without it. Read the main score as "where this skill measurably
+helps most," not as an evenly sampled survey of every Optional API.
+
 The evals check that agents:
 
 - produce coherent Java for the stated baseline;
@@ -297,9 +304,10 @@ Results should be read by subset:
 - natural activation scenarios do not name the skill;
 - explicit invocation scenarios directly ask for `$java-optionals`;
 - Optional-quality subtotal shows the skill-specific effect;
-- the main eval set reports the representative mix;
-- `evals-reference/` keeps broader regression cases, including scenarios a strong baseline may
-  already solve.
+- the main eval set is evidence-weighted toward realistic tasks where Optional-specific guidance
+  should change the answer;
+- `evals-reference/` keeps broader Optional regression coverage, including scenarios a strong
+  baseline may already solve, and should be reported separately from the main score.
 
 Current published scores are shown on the
 [Tessl plugin](https://tessl.io/registry/martinfrancois/java-optionals).

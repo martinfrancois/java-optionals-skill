@@ -11,8 +11,24 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   such as "order-independent" or "preserving laziness", unless those words are truly part of the
   user task. Explicit invocation prompts may name `$java-optionals`, but they should not leak the
   diagnosis or desired fix beyond invoking the skill.
+- The Java Optional skill is broadly about Optional correctness, readability, fallback timing,
+  boundary handling, stream interop, primitive Optional usage, and avoiding cleanup changes that
+  replace one antipattern with another.
+- The main eval set is evidence-weighted: it should cover core skill capabilities and give more
+  weight to scenario families where hosted runs show the largest improvement with the skill versus
+  without it. Read the main score as "where this skill measurably helps most," not as an evenly
+  sampled survey of every Optional API.
 - The main eval should mirror the real failure mode: tasks where an agent writes or changes Java
   Optional code and may introduce Optional antipatterns.
+- The main suite should include at least one scenario for each core capability area that the skill
+  claims to improve when a useful with-vs-without delta exists, higher weights for scenario families
+  with the largest missed-point reduction, natural and explicit invocation scenarios reported
+  separately, and reference scenarios kept separate unless promoted and normalized.
+- When choosing or weighting main scenarios, prefer hosted eval evidence: baseline score,
+  with-context score, raw score lift, missed-point reduction, and whether failures match real
+  observed Optional mistakes.
+- Do not promote a reference scenario into main only for topical balance if the baseline already
+  solves it and the skill adds little measurable value. Keep such cases in `evals-reference/`.
 - Keep a documented mix of invocation styles:
   - Natural activation scenarios don't mention `$java-optionals`, "use the skill", or similar
     command-style phrasing.

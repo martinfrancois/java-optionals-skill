@@ -25,6 +25,7 @@ ANSWER_KEY_MARKERS = (
     "uplift",
     "answer key",
 )
+OPENAI_AGENT_INTERFACE_KEYS = {"display_name", "short_description", "default_prompt"}
 
 
 def error(message: str) -> int:
@@ -54,6 +55,52 @@ def parse_frontmatter(text: str) -> dict[str, str]:
         frontmatter[key] = (value or "").strip().strip('"').strip("'")
 
     return frontmatter
+
+
+def parse_openai_agent_metadata(text: str) -> tuple[dict[str, str] | None, list[str]]:
+    failures: list[str] = []
+    if "\t" in text:
+        failures.append("contains tabs; use spaces")
+    lines = [line for line in text.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+    if not lines:
+        failures.append("metadata file is empty")
+        return None, failures
+    if lines[0] != "interface:":
+        failures.append("first non-comment line must be exactly 'interface:'")
+        return None, failures
+
+    values: dict[str, str] = {}
+    for line_number, line in enumerate(lines[1:], start=2):
+        match = re.fullmatch(r"  ([A-Za-z0-9_-]+):\s*(.+)", line)
+        if not match:
+            failures.append(f"line {line_number} must be a two-space-indented key/value pair")
+            continue
+        key, value = match.groups()
+        if key not in OPENAI_AGENT_INTERFACE_KEYS:
+            failures.append(f"unsupported interface key {key!r}")
+            continue
+        value = value.strip()
+        if (
+            (value.startswith('"') and value.endswith('"'))
+            or (value.startswith("'") and value.endswith("'"))
+        ):
+            value = value[1:-1]
+        if not value:
+            failures.append(f"{key} must be non-empty")
+        values[key] = value
+
+    missing = OPENAI_AGENT_INTERFACE_KEYS - set(values)
+    if missing:
+        failures.append(f"missing interface key(s): {', '.join(sorted(missing))}")
+    return values, failures
+
+
+def scan_answer_key_markers(path: Path, text: str) -> list[str]:
+    failures: list[str] = []
+    for marker in ANSWER_KEY_MARKERS:
+        if marker.lower() in text.lower():
+            failures.append(f"{path}: runtime file contains answer-key marker {marker!r}")
+    return failures
 
 
 def validate_skill(skill_path: Path) -> list[str]:
@@ -102,6 +149,7 @@ def validate_skill(skill_path: Path) -> list[str]:
     body = re.sub(r"^---\n.*?\n---\n?", "", text, count=1, flags=re.DOTALL).strip()
     if not body:
         failures.append(f"{skill_md}: missing body content after frontmatter")
+    failures.extend(scan_answer_key_markers(skill_md, body))
 
     for link in re.findall(r"\]\((references/[^)]+)\)", text):
         target = skill_path / link
@@ -116,11 +164,7 @@ def validate_skill(skill_path: Path) -> list[str]:
     if references_dir.is_dir():
         for reference in sorted(references_dir.glob("*.md")):
             reference_text = reference.read_text(encoding="utf-8")
-            for marker in ANSWER_KEY_MARKERS:
-                if marker.lower() in reference_text.lower():
-                    failures.append(
-                        f"{reference}: runtime reference contains answer-key marker {marker!r}"
-                    )
+            failures.extend(scan_answer_key_markers(reference, reference_text))
 
     stale_eval = skill_path / "evals" / "evals.json"
     if stale_eval.exists():
@@ -128,19 +172,8 @@ def validate_skill(skill_path: Path) -> list[str]:
 
     agent_metadata = skill_path / "agents" / "openai.yaml"
     if agent_metadata.exists():
-        try:
-            import yaml  # type: ignore
-        except Exception:
-            agent_text = agent_metadata.read_text(encoding="utf-8")
-            if not agent_text.strip():
-                failures.append(f"{agent_metadata}: metadata file is empty")
-            elif not re.search(r"^\s*display_name:\s*.+", agent_text, re.MULTILINE):
-                failures.append(f"{agent_metadata}: missing display_name field")
-        else:
-            try:
-                yaml.safe_load(agent_metadata.read_text(encoding="utf-8"))
-            except Exception as exc:  # pragma: no cover - depends on optional PyYAML
-                failures.append(f"{agent_metadata}: invalid YAML: {exc}")
+        _, metadata_failures = parse_openai_agent_metadata(agent_metadata.read_text(encoding="utf-8"))
+        failures.extend(f"{agent_metadata}: {failure}" for failure in metadata_failures)
 
     package_manifests = [Path(".tessl-plugin/plugin.json"), Path("tile.json")]
     existing_manifests = [path for path in package_manifests if path.exists()]

@@ -17,6 +17,14 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep eval-development details in `CONTRIBUTING.md`. The README should explain how the skill is
   evaluated and link to the Tessl plugin for current scores instead of duplicating fixed benchmark
   numbers that can go stale.
+- When discussing evals, explain that the Java Optional skill is broadly about Optional correctness,
+  readability, fallback timing, boundary handling, stream interop, primitive Optional usage, and
+  avoiding cleanup changes that replace one antipattern with another.
+- Describe the main eval set as evidence-weighted: it covers core skill capabilities and gives more
+  weight to scenario families where hosted runs show the largest with-vs-without improvement.
+- When discussing evals, distinguish main eval lift scenarios from reference/regression scenarios,
+  and say that broader Optional coverage in `evals-reference/` should be reported separately from
+  the main score.
 - Use `main score` and `main eval set` consistently in public and maintainer docs.
 - Preserve maintainer-approved package-runner install examples such as `npx`, `yarn dlx`, `pnpx`,
   and `bunx` when they remain valid. Tessl's deprecated global npm install is a separate issue.
@@ -74,6 +82,9 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 - Keep code samples as short as possible while still showing the failure.
 - The README examples aren't exact copies from the original issue. Phrase them accurately with
   "would have changed" or equivalent wording.
+- README examples based on issue evidence, hosted eval outputs, or reference runs are evidence
+  examples. Do not "fix" or harden those snippets during review cleanup unless the maintainer
+  explicitly asks to change the underlying example; update surrounding explanation instead.
 - In anti-examples, avoid generic `from` / `to` labels because they can imply the second half is the
   desired change.
 - Prefer comments like:

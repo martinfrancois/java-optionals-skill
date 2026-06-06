@@ -31,15 +31,15 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
 
 - PR CI runs tokenless validation and plugin lint. Authenticated Tessl publish dry-runs run only on
   trusted `main` pushes and release/publish workflows. The optional skill review workflow runs
-  `tessl skill review --threshold 90` when `TESSL_TOKEN` is configured.
+  `tessl skill review --threshold 100` when `TESSL_TOKEN` is configured.
 - Use `tessl plugin publish --dry-run --bump patch .` as a PR-safe local/manual dry-run when the
   current manifest version is already published. Release publishing uses exact-version
   `tessl plugin publish --dry-run .` immediately before `tessl plugin publish .`.
 - Tessl release publishing runs in the `tessl-release` GitHub environment. Configure required
   reviewers or other environment protection rules in the repository settings when the plan supports
   them.
-- Keep the review threshold below 100 unless the maintainer explicitly wants a hard 100 gate. Don't
-  remove useful Java guidance only to improve the review score.
+- Keep the review threshold at 100 while the skill passes that bar without weakening its Java
+  guidance. Don't remove useful Java guidance only to improve the review score.
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
   `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases. When Release Please creates a
   release with `GITHUB_TOKEN`, the normal `release: published` trigger does not fire, so the Release
