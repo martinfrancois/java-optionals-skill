@@ -2,7 +2,8 @@
 
 ## Scope
 
-Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claims, or scoring rules.
+Use this when editing `evals/`, `evals-reference/`, `evals-regression/`, skill evals,
+benchmark claims, or scoring rules.
 
 ## Rules
 
@@ -28,18 +29,25 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   with-context score, raw score lift, missed-point reduction, and whether failures match real
   observed Optional mistakes.
 - Do not promote a reference scenario into main only for topical balance if the baseline already
-  solves it and the skill adds little measurable value. Keep such cases in `evals-reference/`.
+  solves it and the skill adds little measurable value. Keep low-delta diagnostic cases in
+  `evals-reference/`; move repeatedly solved cases to `evals-regression/` only when hosted history
+  shows both with-context and without-context are consistently 100%.
 - Keep a documented mix of invocation styles:
   - Natural activation scenarios don't mention `$java-optionals`, "use the skill", or similar
     command-style phrasing.
   - Explicit invocation scenarios may say `Use $java-optionals`.
-  - Report natural, explicit, main eval combined, and reference/full results separately when hosted
-    data is available.
+  - Report natural, explicit, main eval combined, reference, and regression results separately when
+    hosted data is available.
 - Include evals where the agent writes new Optional code, not only reviews or refactors snippets.
 - Review-only or no-op evals must still require a concrete artifact, such as `review.md`, so empty
   answers can't pass by accident.
-- Keep broad review or smoke scenarios in `evals-reference/` unless they're part of the main eval
-  set.
+- Keep three eval buckets:
+  - `evals/` is the main eval set used for public lift reporting.
+  - `evals-reference/` is for candidate, diagnostic, and broad coverage scenarios that may still
+    help tune or promote future main evals.
+  - `evals-regression/` is for scenarios that hosted history shows are consistently solved by both
+    with-context and without-context. These protect against regressions but should not be part of
+    normal lift discovery runs.
 - Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`.
 - Every `criteria.json` must classify `metadata.invocation` and `metadata.task_type`.
 - Every main eval criterion must classify `category` as `safety`, `optional_quality`, or
@@ -55,9 +63,9 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   case because checked-boundary scoring is noisier and should not dominate the combined main eval
   score. Its category ratio still follows the main eval policy: roughly 15% safety, 80%
   Optional-quality, and 5% maintainability.
-- `evals-reference/45-workflow-validation-cleanup` remains reference/regression coverage. It is
-  intentionally not part of the focused main eval set because the active main eval set should stay
-  concentrated on the clearest Optional-quality signal.
+- `evals-reference/45-workflow-validation-cleanup` remains reference coverage. It is intentionally
+  not part of the focused main eval set because the active main eval set should stay concentrated on
+  the clearest Optional-quality signal.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.
 - Every Java scenario, including temporary candidate scenarios, must state the Java version to
@@ -71,8 +79,18 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
   legitimate coverage just to improve lift.
 - Track raw score, percentage-point lift, raw score ratio, missed-point reduction, and the
   `optional_quality` subtotal when updating benchmark claims.
-- Don't hide scenarios merely because the baseline solves them. Move them to `evals-reference/`
-  only when they're better as broader regression coverage than main eval evidence, and document why.
+- If with-context is below 100%, keep the scenario in its current suite. Fix the skill or eval in
+  place and run that scenario targeted until it is clean before running broader suites. Do not move
+  failing with-context scenarios to hide them.
+- Promote or demote scenarios based on purpose and evidence:
+  - `with-context < 100`: targeted fix/rerun in place.
+  - `with-context = 100` and `without-context < 100`: useful lift evidence; keep in main or
+    reference depending on coverage and weighting.
+  - `with-context = 100` and `without-context = 100` repeatedly: candidate for
+    `evals-regression/`.
+- Don't hide scenarios merely because the baseline solves them. Move them to `evals-regression/`
+  only when they're consistently solved by both variants and are better as safety-net coverage than
+  lift or diagnostic evidence.
 - For transcript-derived cases, compare the reduced scenario against available replay evidence, PR
   notes, or git history before adding main evals. The reduced eval should reproduce the same
   without-skill vs with-skill difference seen in the full repository. If the with-skill replay still
@@ -80,6 +98,15 @@ Use this when editing `evals/`, `evals-reference/`, skill evals, benchmark claim
 - Historical eval inventories, replay plans, hosted-run notes, and legacy eval formats are not kept
   as active documentation. Keep current policy in these docs and use git history for old answer
   keys, replay logs, and one-off run details.
+- Keep hosted eval usage minimal while preserving confidence:
+  - For skill or eval changes, first run only the affected scenario directories, with both variants
+    when lift or regression risk matters.
+  - If any affected with-context result is below 100%, keep rerunning only those targeted scenarios
+    after fixes until they are clean.
+  - Then run `evals/` for the main score.
+  - Run relevant `evals-reference/` scenarios when deciding promotion or checking nearby behavior.
+  - Run `evals-regression/` as a final safety check before release or after broad changes, not on
+    every tuning loop.
 
 ## Checks
 

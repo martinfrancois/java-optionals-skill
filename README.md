@@ -306,8 +306,8 @@ Results should be read by subset:
 - Optional-quality subtotal shows the skill-specific effect;
 - the main eval set is evidence-weighted toward realistic tasks where Optional-specific guidance
   should change the answer;
-- `evals-reference/` keeps broader Optional regression coverage, including scenarios a strong
-  baseline may already solve, and should be reported separately from the main score.
+- `evals-reference/` keeps broader Optional candidate and diagnostic coverage;
+- `evals-regression/` keeps solved safety-net cases and is reported separately from the main score.
 
 Current published scores are shown on the
 [Tessl plugin](https://tessl.io/registry/martinfrancois/java-optionals).

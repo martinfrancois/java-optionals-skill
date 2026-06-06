@@ -22,9 +22,10 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   avoiding cleanup changes that replace one antipattern with another.
 - Describe the main eval set as evidence-weighted: it covers core skill capabilities and gives more
   weight to scenario families where hosted runs show the largest with-vs-without improvement.
-- When discussing evals, distinguish main eval lift scenarios from reference/regression scenarios,
-  and say that broader Optional coverage in `evals-reference/` should be reported separately from
-  the main score.
+- When discussing evals, distinguish main eval lift scenarios, reference/candidate scenarios, and
+  regression safety-net scenarios. Say that broader Optional coverage in `evals-reference/` and
+  solved safety-net coverage in `evals-regression/` should be reported separately from the main
+  score.
 - Use `main score` and `main eval set` consistently in public and maintainer docs.
 - Preserve maintainer-approved package-runner install examples such as `npx`, `yarn dlx`, `pnpx`,
   and `bunx` when they remain valid. Tessl's deprecated global npm install is a separate issue.

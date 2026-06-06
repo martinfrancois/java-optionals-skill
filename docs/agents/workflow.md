@@ -15,7 +15,7 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
 
   ```bash
   python3 scripts/validate_skill.py skills/java-optionals
-  python3 scripts/validate_eval_criteria.py evals evals-reference
+  python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression
   python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
   bash -n scripts/check_publish_dry_run.sh
   tessl plugin lint .
@@ -40,6 +40,22 @@ Use this for day-to-day work in this repository: auth checks, validation, commit
   them.
 - Keep the review threshold at 100 while the skill passes that bar without weakening its Java
   guidance. Don't remove useful Java guidance only to improve the review score.
+- For skill behavior or eval changes, run hosted evals with the smallest useful set first. Start
+  with targeted affected scenarios:
+
+  ```bash
+  tessl eval run --variant with-context --variant without-context <scenario-dir>
+  ```
+
+  If any targeted with-context result is below 100%, fix the skill or eval and rerun only those
+  targeted scenarios until they are clean. Then run the main eval set:
+
+  ```bash
+  tessl eval run --variant with-context --variant without-context .
+  ```
+
+  Run relevant `evals-reference/` scenarios for nearby behavior and `evals-regression/` only as a
+  final safety check before release or after broad changes.
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
   `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases. When Release Please creates a
   release with `GITHUB_TOKEN`, the normal `release: published` trigger does not fire, so the Release

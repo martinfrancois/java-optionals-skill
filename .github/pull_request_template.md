@@ -45,7 +45,7 @@ during the PR.
 Checks most contributors can run:
 
 - [ ] `python3 scripts/validate_skill.py skills/java-optionals`
-- [ ] `python3 scripts/validate_eval_criteria.py evals evals-reference`
+- [ ] `python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression`
 - [ ] `python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py`
 - [ ] `bash -n scripts/check_publish_dry_run.sh`
 - [ ] `tessl plugin lint .`
@@ -56,9 +56,11 @@ Tessl-authenticated checks:
 
 - [ ] `bash scripts/check_publish_dry_run.sh .`
 - [ ] `tessl plugin publish --dry-run --bump patch .`
-- [ ] `tessl skill review --threshold 90 skills/java-optionals/SKILL.md`, if skill text or references changed
-- [ ] `tessl eval run --variant with-context --variant without-context .`, if skill behavior,
-      evals, or benchmark claims changed
+- [ ] `tessl skill review --threshold 100 skills/java-optionals/SKILL.md`, if skill text or references changed
+- [ ] Targeted `tessl eval run --variant with-context --variant without-context <scenario-dir>`, if
+      skill behavior or evals changed
+- [ ] Full/main `tessl eval run --variant with-context --variant without-context .`, if benchmark
+      claims changed or targeted with-context results are clean
 
 `bash scripts/check_publish_dry_run.sh .`, `tessl skill review`, and hosted Tessl evals require
 Tessl authentication. Hosted evals also require a linked Tessl project. If you can't run one of
@@ -91,6 +93,8 @@ explain why.
 - [ ] Main eval criteria include behavior correctness checks, or N/A
 - [ ] Runtime references contain no eval answer keys, scenario inventory, hosted run IDs, or fixed
       score claims
+- [ ] If any with-context result was below 100%, targeted failing scenarios were fixed and rerun
+      before broader eval suites
 - [ ] Java baseline compatibility has been considered, or N/A
 - [ ] `OptionalInt`, `OptionalLong`, and `OptionalDouble` guidance has been considered, or N/A
 - [ ] Optional-producing stream terminals and collectors are covered, or N/A

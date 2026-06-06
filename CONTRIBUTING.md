@@ -31,6 +31,7 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 ├── .github/workflows/
 ├── evals/
 ├── evals-reference/
+├── evals-regression/
 ├── scripts/
 ├── skills/java-optionals/
 │   ├── SKILL.md
@@ -61,8 +62,10 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
   Optional-family compatibility guidance.
 - `docs/agents/` contains current maintainer policy and workflow guidance.
 - `evals/` contains the hosted Tessl main eval set used for lift reporting.
-- `evals-reference/` keeps extra review and test scenarios that are useful during development but
-  aren't part of the main eval set.
+- `evals-reference/` keeps candidate, diagnostic, and broad coverage scenarios that are useful
+  during development but aren't part of the main eval set.
+- `evals-regression/` keeps scenarios that hosted history shows are consistently solved by both
+  with-context and without-context.
 - `scripts/` contains portable validation checks used by CI.
 - `.github/workflows/ci.yml` validates skill metadata, eval criteria, Tessl linting, and the
   publish dry-run when `TESSL_TOKEN` is configured.
@@ -86,7 +89,7 @@ Run these before committing skill, eval, README, package, script, or CI changes:
 
 ```bash
 python3 scripts/validate_skill.py skills/java-optionals
-python3 scripts/validate_eval_criteria.py evals evals-reference
+python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression
 python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
 bash -n scripts/check_publish_dry_run.sh
 tessl plugin lint .
@@ -203,8 +206,10 @@ If you don't have a Tessl workspace, that's fine. Open the pull request with the
 and a maintainer can run the hosted evals before release.
 
 In this repository, the main eval set lives in `evals/` and is used for public lift reporting.
-`evals-reference/` contains broader regression coverage that helps catch regressions but does not
-directly drive the main lift claim.
+`evals-reference/` contains candidate and diagnostic coverage that helps tune the skill or decide
+what to promote later. `evals-regression/` contains scenarios that are consistently solved by both
+with-context and without-context; these are useful safety checks, but they do not directly drive the
+main lift claim.
 
 The Java Optional skill is broadly about Optional correctness, readability, fallback timing,
 boundary handling, stream interop, primitive Optional usage, and avoiding cleanup changes that
@@ -226,8 +231,14 @@ criterion must also set `category` to `safety`, `optional_quality`, or `maintain
 eval reports can separate Optional quality from compile/behavior checks. For main eval
 scenarios, use roughly `15` safety points, `80` Optional-quality points, and `5` maintainability
 points per 100-point scenario unless a scenario has a documented reason to differ. Do not hide
-baseline-solved scenarios just to improve lift; keep them in `evals-reference/` when they're better
-as broader Optional regression coverage, and report that separately from the main score.
+baseline-solved scenarios just to improve lift. Move repeatedly baseline-solved scenarios to
+`evals-regression/` only when hosted evidence shows both variants are consistently 100%. Keep
+low-delta but still diagnostic scenarios in `evals-reference/`.
+
+When with-context is below 100%, keep the scenario wherever it already lives. Fix the skill or eval
+there, then rerun only that targeted scenario until it is clean before running broader suites. After
+targeted failures are clean, run `evals/` for the main score, relevant `evals-reference/` scenarios
+for nearby behavior, and `evals-regression/` only for final release safety or broad changes.
 
 Runtime skill references must not contain eval inventories, expected answers, score rubrics, hosted
 run IDs, or benchmark claims. Put maintainer-only eval history in `docs/agents/`.
@@ -241,8 +252,8 @@ When the hosted benchmark changes:
 - update baseline and skill scores;
 - update lift, raw score ratio, and missed-point reduction;
 - update the Optional-quality subtotal;
-- report natural activation, explicit invocation, main eval combined, and reference/full results
-  separately when available;
+- report natural activation, explicit invocation, main eval combined, reference, and regression
+  results separately when available;
 - keep the README wording clear about what the benchmark measures and avoid stale fixed claims.
 
 ## Release Checklist

@@ -116,7 +116,7 @@ jobs:
           trap 'code=$?; if [ "$code" -eq 0 ]; then set_status success "Release PR validation passed"; else set_status failure "Release PR validation failed"; fi' EXIT
 
           python3 scripts/validate_skill.py skills/java-optionals
-          python3 scripts/validate_eval_criteria.py evals evals-reference
+          python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression
           python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
           bash -n scripts/check_publish_dry_run.sh
           tessl plugin lint .
