@@ -4,21 +4,25 @@
   "checklist": [
     {
       "name": "Rejects eager fallback",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Says the proposed orElse(createAndStore(key)) cleanup should not be accepted."
     },
     {
       "name": "Identifies eager evaluation",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Explains that orElse evaluates createAndStore(key) even when find(key) is present."
     },
     {
       "name": "Preserves side-effect laziness",
+      "category": "safety",
       "max_score": 8,
       "description": "Notes that createAndStore likely mutates cache state or performs creation work, so it must remain lazy."
     },
     {
       "name": "Suggests orElseGet",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Suggests find(key).orElseGet(() -> createAndStore(key)) or an equivalent lazy branch."
     }

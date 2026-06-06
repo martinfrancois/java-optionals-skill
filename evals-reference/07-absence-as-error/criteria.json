@@ -4,16 +4,19 @@
   "checklist": [
     {
       "name": "Uses orElseThrow",
+      "category": "optional_quality",
       "max_score": 4,
       "description": "Uses Optional.ofNullable(...).orElseThrow(...) or equivalent direct absence-as-error handling."
     },
     {
       "name": "Preserves exception",
+      "category": "safety",
       "max_score": 3,
       "description": "Preserves IllegalArgumentException and the message prefix \"Missing config: \"."
     },
     {
       "name": "Does not overgeneralize",
+      "category": "maintainability",
       "max_score": 3,
       "description": "Does not claim orElseThrow is always bad or replace it with null/fake collection control flow."
     }

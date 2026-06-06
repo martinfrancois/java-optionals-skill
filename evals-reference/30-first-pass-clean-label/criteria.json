@@ -4,26 +4,31 @@
   "checklist": [
     {
       "name": "Creates requested formatter",
+      "category": "safety",
       "max_score": 4,
       "description": "Creates LabelFormatter.java with label(Optional<String>)."
     },
     {
       "name": "Uses transform/filter boundary",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Uses rawLabel.map(String::trim).filter(...).orElse(\"untitled\") or an equivalent direct Optional transform/filter/fallback boundary."
     },
     {
       "name": "No presence-check value read",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() for ordinary fallback."
     },
     {
       "name": "No null or fake collection workaround",
+      "category": "optional_quality",
       "max_score": 6,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over one Optional."
     },
     {
       "name": "Preserves label behavior",
+      "category": "safety",
       "max_score": 8,
       "description": "Returns the trimmed nonblank label when present and untitled for absent or blank labels."
     }

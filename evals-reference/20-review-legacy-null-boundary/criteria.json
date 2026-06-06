@@ -4,21 +4,25 @@
   "checklist": [
     {
       "name": "Allows isolated boundary",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Recognizes this can be acceptable if AuditEvent uses null to represent absent comments."
     },
     {
       "name": "No extra null branching",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Does not suggest adding value != null branches or other local null-control-flow around the value."
     },
     {
       "name": "Separates API redesign",
+      "category": "maintainability",
       "max_score": 10,
       "description": "Notes that changing AuditEvent to avoid null would be a separate API/design decision, not a local Optional cleanup."
     },
     {
       "name": "No blanket orElse null ban",
+      "category": "optional_quality",
       "max_score": 8,
       "description": "Does not claim every orElse(null) is forbidden regardless of boundary context."
     }

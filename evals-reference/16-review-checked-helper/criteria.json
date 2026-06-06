@@ -4,26 +4,31 @@
   "checklist": [
     {
       "name": "Rejects local helper cleanup",
+      "category": "maintainability",
       "max_score": 10,
       "description": "Says the helper-based refactor should not be accepted as a narrow local cleanup."
     },
     {
       "name": "Preserves checked boundary",
+      "category": "safety",
       "max_score": 8,
       "description": "Explains that the prompt fallback performs checked IO and the method should keep that boundary honest."
     },
     {
       "name": "Avoids unchecked wrapper",
+      "category": "optional_quality",
       "max_score": 8,
       "description": "Rejects the UncheckedIOException adaptation or similar checked-exception hiding solely to keep fluent syntax."
     },
     {
       "name": "Suggests narrow branch",
+      "category": "optional_quality",
       "max_score": 8,
       "description": "Suggests an explicit isEmpty branch with configured.orElseThrow(), or an equivalent clear branch at the checked-IO boundary."
     },
     {
       "name": "No dependency/style creep",
+      "category": "maintainability",
       "max_score": 6,
       "description": "Does not suggest adding a functional dependency for this narrow local cleanup."
     }

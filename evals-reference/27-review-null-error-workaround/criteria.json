@@ -4,21 +4,25 @@
   "checklist": [
     {
       "name": "Rejects proposed cleanup",
+      "category": "maintainability",
       "max_score": 10,
       "description": "Says the proposed change should not be accepted."
     },
     {
       "name": "Identifies null-control-flow workaround",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Explains that orElse(null) plus value == null is null-style control flow, not an Optional cleanup."
     },
     {
       "name": "Keeps absence-as-error boundary",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Recommends keeping orElseThrow for the true absence-as-error boundary."
     },
     {
       "name": "Preserves exception behavior",
+      "category": "safety",
       "max_score": 8,
       "description": "Preserves IllegalArgumentException and the Missing config message."
     }

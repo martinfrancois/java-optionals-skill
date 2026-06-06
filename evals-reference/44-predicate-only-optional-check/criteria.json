@@ -4,31 +4,37 @@
   "checklist": [
     {
       "name": "Creates revised check class",
+      "category": "safety",
       "max_score": 4,
       "description": "Creates CustomerSessionCheck.java with the requested import, class, and belongsToCustomer method."
     },
     {
       "name": "Uses predicate-only Optional boundary",
+      "category": "optional_quality",
       "max_score": 34,
       "description": "Uses sessionCustomerId.filter(id -> id.equals(expectedCustomerId)).isPresent(), map(id -> id.equals(expectedCustomerId)).orElse(false), or an equivalent direct Optional predicate boundary that calls equals on the present value."
     },
     {
       "name": "Avoids value-read antipattern",
+      "category": "optional_quality",
       "max_score": 30,
       "description": "Does not keep isPresent() followed by orElseThrow(), get(), or another value read for the customer id."
     },
     {
       "name": "Preserves true behavior",
+      "category": "safety",
       "max_score": 12,
       "description": "Returns true when sessionCustomerId is present and equals expectedCustomerId."
     },
     {
       "name": "Preserves false behavior",
+      "category": "safety",
       "max_score": 12,
       "description": "Returns false when sessionCustomerId is empty or does not equal expectedCustomerId."
     },
     {
       "name": "Avoids null/list workaround",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), or a loop over the Optional."
     }

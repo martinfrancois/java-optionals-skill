@@ -4,21 +4,25 @@
   "checklist": [
     {
       "name": "Chooses Optional boundary",
+      "category": "optional_quality",
       "max_score": 2,
       "description": "Uses cache.find(key) or equivalent Optional-returning lookup as the present/absent boundary."
     },
     {
       "name": "Lazy creation",
+      "category": "optional_quality",
       "max_score": 4,
       "description": "Uses orElseGet(() -> createAndStore(key)) or an equivalent explicit absent branch so document creation and cache mutation are lazy."
     },
     {
       "name": "No eager fallback",
+      "category": "optional_quality",
       "max_score": 2,
       "description": "Does not use orElse(createAndStore(key)) or otherwise create/store the document when the cache already has it."
     },
     {
       "name": "No Optional antipattern workaround",
+      "category": "optional_quality",
       "max_score": 2,
       "description": "Does not use isPresent() plus get(), orElse(null), or an Optional-to-list workaround."
     }

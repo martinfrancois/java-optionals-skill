@@ -4,36 +4,43 @@
   "checklist": [
     {
       "name": "Creates requested planner",
+      "category": "safety",
       "max_score": 6,
       "description": "Creates SetupOptions.java with plan(Request, Defaults) and the requested records."
     },
     {
       "name": "Uses priority Optional boundaries",
+      "category": "optional_quality",
       "max_score": 18,
       "description": "Uses request optionals with or(() -> defaults...) or equivalent direct Optional priority boundaries for githubMode, boardName, and serverPort."
     },
     {
       "name": "Keeps boolean validation separate",
+      "category": "safety",
       "max_score": 10,
       "description": "Allows presence checks for validation if no value is read repeatedly, or uses filter/map/orElseThrow cleanly for validation."
     },
     {
       "name": "No presence-check value-read antipattern",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Does not use isPresent()/isEmpty() followed by get() or orElseThrow() repeatedly for ordinary default selection."
     },
     {
       "name": "No null or fake collection workaround",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), lists, or loops to unwrap the request/default Optionals."
     },
     {
       "name": "Preserves defaults",
+      "category": "safety",
       "max_score": 14,
       "description": "Chooses request before defaults before literal fallback for all three fields, with false, Symphony, and 18080 as final defaults."
     },
     {
       "name": "Preserves validation errors",
+      "category": "safety",
       "max_score": 10,
       "description": "Throws the exact server_port and board-name IllegalArgumentException messages for invalid explicit request values."
     }

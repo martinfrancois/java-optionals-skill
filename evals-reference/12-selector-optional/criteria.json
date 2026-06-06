@@ -4,26 +4,31 @@
   "checklist": [
     {
       "name": "Preserves mutual exclusion",
+      "category": "safety",
       "max_score": 3,
       "description": "Keeps the board/workflow mutual-exclusion check and preserves the exception message."
     },
     {
       "name": "Classifies boolean-only validation",
+      "category": "optional_quality",
       "max_score": 3,
       "description": "Recognizes that the conflict check may remain as isPresent() checks because no Optional value is read there."
     },
     {
       "name": "Uses Optional selector boundaries",
+      "category": "optional_quality",
       "max_score": 4,
       "description": "Replaces selector branches with board.map(...).orElseGet(...) and a nested workflow Optional boundary, or an equivalent direct Optional/value-binding shape."
     },
     {
       "name": "No null workaround",
+      "category": "optional_quality",
       "max_score": 2,
       "description": "Does not introduce orElse(null), value != null checks, or local null control flow."
     },
     {
       "name": "No fake collection workaround",
+      "category": "optional_quality",
       "max_score": 2,
       "description": "Does not convert either single Optional selector to stream().toList(), a list, or a loop."
     }

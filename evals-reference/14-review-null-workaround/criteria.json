@@ -4,21 +4,25 @@
   "checklist": [
     {
       "name": "Rejects proposed cleanup",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Clearly says the proposed change should not be accepted as an Optional cleanup."
     },
     {
       "name": "Identifies null-control-flow equivalence",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Explains that orElse(null) plus value != null is the same nullable-control-flow smell in a different form."
     },
     {
       "name": "Suggests Optional boundary",
+      "category": "optional_quality",
       "max_score": 8,
       "description": "Suggests user.map(User::displayName).orElse(\"Anonymous\") or an equivalent direct Optional boundary."
     },
     {
       "name": "Preserves behavior",
+      "category": "safety",
       "max_score": 4,
       "description": "Preserves both the present displayName branch and the Anonymous fallback."
     }

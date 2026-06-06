@@ -4,36 +4,43 @@
   "checklist": [
     {
       "name": "Creates revised setup options",
+      "category": "safety",
       "max_score": 6,
       "description": "Creates SetupOptions.java with plan(Request, Defaults) and the requested records."
     },
     {
       "name": "Uses priority Optional boundaries",
+      "category": "optional_quality",
       "max_score": 24,
       "description": "Uses request optionals with or(() -> defaults...) or equivalent direct Optional priority boundaries for all selected values."
     },
     {
       "name": "Removes repeated request value reads",
+      "category": "optional_quality",
       "max_score": 18,
       "description": "Does not keep isPresent()/get() or repeated request optional calls for ordinary default selection."
     },
     {
       "name": "Avoids null/list workaround",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Does not use orElse(null), local null branching, Optional.stream().toList(), lists, or loops to unwrap the Optionals."
     },
     {
       "name": "Preserves priority defaults",
+      "category": "safety",
       "max_score": 16,
       "description": "Chooses request before defaults before literal fallback for githubMode, boardName, and serverPort."
     },
     {
       "name": "Adds server-port validation",
+      "category": "safety",
       "max_score": 10,
       "description": "Throws IllegalArgumentException(\"server_port must be positive\") for explicit request ports below 1."
     },
     {
       "name": "Adds board-name validation and trimming",
+      "category": "safety",
       "max_score": 14,
       "description": "Throws IllegalArgumentException(\"board name must not be blank\") for explicit blank request board names and trims the selected board name."
     }

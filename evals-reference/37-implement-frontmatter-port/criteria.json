@@ -4,31 +4,37 @@
   "checklist": [
     {
       "name": "Creates requested lookup",
+      "category": "safety",
       "max_score": 6,
       "description": "Creates WorkflowPortLookup.java with workflowServerPortReservation(Optional<Map<String,Object>>, Path) and needed imports."
     },
     {
       "name": "Uses Optional map boundary",
+      "category": "optional_quality",
       "max_score": 18,
       "description": "Uses frontMatter.flatMap/map plus a parsing helper or equivalent direct Optional boundary instead of guarding then repeatedly calling frontMatter.get()."
     },
     {
       "name": "No repeated Optional reopening",
+      "category": "optional_quality",
       "max_score": 12,
       "description": "Does not use frontMatter.get() or frontMatter.orElseThrow() repeatedly after an isPresent()/isEmpty() guard."
     },
     {
       "name": "No null or fake collection workaround",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Does not use orElse(null) plus local null branching, Optional.stream().toList(), or a loop over one Optional."
     },
     {
       "name": "Parses supported values",
+      "category": "safety",
       "max_score": 18,
       "description": "Returns Optional.of(port) for Number values and trimmed numeric String values."
     },
     {
       "name": "Handles absence and malformed values",
+      "category": "safety",
       "max_score": 16,
       "description": "Returns Optional.empty() for absent front matter, missing key, blank strings, non-numeric strings, and unsupported value types without throwing."
     }

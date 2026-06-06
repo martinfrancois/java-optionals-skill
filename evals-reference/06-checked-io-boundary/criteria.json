@@ -4,16 +4,19 @@
   "checklist": [
     {
       "name": "Preserves checked exception contract",
+      "category": "safety",
       "max_score": 10,
       "description": "Keeps throws IOException and does not change the checked exception boundary."
     },
     {
       "name": "No unchecked wrapper",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Does not wrap IOException in RuntimeException, UncheckedIOException, or similar solely to keep Optional fluent syntax."
     },
     {
       "name": "No new helper or dependency",
+      "category": "maintainability",
       "max_score": 8,
       "description": "Does not introduce CheckedOptionals or another helper/dependency for this narrow case."
     }

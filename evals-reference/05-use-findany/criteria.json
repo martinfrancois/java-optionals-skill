@@ -4,11 +4,13 @@
   "checklist": [
     {
       "name": "Uses findAny",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Changes findFirst to findAny or clearly states findAny is the intended shape."
     },
     {
       "name": "Preserves real collection stream",
+      "category": "safety",
       "max_score": 6,
       "description": "Recognizes the stream is over a real collection and does not replace it with a manual loop or null-control-flow."
     }

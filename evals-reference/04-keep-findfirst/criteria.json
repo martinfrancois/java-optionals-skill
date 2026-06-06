@@ -4,16 +4,19 @@
   "checklist": [
     {
       "name": "Keeps findFirst",
+      "category": "optional_quality",
       "max_score": 10,
       "description": "Does not replace findFirst with findAny."
     },
     {
       "name": "Identifies order contract",
+      "category": "optional_quality",
       "max_score": 8,
       "description": "Explains that firstEnabledRoute and list order imply first-match priority."
     },
     {
       "name": "No unnecessary rewrite",
+      "category": "maintainability",
       "max_score": 4,
       "description": "Does not introduce a manual loop or unrelated refactor."
     }

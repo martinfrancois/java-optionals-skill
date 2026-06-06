@@ -4,21 +4,25 @@
   "checklist": [
     {
       "name": "Recognizes single Optional",
+      "category": "optional_quality",
       "max_score": 2,
       "description": "Identifies that name is one Optional, not a real collection."
     },
     {
       "name": "Uses direct Optional boundary",
+      "category": "optional_quality",
       "max_score": 3,
       "description": "Uses name.map(...).orElse(...) or an equivalent direct Optional expression."
     },
     {
       "name": "Removes fake collection",
+      "category": "optional_quality",
       "max_score": 3,
       "description": "Removes stream().toList() and the loop over a one-element Optional stream."
     },
     {
       "name": "Behavior preserved",
+      "category": "safety",
       "max_score": 2,
       "description": "Preserves both greeting strings."
     }
