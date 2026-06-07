@@ -271,43 +271,14 @@ Optional<DeliverySlot> deliverySlot(DeliveryWindow preferredWindow) {
 
 ## How It's Evaluated
 
-The skill is tested on implementation tasks based on real AI-written `Optional` mistakes. The tasks
-cover both writing new Optional code and cleaning up existing Optional code. The main eval set uses a
-documented mix of natural prompts and explicit `Use $java-optionals` prompts. Each task is run
-without the skill and with the skill, then scored mainly on Optional-specific quality, with compile
-and behavior checks included as safety checks.
+The skill is tested on Java Optional implementation, review, and cleanup tasks. Each task is run
+without the skill and with the skill, then scored on whether the agent keeps the requested behavior
+while choosing clearer and safer Optional code.
 
-The Java Optional skill is broadly about Optional correctness, readability, fallback timing,
-boundary handling, stream interop, primitive Optional usage, and avoiding cleanup changes that
-replace one antipattern with another. The main eval set is evidence-weighted: it covers core skill
-capabilities and gives more weight to scenario families where hosted runs show the largest
-improvement with the skill versus without it. Read the main score as "where this skill measurably
-helps most," not as an evenly sampled survey of every Optional API.
-
-The evals check that agents:
-
-- produce coherent Java for the stated baseline;
-- preserve exact outputs, errors, prompts, side effects, ordering, and fallback timing;
-- avoid `isPresent()` / `get()` for ordinary value reads;
-- don't replace `Optional` with `orElse(null)`;
-- run fallback work only when needed;
-- keep checked IO and user prompts clear;
-- keep real collection streams readable;
-- handle primitive Optionals and Optional-producing stream/collector APIs correctly.
-
-Compile and behavior checks make regressions visible in the score, but the main score gives extra
-weight to Optional quality: whether the agent keeps the same behavior while avoiding Optional
-antipatterns and readability regressions.
-
-Results should be read by subset:
-
-- natural activation scenarios do not name the skill;
-- explicit invocation scenarios directly ask for `$java-optionals`;
-- Optional-quality subtotal shows the skill-specific effect;
-- the main eval set is evidence-weighted toward realistic tasks where Optional-specific guidance
-  should change the answer;
-- `evals-reference/` keeps broader Optional candidate and diagnostic coverage;
-- `evals-regression/` keeps solved safety-net cases and is reported separately from the main score.
+The evals cover common places where agents write plausible-looking but weak Java: ordinary
+`isPresent()` / `get()` value reads, eager fallback work, `orElse(null)`, unclear checked-IO
+boundaries, primitive Optional mistakes, stream interop, and cleanup changes that replace one
+Optional antipattern with another.
 
 Current published scores are shown on the
 [Tessl plugin](https://tessl.io/registry/martinfrancois/java-optionals).
