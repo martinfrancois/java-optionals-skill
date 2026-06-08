@@ -45,11 +45,80 @@ BEHAVIOR_WORDS = (
     "redact",
 )
 CRITERION_CATEGORIES = {"safety", "optional_quality", "maintainability"}
+EVIDENCE_TYPES = {"ordinary_lift", "solved_regression", "skill_context_dependent"}
+INTERNAL_LABEL_ALLOW_PATTERNS = (
+    r"\bdo not deduct\b.{0,120}\b(?:hard[- ]stop|checklist|scan|marker|skill)\b",
+    r"\baward full credit\b.{0,120}\b(?:hard[- ]stop|checklist|scan|marker|skill)\b",
+    r"\ballow(?:s|ed)?\b.{0,120}\b(?:hard[- ]stop|checklist|scan|marker|skill)\b",
+    r"\bbrief(?:ly)? uses\b.{0,120}\b(?:hard[- ]stop|checklist|scan|marker|skill)\b",
+)
 EXPLICIT_INVOCATION_PATTERNS = (
     r"\$java-optionals\b",
     r"\buse\s+java-optionals\b",
     r"\buse\s+the\s+java-optionals\s+skill\b",
     r"\bjava-optionals\s+skill\b",
+)
+IDENTIFIER_STOP_WORDS = {
+    "abstractmap",
+    "api",
+    "arraylist",
+    "bigdecimal",
+    "boolean",
+    "class",
+    "collectors",
+    "comparator",
+    "completablefuture",
+    "comparing",
+    "double",
+    "exception",
+    "filter",
+    "function",
+    "gatherers",
+    "hashmap",
+    "integer",
+    "intoptional",
+    "java",
+    "list",
+    "long",
+    "longoptional",
+    "map",
+    "object",
+    "objects",
+    "optional",
+    "parallel",
+    "paralleloptional",
+    "predicate",
+    "record",
+    "runtimeexception",
+    "set",
+    "simpleimmutableentry",
+    "sorted",
+    "string",
+    "stream",
+    "streams",
+    "system",
+    "throw",
+    "tolist",
+    "total",
+    "null",
+    "unsupportedoperationexception",
+    "void",
+}
+SCENARIO_REFERENCE_FILES = (
+    Path("README.md"),
+    Path("CONTRIBUTING.md"),
+    Path(".github/pull_request_template.md"),
+    Path("evals/NUMBERING.md"),
+    Path("evals-reference/NUMBERING.md"),
+    Path("evals-regression/NUMBERING.md"),
+    Path("evals-regression/README.md"),
+)
+SCENARIO_REFERENCE_DIRS = (Path("docs"),)
+AGENT_DOC_FORBIDDEN_EXTERNAL_HISTORY_PATTERNS = (
+    re.compile(r"\bissue\s+#?\d+\b", re.IGNORECASE),
+    re.compile(r"\bpr\s+#?\d+\b", re.IGNORECASE),
+    re.compile(r"https://github\.com/[^)\s]+/(?:issues|pull)/\d+", re.IGNORECASE),
+    re.compile(r"\b019e[a-f0-9-]{20,}\b", re.IGNORECASE),
 )
 
 
@@ -90,6 +159,103 @@ def invocation_from_task(task_text: str) -> bool:
 
 def text_of(item: dict[str, Any]) -> str:
     return f"{item.get('name', '')} {item.get('description', '')}".lower()
+
+
+def normalized_words(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", text.lower())
+
+
+def normalized_text(text: str) -> str:
+    return " ".join(normalized_words(text))
+
+
+def ngrams(words: list[str], size: int) -> set[tuple[str, ...]]:
+    if len(words) < size:
+        return set()
+    return {tuple(words[index : index + size]) for index in range(len(words) - size + 1)}
+
+
+def code_like_text(text: str) -> str:
+    chunks = re.findall(r"```(?:[A-Za-z0-9_-]+)?\n(.*?)```", text, flags=re.DOTALL)
+    chunks.extend(re.findall(r"`([^`\n]+)`", text))
+    return "\n".join(chunks)
+
+
+def task_similarity(left: str, right: str) -> float:
+    left_words = normalized_words(left)
+    right_words = normalized_words(right)
+    left_text = " ".join(left_words)
+    right_text = " ".join(right_words)
+    if not left_text or not right_text:
+        return 0.0
+    exact_ratio = 1.0 if left_text == right_text else 0.0
+    left_grams = ngrams(left_words, 8)
+    right_grams = ngrams(right_words, 8)
+    if not left_grams or not right_grams:
+        return exact_ratio
+    overlap = len(left_grams & right_grams) / min(len(left_grams), len(right_grams))
+    return max(exact_ratio, overlap)
+
+
+def domain_identifiers(text: str) -> set[str]:
+    identifiers = set(re.findall(r"\b[A-Za-z_][A-Za-z0-9_]*\b", code_like_text(text)))
+    result: set[str] = set()
+    for identifier in identifiers:
+        lowered = identifier.lower()
+        if lowered in IDENTIFIER_STOP_WORDS or len(identifier) < 4:
+            continue
+        if identifier.isupper() and len(identifier) <= 6:
+            continue
+        result.add(identifier)
+    return result
+
+
+def api_markers(text: str) -> set[str]:
+    markers = set(
+        re.findall(
+            r"\b[A-Z][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)+\b"
+            r"|\b[A-Za-z_][A-Za-z0-9_]*::[A-Za-z_][A-Za-z0-9_]*\b",
+            text,
+        )
+    )
+    return {marker for marker in markers if marker not in {"System.out"}}
+
+
+def is_skill_context_dependent_text(text: str) -> bool:
+    lowered = text.lower()
+    context_terms = (
+        "skill bundle",
+        "skill package",
+        "skill-provided",
+        "skill-only context",
+        "agent instructions",
+        "from the skill",
+        "from the skill bundle",
+        "bundled reference",
+        "bundled reference text",
+        "exact skill-provided text",
+        "exact wording",
+        "exact text",
+        "exact scan",
+        "exact scan header",
+        "exact checklist",
+        "exact procedure",
+        "exact command",
+        "scan command from the skill",
+        "hard-stop rg scan command",
+    )
+    required_terms = (
+        "exact",
+        "skill-provided",
+        "skill-only context",
+        "skill package",
+        "agent instructions",
+        "from the skill",
+        "bundled reference",
+    )
+    return any(term in lowered for term in context_terms) and any(
+        term in lowered for term in required_terms
+    )
 
 
 def validate_scenario(scenario: Path, main_eval_root: Path | None) -> list[str]:
@@ -174,18 +340,61 @@ def validate_scenario(scenario: Path, main_eval_root: Path | None) -> list[str]:
         if any(word in haystack for word in BEHAVIOR_WORDS):
             behavior_score += max_score
 
+    task_text = task_file.read_text(encoding="utf-8") if task_file.is_file() else ""
     metadata = data.get("metadata")
     if not isinstance(metadata, dict):
         failures.append(f"{criteria_file}: missing metadata object")
         metadata = {}
     invocation = metadata.get("invocation")
     task_type = metadata.get("task_type")
+    evidence_type = metadata.get("evidence_type")
     if invocation not in {"natural", "explicit"}:
         failures.append(f"{criteria_file}: metadata.invocation must be natural or explicit")
     if task_type not in {"implementation", "cleanup", "review"}:
         failures.append(f"{criteria_file}: metadata.task_type must be implementation, cleanup, or review")
+    if evidence_type is not None and evidence_type not in EVIDENCE_TYPES:
+        failures.append(
+            f"{criteria_file}: metadata.evidence_type must be one of {sorted(EVIDENCE_TYPES)}"
+        )
+    if scenario.parent.name == "evals-regression" and evidence_type not in {
+        "solved_regression",
+        "skill_context_dependent",
+    }:
+        failures.append(
+            f"{criteria_file}: regression scenarios must set metadata.evidence_type to "
+            "solved_regression or skill_context_dependent"
+        )
+    scenario_text = f"{scenario.name}\n{task_text}\n{json.dumps(data, sort_keys=True)}"
+    detected_skill_context = is_skill_context_dependent_text(scenario_text)
+    if evidence_type == "skill_context_dependent" and scenario.parent.name != "evals-regression":
+        failures.append(
+            f"{criteria_file}: metadata.evidence_type=skill_context_dependent must live in evals-regression"
+        )
+    if evidence_type == "solved_regression" and scenario.parent.name != "evals-regression":
+        failures.append(
+            f"{criteria_file}: metadata.evidence_type=solved_regression must live in evals-regression"
+        )
+    if evidence_type == "ordinary_lift" and scenario.parent.name == "evals-regression":
+        failures.append(
+            f"{criteria_file}: metadata.evidence_type=ordinary_lift must live in evals or evals-reference"
+        )
+    if evidence_type != "skill_context_dependent" and detected_skill_context:
+        failures.append(
+            f"{criteria_file}: scenario appears skill-context-dependent; set "
+            "metadata.evidence_type to skill_context_dependent and keep it in evals-regression"
+        )
+    if evidence_type != "skill_context_dependent" and task_type == "review":
+        for index, item in enumerate(checklist, start=1):
+            if not isinstance(item, dict):
+                continue
+            criterion_text = text_of(item)
+            if any(re.search(pattern, criterion_text) for pattern in INTERNAL_LABEL_ALLOW_PATTERNS):
+                failures.append(
+                    f"{criteria_file}: checklist item {index} appears to allow internal workflow "
+                    "labels in ordinary review output; prohibit them or move the scenario to "
+                    "skill-context-dependent regression if exact workflow wording is required"
+                )
 
-    task_text = task_file.read_text(encoding="utf-8") if task_file.is_file() else ""
     if task_text and not re.search(r"\bAssume Java\s+\d+\b", task_text):
         failures.append(f"{task_file}: task must state the Java version to assume, e.g. 'Assume Java 17.'")
     has_explicit_invocation = invocation_from_task(task_text)
@@ -212,6 +421,139 @@ def validate_scenario(scenario: Path, main_eval_root: Path | None) -> list[str]:
     return failures
 
 
+def validate_cross_suite_duplicates(dirs: list[Path]) -> list[str]:
+    failures: list[str] = []
+    active = [scenario for scenario in dirs if scenario.parent.name == "evals"]
+    reference = [
+        scenario
+        for scenario in dirs
+        if scenario.parent.name in {"evals-reference", "evals-regression"}
+    ]
+    for active_scenario in active:
+        if not (active_scenario / "task.md").is_file():
+            continue
+        active_task = (active_scenario / "task.md").read_text(encoding="utf-8")
+        for reference_scenario in reference:
+            if not (reference_scenario / "task.md").is_file():
+                continue
+            reference_task = (reference_scenario / "task.md").read_text(encoding="utf-8")
+            similarity = task_similarity(active_task, reference_task)
+            if similarity >= 0.85:
+                failures.append(
+                    f"{active_scenario}: task.md is too similar to {reference_scenario} "
+                    f"(normalized task overlap {similarity:.2f})"
+                )
+    return failures
+
+
+def validate_runtime_reference_overlap(dirs: list[Path]) -> list[str]:
+    failures: list[str] = []
+    references_root = Path("skills/java-optionals/references")
+    if not references_root.exists():
+        return failures
+
+    runtime_text = "\n".join(
+        path.read_text(encoding="utf-8") for path in sorted(references_root.glob("*.md"))
+    )
+    runtime_identifiers = domain_identifiers(runtime_text)
+    runtime_words = normalized_words(runtime_text)
+    runtime_grams = ngrams(runtime_words, 12)
+
+    for scenario in dirs:
+        if scenario.parent.name != "evals":
+            continue
+        task_file = scenario / "task.md"
+        if not task_file.exists():
+            continue
+        task_text = task_file.read_text(encoding="utf-8")
+        if is_skill_context_dependent_text(f"{scenario.name}\n{task_text}"):
+            continue
+
+        task_identifiers = domain_identifiers(task_text)
+        shared_identifiers = sorted(task_identifiers & runtime_identifiers)
+        task_words = normalized_words(task_text)
+        task_grams = ngrams(task_words, 12)
+        long_overlap_count = len(task_grams & runtime_grams)
+
+        if long_overlap_count >= 8 and len(shared_identifiers) >= 8:
+            failures.append(
+                f"{scenario}: task.md overlaps runtime references too closely; shared identifiers: "
+                f"{', '.join(shared_identifiers[:12])}"
+            )
+    return failures
+
+
+def runtime_reference_overlap_warnings(dirs: list[Path]) -> list[str]:
+    warnings: list[str] = []
+    references_root = Path("skills/java-optionals/references")
+    if not references_root.exists():
+        return warnings
+
+    runtime_text = "\n".join(
+        path.read_text(encoding="utf-8") for path in sorted(references_root.glob("*.md"))
+    )
+    runtime_identifiers = domain_identifiers(runtime_text)
+    runtime_api_markers = api_markers(runtime_text)
+    runtime_words = normalized_words(runtime_text)
+    runtime_grams = ngrams(runtime_words, 12)
+
+    for scenario in dirs:
+        if scenario.parent.name != "evals":
+            continue
+        task_file = scenario / "task.md"
+        criteria_file = scenario / "criteria.json"
+        if not task_file.exists() or not criteria_file.exists():
+            continue
+        task_text = task_file.read_text(encoding="utf-8")
+        criteria_text = criteria_file.read_text(encoding="utf-8")
+        combined_text = f"{task_text}\n{criteria_text}"
+        if is_skill_context_dependent_text(f"{scenario.name}\n{combined_text}"):
+            continue
+
+        shared_identifiers = sorted(domain_identifiers(combined_text) & runtime_identifiers)
+        shared_api_markers = sorted(api_markers(combined_text) & runtime_api_markers)
+        combined_grams = ngrams(normalized_words(combined_text), 12)
+        long_overlap_count = len(combined_grams & runtime_grams)
+        repeated_api_shape = (
+            "blocking" in combined_text.lower()
+            and "bounded" in combined_text.lower()
+            and "Gatherers.mapConcurrent" in shared_api_markers
+            and "Map.entry" in shared_api_markers
+        )
+        if (
+            len(shared_identifiers) >= 4
+            or (len(shared_identifiers) >= 3 and long_overlap_count)
+            or repeated_api_shape
+        ):
+            warnings.append(
+                f"{scenario}: task.md plus criteria.json are close to runtime references; "
+                f"document a focused-coverage rationale if intentional. Shared identifiers: "
+                f"{', '.join(shared_identifiers[:12]) or '(none)'}; shared API markers: "
+                f"{', '.join(shared_api_markers[:12]) or '(none)'}"
+            )
+
+    return warnings
+
+
+def validate_scenario_path_references() -> list[str]:
+    failures: list[str] = []
+    files = [path for path in SCENARIO_REFERENCE_FILES if path.exists()]
+    for directory in SCENARIO_REFERENCE_DIRS:
+        if directory.exists():
+            files.extend(sorted(directory.rglob("*.md")))
+
+    pattern = re.compile(r"`?((?:evals|evals-reference|evals-regression)/[A-Za-z0-9_.\-/]+)`?")
+    for path in files:
+        text = path.read_text(encoding="utf-8")
+        for match in pattern.finditer(text):
+            candidate = match.group(1).rstrip(".,);:")
+            if "*" in candidate:
+                continue
+            if not Path(candidate).exists():
+                failures.append(f"{path}: stale scenario path reference {candidate!r}")
+    return failures
+
+
 def validate_runtime_references() -> list[str]:
     failures: list[str] = []
     root = Path("skills/java-optionals/references")
@@ -224,6 +566,23 @@ def validate_runtime_references() -> list[str]:
                 failures.append(f"{path}: runtime reference contains answer-key marker {marker!r}")
     if Path("skills/java-optionals/evals/evals.json").exists():
         failures.append("skills/java-optionals/evals/evals.json: stale runtime-adjacent legacy eval file")
+    return failures
+
+
+def validate_agent_docs_self_contained() -> list[str]:
+    failures: list[str] = []
+    root = Path("docs/agents")
+    if not root.exists():
+        return failures
+    for path in sorted(root.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        for pattern in AGENT_DOC_FORBIDDEN_EXTERNAL_HISTORY_PATTERNS:
+            match = pattern.search(text)
+            if match:
+                failures.append(
+                    f"{path}: docs/agents must be self-contained; remove external history "
+                    f"reference {match.group(0)!r}"
+                )
     return failures
 
 
@@ -326,7 +685,14 @@ def main() -> int:
     for path in paths:
         if path.is_dir():
             failures.extend(validate_numbering(path))
+    failures.extend(validate_cross_suite_duplicates(dirs))
+    warnings = runtime_reference_overlap_warnings(dirs)
+    failures.extend(validate_scenario_path_references())
     failures.extend(validate_runtime_references())
+    failures.extend(validate_agent_docs_self_contained())
+
+    for warning in warnings:
+        print(f"warning: {warning}", file=sys.stderr)
 
     if failures:
         for failure in failures:

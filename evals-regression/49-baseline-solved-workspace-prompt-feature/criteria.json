@@ -46,6 +46,7 @@
     }
   ],
   "metadata": {
+    "evidence_type": "solved_regression",
     "invocation": "explicit",
     "task_type": "implementation"
   }
