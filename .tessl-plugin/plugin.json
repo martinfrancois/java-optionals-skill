@@ -1,8 +1,8 @@
 {
   "name": "martinfrancois/java-optionals",
   "version": "1.0.0",
-  "description": "Help AI coding agents use Java Optional well in new code and cleanups, without replacing one antipattern with another.",
-  "summary": "Help AI coding agents use Java Optional well in new code and cleanups, without replacing one antipattern with another.",
+  "description": "Help AI coding agents use Java Optional well in new code, review, and cleanup without replacing one antipattern with another.",
+  "summary": "Help AI coding agents use Java Optional well in new code, review, and cleanup without replacing one antipattern with another.",
   "repository": "https://github.com/martinfrancois/java-optionals-skill",
   "homepage": "https://github.com/martinfrancois/java-optionals-skill#readme",
   "license": "MIT",
