@@ -46,10 +46,9 @@ Checks most contributors can run:
 
 - [ ] `python3 scripts/validate_skill.py skills/java-optionals`
 - [ ] `python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression`
-- [ ] `python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py`
-- [ ] `bash -n scripts/check_publish_dry_run.sh`
+- [ ] `python3 -m py_compile scripts/*.py`
+- [ ] `bash -n scripts/*.sh`
 - [ ] `tessl plugin lint .`
-- [ ] `markdownlint`, if Markdown changed
 - [ ] Manual rendered-doc or example review, if docs or examples changed
 
 Tessl-authenticated checks:
@@ -57,10 +56,14 @@ Tessl-authenticated checks:
 - [ ] `bash scripts/check_publish_dry_run.sh .`
 - [ ] `tessl plugin publish --dry-run --bump patch .`
 - [ ] `tessl skill review --threshold 100 skills/java-optionals/SKILL.md`, if skill text or references changed
-- [ ] Targeted `tessl eval run --variant with-context --variant without-context <scenario-dir>`, if
-      skill behavior or evals changed
-- [ ] Full/main `tessl eval run --variant with-context --variant without-context .`, if benchmark
-      claims changed or targeted with-context results are clean
+- [ ] Targeted main/reference `scripts/run_eval_suite.sh <main|reference> <scenario-name>`, if skill behavior or those evals changed
+- [ ] Targeted regression `scripts/run_eval_suite.sh regression <scenario-name>`, if regression evals changed
+- [ ] Every substantively changed eval scenario was rerun targeted and reached 100% with context, or the PR explains the Tessl blocker and remaining work
+- [ ] Runtime skill/reference changes only: full `scripts/run_eval_suite.sh reference` was run after the final runtime-context change, or the PR links the blocker issue
+- [ ] Runtime skill/reference changes only: full `scripts/run_eval_suite.sh regression` was run after the final runtime-context change, or the PR links the blocker issue
+- [ ] Pure eval suite moves did not change task wording, scoring criteria, or capability text beyond suite-placement metadata/numbering notes
+- [ ] `scripts/classify_eval_result.py <run-json> --scenario-dir <scenario-dir>`, if a scenario was added or moved between suites
+- [ ] Full/main `scripts/run_eval_suite.sh main`, if benchmark claims changed or targeted with-context results are clean
 
 `bash scripts/check_publish_dry_run.sh .`, `tessl skill review`, and hosted Tessl evals require
 Tessl authentication. Hosted evals also require a linked Tessl project. If you can't run one of
@@ -83,30 +86,17 @@ explain why.
 
 ## Review Checklist
 
-- [ ] Docs updated, or N/A
-- [ ] Evals updated, or N/A
-- [ ] Scenario directories include `task.md`, `criteria.json`, and `capability.txt`, or N/A
-- [ ] Scenario invocation style is classified as natural or explicit, or N/A
-- [ ] Natural activation prompts don't explicitly invoke the skill, or N/A
-- [ ] Explicit invocation prompts are labeled as explicit, or N/A
-- [ ] Main eval criteria include compile/artifact checks, or N/A
-- [ ] Main eval criteria include behavior correctness checks, or N/A
-- [ ] Runtime references contain no eval answer keys, scenario inventory, hosted run IDs, or fixed
-      score claims
-- [ ] If any with-context result was below 100%, targeted failing scenarios were fixed and rerun
-      before broader eval suites
-- [ ] Java baseline compatibility has been considered, or N/A
-- [ ] `OptionalInt`, `OptionalLong`, and `OptionalDouble` guidance has been considered, or N/A
-- [ ] Optional-producing stream terminals and collectors are covered, or N/A
-- [ ] Java 26 Javadocs were checked for Optional-family coverage, or N/A
-- [ ] Valid README package-runner instructions were preserved, or N/A
-- [ ] Tessl package commands match the verified plugin package format
-- [ ] Full/reference eval reporting is not hidden or cherry-picked
-- [ ] Tessl checks were run, or unavailability is documented
-- [ ] PR title or squash title uses Conventional Commits
-- [ ] Redaction checked: no Tessl tokens, GitHub tokens, package manager tokens, private repository
-      links, private eval artifacts, private registry/workspace links, local host paths, or
-      proprietary Java source
+- [ ] The change is scoped to the sections, skill files, evals, or workflows described above.
+- [ ] Validation that applies to this change is checked above, or any unavailable check is explained.
+- [ ] If Java Optional guidance changed, Java baseline compatibility, fallback timing, null interop, primitive Optionals, and checked boundaries were considered.
+- [ ] If evals or benchmark claims changed, the eval scenarios remain fair and do not leak answer keys, run IDs, or fixed score claims into runtime references.
+- [ ] If runtime skill text or references changed, hosted checks were widened from targeted affected scenarios to main/reference/regression as described in `docs/agents/workflow.md`, or any Tessl blocker is documented.
+- [ ] If a runtime skill/reference change was released, the final report includes the published main eval run plus post-change reference and regression run IDs, or a blocker issue for missing broad suites.
+- [ ] Main and reference evals were run with both variants when hosted evals were needed; regression evals were run with context only unless reclassification back to reference was being checked.
+- [ ] New or moved eval scenarios follow the classifier recommendation, or the PR explains the maintainer-approved override.
+- [ ] Every retained eval scenario has a 100% with-context result, or any below-100 result is documented as blocking follow-up rather than classified/reportable coverage.
+- [ ] PR title or squash title uses Conventional Commits.
+- [ ] Redaction checked: no tokens, private links, private eval artifacts, local host paths, or proprietary Java source.
 
 ## AI Assistance (if used)
 
