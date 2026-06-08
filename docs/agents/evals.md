@@ -41,15 +41,29 @@ benchmark claims, or scoring rules.
 - Include evals where the agent writes new Optional code, not only reviews or refactors snippets.
 - Review-only or no-op evals must still require a concrete artifact, such as `review.md`, so empty
   answers can't pass by accident.
+- Skill-context-dependent evals require information that only comes from the skill package or agent
+  instructions, such as exact wording, commands, procedures, checklists, headers, or bundled
+  reference text. Keep them in `evals-regression/` once with-context is 100%, regardless of the
+  without-context score. Do not count them in the main or reference lift score, do not describe them
+  as natural activation or independent Java Optional reasoning, and do not call weighted checklist
+  items hard gates.
 - Keep three eval buckets:
   - `evals/` is the main eval set used for public lift reporting.
   - `evals-reference/` is for candidate, diagnostic, and broad coverage scenarios that may still
     help tune or promote future main evals.
   - `evals-regression/` is for scenarios that hosted history shows are consistently solved by both
-    with-context and without-context. These protect against regressions but should not be part of
+    with-context and without-context, plus skill-context-dependent checks that are only fair as
+    with-context regression coverage. These protect against regressions but should not be part of
     normal lift discovery runs.
 - Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`.
 - Every `criteria.json` must classify `metadata.invocation` and `metadata.task_type`.
+- Use `metadata.evidence_type` when scenario placement needs to be explicit:
+  - `ordinary_lift`: an ordinary main or reference scenario where both variants are fair to compare.
+    This value is invalid in `evals-regression/`.
+  - `solved_regression`: a regression scenario moved because hosted evidence shows both variants
+    repeatedly score 100%.
+  - `skill_context_dependent`: a regression scenario that requires skill-package or agent-instruction
+    context, so without-context comparison is not fair.
 - Every main eval criterion must classify `category` as `safety`, `optional_quality`, or
   `maintainability`.
 - Main eval implementation scenarios need compile/artifact checks and behavior checks as safety
@@ -88,6 +102,12 @@ benchmark claims, or scoring rules.
     reference depending on coverage and weighting.
   - `with-context = 100` and `without-context = 100` repeatedly: candidate for
     `evals-regression/`.
+- A new scenario should not move to main unless its percentage-point delta is at least 30 percentage
+  points and it improves capability coverage. Treat 30 pp as maintainer policy for future promotion
+  or demotion decisions, not as a current hosted benchmark result. Old hosted deltas are historical
+  evidence only; do not use them for release-readiness claims, public score/lift claims, or current
+  benchmark claims until they are rerun against the current active suite membership, denominator,
+  commit/ref, natural/explicit split, and pinned CLI behavior.
 - Don't hide scenarios merely because the baseline solves them. Move them to `evals-regression/`
   only when they're consistently solved by both variants and are better as safety-net coverage than
   lift or diagnostic evidence.
@@ -99,14 +119,26 @@ benchmark claims, or scoring rules.
   as active documentation. Keep current policy in these docs and use git history for old answer
   keys, replay logs, and one-off run details.
 - Keep hosted eval usage minimal while preserving confidence:
-  - For skill or eval changes, first run only the affected scenario directories, with both variants
-    when lift or regression risk matters.
+  - Use `scripts/run_eval_suite.sh` so variants match suite purpose and runs use the plugin context.
+  - Main and reference scenarios run with both variants.
+  - Regression scenarios run with context only by default. Run regression without-context only when
+    intentionally checking whether a scenario should move back to reference.
+  - For skill or eval changes, first run only the affected scenario directories.
   - If any affected with-context result is below 100%, keep rerunning only those targeted scenarios
     after fixes until they are clean.
   - Then run `evals/` for the main score.
   - Run relevant `evals-reference/` scenarios when deciding promotion or checking nearby behavior.
   - Run `evals-regression/` as a final safety check before release or after broad changes, not on
     every tuning loop.
+  - A pure move between `evals/`, `evals-reference/`, and `evals-regression/` does not need a hosted
+    rerun when `task.md`, scoring criteria, and `capability.txt` are unchanged except for
+    suite-placement metadata or numbering notes.
+
+Current active suite structure:
+
+- `evals/`: 4 scenarios, 360 checklist points, 3 natural and 1 explicit.
+- `evals-reference/`: 46 scenarios, 2470 checklist points, broad candidate and diagnostic coverage.
+- `evals-regression/`: 2 scenarios, 200 checklist points, with-context safety coverage.
 
 ## Checks
 

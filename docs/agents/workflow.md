@@ -2,74 +2,197 @@
 
 ## Scope
 
-Use this for day-to-day work in this repository: auth checks, validation, commits, and pushes.
+Use this for day-to-day work in this repository: auth checks, validation, commits, pushes, and
+release-readiness.
 
 ## Rules
 
 - If a Tessl or GitHub command fails because auth, login, workspace, or permission state appears
-  missing, re-check after the user says they changed it. Don't keep assuming the old state.
-- When the maintainer explicitly asks for autonomous pull request work, carry it through
-  implementation, validation, commit, push, and PR creation unless they ask to stop earlier.
-- Before committing changes to the skill, README, evals, package metadata, scripts, CI, agent docs,
-  or this file, run:
+  missing, re-check after the user says they changed it.
+- When the maintainer explicitly asks for autonomous repository work, carry it through
+  implementation, validation, commit, push, and pull request creation unless they ask to stop
+  earlier.
+- Before committing changes to the skill, README, evals, package metadata, scripts, CI, or agent
+  docs, run:
 
   ```bash
   python3 scripts/validate_skill.py skills/java-optionals
   python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression
-  python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
-  bash -n scripts/check_publish_dry_run.sh
+  python3 -m py_compile scripts/*.py
+  bash -n scripts/*.sh
   tessl plugin lint .
   bash scripts/check_publish_dry_run.sh .
   tessl plugin publish --dry-run --bump patch .
   tessl plugin publish --dry-run .
   ```
 
-- After a version has been published, the dry-run may fail only because that exact version already
-  exists. For docs-only changes that don't need a new plugin release, record that as expected and don't
-  bump the version. For skill, eval, or package changes that should be published, bump the
-  version before publishing again.
+  If `tessl plugin publish --dry-run .` fails only because the current manifest version has already
+  been published, record that as expected for ordinary non-release changes and rely on the
+  patch-bump dry-run for PR safety. For skill, eval, package, or release changes that should publish
+  a new version, let Release Please bump the version before the exact-version publish check.
 
-- PR CI runs tokenless validation and plugin lint. Authenticated Tessl publish dry-runs run only on
-  trusted `main` pushes and release/publish workflows. The optional skill review workflow runs
-  `tessl skill review --threshold 100` when `TESSL_TOKEN` is configured.
-- Use `tessl plugin publish --dry-run --bump patch .` as a PR-safe local/manual dry-run when the
-  current manifest version is already published. Release publishing uses exact-version
-  `tessl plugin publish --dry-run .` immediately before `tessl plugin publish .`.
-- Tessl release publishing runs in the `tessl-release` GitHub environment. Configure required
-  reviewers or other environment protection rules in the repository settings when the plan supports
-  them.
-- Keep the review threshold at 100 while the skill passes that bar without weakening its Java
-  guidance. Don't remove useful Java guidance only to improve the review score.
-- For skill behavior or eval changes, run hosted evals with the smallest useful set first. Start
-  with targeted affected scenarios:
+- For skill behavior or eval changes, run hosted evals with Sonnet 4.6, but start with the smallest
+  useful set to conserve Tessl daily rate-limit budget. Use `scripts/run_eval_suite.sh` so the run
+  uses plugin context and the right variant policy.
+
+  If any eval scenario's `task.md`, `criteria.json`, or `capability.txt` changed, run that exact
+  scenario before finishing the PR. A pure move between `evals/`, `evals-reference/`, and
+  `evals-regression/` does not need a hosted rerun when the task, scoring criteria, and capability
+  text are unchanged except for suite-placement metadata or numbering notes; run local validators
+  and update suite totals instead. The with-context result for every substantively changed scenario
+  must be 100% before broader suite results, benchmark claims, or release-readiness claims are
+  trusted. This rule applies even when the edit looks like a prompt cleanup or metadata-only scoring
+  clarification. If Tessl hosted evals are unavailable, the PR must document the blocker and
+  remaining targeted runs; do not make benchmark or release-readiness claims until those runs pass.
+
+  Run targeted affected main or reference scenarios with both variants:
 
   ```bash
-  tessl eval run --variant with-context --variant without-context <scenario-dir>
+  scripts/run_eval_suite.sh main <scenario-name>
+  scripts/run_eval_suite.sh reference <scenario-name>
+  ```
+
+  Run targeted affected regression scenarios with context only by default:
+
+  ```bash
+  scripts/run_eval_suite.sh regression <scenario-name>
   ```
 
   If any targeted with-context result is below 100%, fix the skill or eval and rerun only those
   targeted scenarios until they are clean. Then run the main eval set:
 
   ```bash
-  tessl eval run --variant with-context --variant without-context .
+  scripts/run_eval_suite.sh main
   ```
 
-  Run relevant `evals-reference/` scenarios for nearby behavior and `evals-regression/` only as a
-  final safety check before release or after broad changes.
-- Pull request titles and commits must use Conventional Commits. Release Please uses them to update
-  `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases. When Release Please creates a
-  release with `GITHUB_TOKEN`, the normal `release: published` trigger does not fire, so the Release
-  Please workflow dispatches `.github/workflows/publish-tessl.yml` with the created tag. Tessl
-  publishing still happens only in `.github/workflows/publish-tessl.yml`.
-- Renovate manages GitHub Actions, action digests, commitlint packages, and the pinned Tessl CLI
-  version in workflows. Keep `minimumReleaseAge` at 7 days with `internalChecksFilter: "strict"` so
-  Renovate waits before creating branches or PRs for updates that haven't passed the age gate. Keep
-  custom managers only for dependencies Renovate can't detect natively: commitlint packages installed
-  inside workflow shell commands, and the Tessl CLI version passed to `tesslio/setup-tessl`. Don't
-  add Maven, Docker, or vendored Tessl dependency rules unless those files exist here.
+  For runtime skill text or runtime reference changes, progressively widen the hosted checks before
+  calling the PR done: first affected scenarios, then the full main suite, then every reference
+  scenario with both variants, then every regression scenario with context only. The final post-change
+  evidence must show 100% with context for every retained scenario in every suite. Run regression
+  without-context only when intentionally checking whether a scenario should move back to reference.
+  If a broad run finds isolated failures, fix and rerun those scenarios targeted after the fix before
+  spending rate-limit budget on another broad suite run; once targeted failures are clean, finish the
+  remaining broad suites that have not yet run against the final skill state. If Tessl hosted evals
+  are unavailable or rate-limited, document the exact missing runs and do not call the PR
+  release-ready.
 
-- For maintainer-requested automation tasks where the user has asked for a pull request, commit and
-  push finished changes. Otherwise, don't push without explicit instruction.
+  Release evals only cover the published main suite. After any runtime skill text or runtime
+  reference change, a successful publish run is not enough by itself: before saying the release or
+  repository is done, also verify that every reference scenario has run with both variants and every
+  regression scenario has run with context only against the final skill state. These runs may be
+  split across targeted and suite runs to conserve Tessl quota, but they must be after the last
+  runtime-context change. If quota, auth, or hosted availability blocks the broad reference or
+  regression checks, open or update a GitHub issue with the exact missing commands, run IDs already
+  completed, and the blocking condition.
+
+- When adding or moving one scenario, classify it from the isolated run before choosing the final
+  suite:
+
+  ```bash
+  tessl eval view <run-id> --json > /tmp/eval-run.json
+  scripts/classify_eval_result.py /tmp/eval-run.json --scenario-dir <scenario-dir>
+  ```
+
+  Follow the recommendation unless the pull request documents a maintainer-approved override.
+
+- Run the Tessl skill review at threshold 100 when changing runtime skill content:
+
+  ```bash
+  tessl skill review --threshold 100 skills/java-optionals/SKILL.md
+  ```
+
+- Pull request titles and commits must use Conventional Commits. Release Please uses them to update
+  `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases.
+  Any change that could affect hosted lift, baseline score, with-context score, skill activation, runtime skill behavior, active eval tasks, active eval criteria, or active eval membership must be made in a separate commit. Label it as lift-sensitive in the PR summary and include a revert strategy.
+  - Use `fix(skill): ...` for corrections to `skills/java-optionals/SKILL.md` or files it links as
+    runtime references.
+  - Use `feat(skill): ...` when adding a new runtime capability or materially broader skill behavior.
+  - Use `test(evals): ...` when adding, moving, or reclassifying scenarios without changing their
+    scoring intent.
+  - Use `fix(evals): ...` when correcting a flawed task, criterion, score interpretation, or unfair
+    eval expectation.
+  - Use `docs: ...` only for user/contributor/agent docs that do not change runtime skill behavior
+    and do not change eval scoring or suite membership.
+  - Use the PR title type/scope for the highest-impact change in the PR; if runtime skill behavior
+    changed, the PR title should normally be `fix(skill)` or `feat(skill)`, not `docs`.
+
+  When Release Please creates a release with `GITHUB_TOKEN`, the normal `release: published` trigger
+  does not fire, so the Release Please workflow dispatches `.github/workflows/publish-tessl.yml` with
+  the created tag. Tessl publishing still happens only in `.github/workflows/publish-tessl.yml`.
+  That workflow requires an explicit publish ref and validates that release tags match
+  `.tessl-plugin/plugin.json` as `v<version>`.
+  Release Please PRs created or updated with `GITHUB_TOKEN` may not trigger ordinary `pull_request`
+  workflows, so `.github/workflows/release-please.yml` also posts the required release-PR
+  `Commitlint` and `Validate skill and plugin` statuses. Prefer the Release Please `pr` output for
+  those statuses, and fall back to the existing pending release PR only when Release Please emits no
+  PR output because the PR was unchanged.
+- When the maintainer asks for a release, keep Release Please as the source of truth. Do not edit
+  `CHANGELOG.md`, `.release-please-manifest.json`, `.tessl-plugin/plugin.json`, tags, or GitHub
+  releases by hand unless the maintainer explicitly asks to repair broken release state.
+
+  If a Release Please PR is already open:
+
+  ```bash
+  gh pr list --state open --author "github-actions[bot]" \
+    --head release-please--branches--main--components--java-optionals
+  gh pr checks <release-pr-number> --fail-fast=false
+  ```
+
+  Make sure the PR only contains Release Please files (`CHANGELOG.md`,
+  `.release-please-manifest.json`, `.tessl-plugin/plugin.json`) and that required checks pass. If
+  the release PR has no checks because it was just created, rerun the Release Please workflow for the
+  current `main` run so it finds the existing PR and attaches the validation statuses. Then merge the
+  release PR with the repository's linear-history merge method, normally squash merge, and wait for
+  `.github/workflows/publish-tessl.yml` to finish.
+
+  If no Release Please PR is open:
+
+  ```bash
+  git status --short --branch
+  git log --oneline "$(git describe --tags --abbrev=0)"..main
+  gh run list --workflow release-please.yml --limit 5
+  ```
+
+  If unreleased commits already include a releasable Conventional Commit such as `fix:` or `feat:`,
+  rerun or trigger the Release Please workflow on `main` and wait for the release PR. If the only
+  unreleased commits are non-releasable types such as `docs:`, `test:`, or `chore:`, and the
+  maintainer still wants a new published version, create an empty releasable commit that accurately
+  describes why a release is needed, for example:
+
+  ```bash
+  git commit --allow-empty -m "fix(evals): publish updated main eval suite"
+  git push origin main
+  ```
+
+  Then let Release Please open the release PR, validate it, merge it, and wait for the Tessl publish
+  workflow. After the publish run completes, confirm the GitHub release, Tessl latest version, and
+  that no stale Release Please PR or branch remains.
+
+  For a maintainer-approved manual publish, dispatch `publish-tessl.yml` with an explicit `ref`.
+  Normal releases should use the fully qualified release tag, which must equal
+  `refs/tags/v<plugin-version>`. Publishing a branch or other non-tag ref requires setting
+  `allow_non_tag_ref=true`; use that only for recovery when Release Please cannot complete the
+  normal handoff.
+
+  If the release contains any runtime skill text or runtime reference change, do not stop after the
+  registry main eval passes. Confirm the post-change eval evidence also includes:
+
+  ```bash
+  scripts/run_eval_suite.sh reference
+  scripts/run_eval_suite.sh regression
+  ```
+
+  `reference` must be run with both variants through the wrapper. `regression` must be run with
+  context only through the wrapper. If these broad suite runs were already completed after the final
+  runtime-context commit, reuse those run IDs; otherwise run them before reporting the release as
+  complete. The completion report must state the main release eval run plus the reference and
+  regression run IDs, or link the GitHub issue that records why the remaining checks are blocked.
+- The GitHub repository is public. Keep docs, metadata, license, security policy, and contribution
+  workflow public-safe.
+- Keep `.tessl-plugin/plugin.json` public with `"private": false`, but do not run a real Tessl
+  publish unless the maintainer explicitly asks for publication.
+- For maintainer-requested automation tasks where the user has asked for GitHub state, commit and
+  push finished changes.
 
 ## References
 

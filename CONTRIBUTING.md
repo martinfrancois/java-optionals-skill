@@ -90,8 +90,8 @@ Run these before committing skill, eval, README, package, script, or CI changes:
 ```bash
 python3 scripts/validate_skill.py skills/java-optionals
 python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression
-python3 -m py_compile scripts/validate_skill.py scripts/validate_eval_criteria.py
-bash -n scripts/check_publish_dry_run.sh
+python3 -m py_compile scripts/*.py
+bash -n scripts/*.sh
 tessl plugin lint .
 ```
 
@@ -196,10 +196,23 @@ history simple and use one clear commit for a focused pull request.
 Hosted evals are useful when a change affects the skill behavior, benchmark scenarios, or README
 score claims. They require Tessl authentication and a linked Tessl project.
 
-If you have your own Tessl workspace, link your checkout to your own project and run:
+Use Sonnet 4.6 for this repository's main eval checks. Prefer `scripts/run_eval_suite.sh`; it runs
+from the plugin root and chooses variants by suite purpose.
+
+Run hosted eval variants by suite purpose:
+
+- `evals/`: run both `without-context` and `with-context`; these runs support public lift
+  reporting. Use `scripts/run_eval_suite.sh main`.
+- `evals-reference/`: run both `without-context` and `with-context`; these runs decide whether a
+  scenario has meaningful lift or should move suites. Use `scripts/run_eval_suite.sh reference`.
+- `evals-regression/`: run `with-context` only by default; these runs are safety checks, not lift
+  discovery. Run regression `without-context` only when deliberately checking whether a scenario
+  should move back to `evals-reference/`. Use `scripts/run_eval_suite.sh regression`.
+
+For example:
 
 ```bash
-tessl eval run --variant with-context --variant without-context .
+scripts/run_eval_suite.sh main
 ```
 
 If you don't have a Tessl workspace, that's fine. Open the pull request with the local check results,
@@ -207,9 +220,9 @@ and a maintainer can run the hosted evals before release.
 
 In this repository, the main eval set lives in `evals/` and is used for public lift reporting.
 `evals-reference/` contains candidate and diagnostic coverage that helps tune the skill or decide
-what to promote later. `evals-regression/` contains scenarios that are consistently solved by both
-with-context and without-context; these are useful safety checks, but they do not directly drive the
-main lift claim.
+what to promote later. `evals-regression/` contains solved scenarios and skill-context-dependent
+checks; these are useful with-context safety checks, but they do not directly drive the main lift
+claim.
 
 The Java Optional skill is broadly about Optional correctness, readability, fallback timing,
 boundary handling, stream interop, primitive Optional usage, and avoiding cleanup changes that
@@ -235,10 +248,37 @@ baseline-solved scenarios just to improve lift. Move repeatedly baseline-solved 
 `evals-regression/` only when hosted evidence shows both variants are consistently 100%. Keep
 low-delta but still diagnostic scenarios in `evals-reference/`.
 
+Use `metadata.evidence_type` when scenario placement needs to be explicit:
+
+- `ordinary_lift`: both variants are fair to compare, so the scenario can live in main or reference.
+  This value is invalid in `evals-regression/`.
+- `solved_regression`: hosted history shows both variants solve the scenario at 100%. This value is
+  invalid outside `evals-regression/`.
+- `skill_context_dependent`: the scenario requires exact skill-provided text, commands, procedures,
+  checklists, headers, or bundled reference text. It must live in `evals-regression/`.
+
+When adding a new scenario, classify it from an isolated hosted run:
+
+```bash
+tessl eval view <run-id> --json > /tmp/eval-run.json
+scripts/classify_eval_result.py /tmp/eval-run.json --scenario-dir <scenario-dir>
+```
+
+The main promotion floor is 30 percentage points. Treat that as maintainer policy for future
+promotion or demotion decisions, not as a current hosted benchmark result. Old hosted deltas are
+historical evidence only until rerun against the current active suite membership, denominator,
+commit/ref, natural/explicit split, and pinned CLI behavior.
+
 When with-context is below 100%, keep the scenario wherever it already lives. Fix the skill or eval
 there, then rerun only that targeted scenario until it is clean before running broader suites. After
 targeted failures are clean, run `evals/` for the main score, relevant `evals-reference/` scenarios
-for nearby behavior, and `evals-regression/` only for final release safety or broad changes.
+with both variants for nearby behavior, and `evals-regression/` with context only for final release
+safety or broad changes.
+
+Every substantive eval scenario edit requires a targeted hosted rerun of that scenario before the PR
+is ready. A pure move between `evals/`, `evals-reference/`, and `evals-regression/` does not need a
+hosted rerun when `task.md`, scoring criteria, and `capability.txt` are unchanged except for
+suite-placement metadata or numbering notes; run local validators and update suite totals instead.
 
 Runtime skill references must not contain eval inventories, expected answers, score rubrics, hosted
 run IDs, or benchmark claims. Put maintainer-only eval history in `docs/agents/`.
@@ -270,6 +310,11 @@ Before merging a release pull request:
 - test the skill against at least one Java Optional change outside this repository;
 - confirm `README.md` stays user-focused;
 - confirm contributor-only process details live here.
+
+Manual Tessl publishing is for maintainer-approved recovery only. Dispatch `publish-tessl.yml` with
+an explicit `ref`; normal releases should use the fully qualified tag that matches
+`.tessl-plugin/plugin.json` as `refs/tags/v<version>`. Publishing a branch or other non-tag ref
+requires the workflow's explicit `allow_non_tag_ref` override.
 
 ## Dependency Updates
 
