@@ -8,6 +8,12 @@ benchmark claims, or scoring rules.
 ## Rules
 
 - Don't cheat. Don't leak the diagnosis or desired fix in eval prompts.
+- Run quality review first, and if it is below 100%, stop and fix all quality issues before any new
+  hosted eval rerun. Then execute targeted evals for every changed scenario, and only progressively
+  broaden suites after targeted runs are clean. Preserve the daily budget by stopping at each stage
+  unless failures require another targeted rerun; only then proceed to broader hosted checks. If a
+  broad run shows any with-context below 100%, stop that run and return to targeted reruns for failed
+  scenarios only.
 - Keep natural activation prompts neutral. Avoid clue words that tell the model the exact failure,
   such as "order-independent" or "preserving laziness", unless those words are truly part of the
   user task. Explicit invocation prompts may name `$java-optionals`, but they should not leak the
