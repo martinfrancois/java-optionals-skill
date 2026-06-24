@@ -126,6 +126,11 @@ benchmark claims, or scoring rules.
   keys, replay logs, and one-off run details.
 - Keep hosted eval usage minimal while preserving confidence:
   - Use `scripts/run_eval_suite.sh` so variants match suite purpose and runs use the plugin context.
+  - Use Tessl's default solver unless the account has model-selection entitlements and you intentionally
+    want a representative frontier check. The hosted default is intentionally not pinned by policy.
+    See Tessl model-selection notes if available:
+    - https://docs.tessl.io/changelog
+    - https://tessl.io/blog/why-were-changing-our-default-eval-model/
   - Main and reference scenarios run with both variants.
   - Regression scenarios run with context only by default. Run regression without-context only when
     intentionally checking whether a scenario should move back to reference.

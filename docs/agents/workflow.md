@@ -31,9 +31,16 @@ release-readiness.
   patch-bump dry-run for PR safety. For skill, eval, package, or release changes that should publish
   a new version, let Release Please bump the version before the exact-version publish check.
 
-- For skill behavior or eval changes, run hosted evals with Sonnet 4.6, but start with the smallest
-  useful set to conserve Tessl daily rate-limit budget. Use `scripts/run_eval_suite.sh` so the run
-  uses plugin context and the right variant policy.
+- For skill behavior or eval changes, run hosted evals with Tessl's default solver, but start with the
+  smallest useful set to conserve Tessl daily rate-limit budget. Use `scripts/run_eval_suite.sh` so the
+  run uses plugin context and the right variant policy.
+
+  Model-selection note:
+  Do not pin Sonnet in default commands; the script runs with the current Tessl default solver.
+  If model-selection is available, Sonnet 4.6 or better is a good representative check. See Tessl
+  model-selection and default-model discussions:
+  - https://docs.tessl.io/changelog
+  - https://tessl.io/blog/why-were-changing-our-default-eval-model/
 
   If any eval scenario's `task.md`, `criteria.json`, or `capability.txt` changed, run that exact
   scenario before finishing the PR. A pure move between `evals/`, `evals-reference/`, and
