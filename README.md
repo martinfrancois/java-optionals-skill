@@ -15,12 +15,17 @@ use a plain branch when checked IO makes that clearer.
 It also tells the agent to check the project Java version first. The right Optional code for a
 Java 8 project may be different from the right code for Java 17 or Java 21.
 
+For general lambda, method-reference, identity-function, no-op functional stage, supplier/callback
+style, and callback readability guidance, install the companion package
+`martinfrancois/java-functional-style` together with this Optional package.
+
 ## Contents
 
 - [Getting Started](#getting-started)
 - [Why This Exists](#why-this-exists)
 - [What Good Looks Like](#what-good-looks-like)
 - [What It Helps With](#what-it-helps-with)
+- [Ownership Boundaries](#ownership-boundaries)
 - [Examples](#examples)
 - [How It's Evaluated](#how-its-evaluated)
 - [Contributing](#contributing)
@@ -213,6 +218,21 @@ Poor fit:
 - large API redesigns, data object changes, or new dependencies without maintainer agreement;
 - changing business behavior just to make code look more functional;
 - replacing every readable branch with a method chain.
+
+## Ownership Boundaries
+
+`java-optionals` owns Optional behavior: absence and fallback handling, Optional API choice,
+fallback laziness as Optional behavior, checked IO and prompt boundaries, primitive Optionals,
+Optional Java-version compatibility, and present/empty/error contract preservation.
+
+`java-functional-style` owns general Java lambda and functional-interface style: identity
+functions, no-op functional stages, method references, callback readability, supplier/callback
+style, and callback side-effect boundaries.
+
+`java-streams` owns stream and collector behavior.
+
+Install `java-optionals` and `java-functional-style` together for Optional cleanup involving
+non-trivial callbacks or generic functional-interface style.
 
 ## Examples
 

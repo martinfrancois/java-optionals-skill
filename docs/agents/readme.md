@@ -26,6 +26,9 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   regression safety-net scenarios. Say that broader Optional coverage in `evals-reference/` and
   solved safety-net coverage in `evals-regression/` should be reported separately from the main
   score.
+- Keep the ownership boundary visible: `java-optionals` owns Optional behavior, and
+  `java-functional-style` owns generic lambda, method-reference, identity-function, no-op
+  functional-stage, supplier/callback style, and callback-readability guidance.
 - Use `main score` and `main eval set` consistently in public and maintainer docs.
 - Preserve maintainer-approved package-runner install examples such as `npx`, `yarn dlx`, `pnpx`,
   and `bunx` when they remain valid. Tessl's deprecated global npm install is a separate issue.
@@ -101,6 +104,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 ## References
 
 - [Skill Behavior](skill-behavior.md)
+- [Ownership Boundaries](ownership-boundaries.md)
 - [Public Metadata And OSS Readiness](public-metadata.md)
 - [Maintaining Agent Docs](maintaining-agent-docs.md)
 - Runtime reference: `skills/java-optionals/references/hard-stops.md` lists replacement
