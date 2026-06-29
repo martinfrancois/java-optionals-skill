@@ -1,4 +1,4 @@
-# Java Optional Skill for AI Agents
+# Java Optionals Skill for AI Agents
 
 [![tessl](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.tessl.io%2Fv1%2Fbadges%2Fmartinfrancois%2Fjava-optionals)](https://tessl.io/registry/martinfrancois/java-optionals)
 
