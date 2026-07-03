@@ -1,0 +1,54 @@
+{
+  "context": "Reference cleanup: Optional upsert logic should have one clear present/absent side-effect boundary and named present-branch policy.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "category": "safety",
+      "max_score": 8,
+      "description": "Returns complete Java 17-compatible WaitingCommentSync code with imports, logger, methods, and records intact."
+    },
+    {
+      "name": "Uses one Optional decision boundary",
+      "category": "optional_quality",
+      "max_score": 24,
+      "description": "Consumes prerequisiteWaitingComment(config, card.id()) once with ifPresentOrElse or an equivalent single present/absent boundary."
+    },
+    {
+      "name": "Extracts present-branch policy",
+      "category": "maintainability",
+      "max_score": 18,
+      "description": "Moves same-text no-op, blank-id create, and update behavior into a named helper or otherwise makes the present-branch policy clear."
+    },
+    {
+      "name": "Preserves side-effect behavior",
+      "category": "safety",
+      "max_score": 22,
+      "description": "Keeps absent create, same-text no-op, different-text update when id is nonblank, different-text create when id is blank, and the original add/update arguments."
+    },
+    {
+      "name": "Keeps exception boundary",
+      "category": "safety",
+      "max_score": 10,
+      "description": "Keeps runtime exception handling around the upsert operation and preserves warning behavior."
+    },
+    {
+      "name": "Avoids Optional antipatterns",
+      "category": "optional_quality",
+      "max_score": 12,
+      "description": "Does not reuse the same Optional in multiple pipelines, use orElse(null), isPresent/get, generic helpers, or fake collections."
+    },
+    {
+      "name": "Keeps code focused",
+      "category": "maintainability",
+      "max_score": 6,
+      "description": "Does not redesign logging, comments, config, or repository access beyond clarifying the upsert flow."
+    }
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/70"
+  }
+}

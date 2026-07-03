@@ -1,0 +1,2 @@
+Use ifPresentOrElse for Java side-effecting Optional present and absent branches while preserving
+rendering order and checked boundaries.
