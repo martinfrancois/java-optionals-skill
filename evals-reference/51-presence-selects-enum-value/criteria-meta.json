@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/74"
+  },
+  "categories": {
+    "Creates coherent Java 17 artifact": "safety",
+    "Uses Optional map for enum selection": "optional_quality",
+    "Preserves ignored present value": "optional_quality",
+    "Uses appropriate eager constant fallback": "optional_quality",
+    "Keeps side-effect branch imperative": "safety",
+    "Avoids Optional antipatterns": "optional_quality",
+    "Keeps behavior focused": "maintainability"
+  }
+}
