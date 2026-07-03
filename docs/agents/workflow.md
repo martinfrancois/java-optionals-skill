@@ -105,7 +105,7 @@ release-readiness.
 - Run the Tessl skill review at threshold 100 when changing runtime skill content:
 
   ```bash
-  tessl skill review --threshold 100 skills/java-optionals/SKILL.md
+  tessl review run --workspace martinfrancois --threshold 100 skills/java-optionals/SKILL.md
   ```
 
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
