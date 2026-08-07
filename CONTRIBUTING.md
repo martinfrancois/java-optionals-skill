@@ -69,7 +69,7 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 - `scripts/` contains portable validation checks used by CI.
 - `.github/workflows/ci.yml` validates skill metadata, eval criteria, Tessl linting, and the
   publish dry-run when `TESSL_TOKEN` is configured.
-- `.github/workflows/skill-review.yml` runs `tessl skill review` on pull requests when
+- `.github/workflows/skill-review.yml` runs `tessl review run` on pull requests when
   `TESSL_TOKEN` is configured.
 - `AI_CONTRIBUTION_POLICY.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` set expectations for AI
   assistance, project conduct, and private vulnerability reporting.
@@ -98,7 +98,7 @@ tessl plugin lint .
 If you change the skill text or reference files, also run:
 
 ```bash
-tessl skill review --threshold 100 skills/java-optionals/SKILL.md
+tessl review run --workspace martinfrancois --threshold 100 skills/java-optionals/SKILL.md
 ```
 
 The threshold is intentionally 100 because the current skill passes that bar without weakening its
@@ -119,7 +119,7 @@ PR CI runs tokenless validation and plugin lint. Authenticated Tessl publish dry
 trusted `main` pushes and release/publish workflows. Release publishing uses exact-version
 `tessl plugin publish --dry-run .` immediately before `tessl plugin publish .`.
 
-`tessl skill review`, `bash scripts/check_publish_dry_run.sh .`, and hosted evals require Tessl
+`tessl review run`, `bash scripts/check_publish_dry_run.sh .`, and hosted evals require Tessl
 authentication. Hosted evals also require a linked Tessl project. If you don't have access, include
 the local checks you did run and say which Tessl checks need maintainer help.
 
