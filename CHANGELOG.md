@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.0...v1.0.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* **renovate:** separate majors and automerge non-major updates ([94b92b5](https://github.com/martinfrancois/java-optionals-skill/commit/94b92b51703ee28f4f5e8b0eb8c05233372ceb3f))
+
 ## [1.0.0](https://github.com/martinfrancois/java-optionals-skill/compare/v0.1.28...v1.0.0) (2026-06-02)
 
 
