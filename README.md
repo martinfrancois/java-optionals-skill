@@ -15,9 +15,10 @@ use a plain branch when checked IO makes that clearer.
 It also tells the agent to check the project Java version first. The right Optional code for a
 Java 8 project may be different from the right code for Java 17 or Java 21.
 
-For general lambda, method-reference, identity-function, no-op functional stage, supplier/callback
-style, and callback readability guidance, install the companion package
-`martinfrancois/java-functional-style` together with this Optional package.
+General lambda and callback style (identity functions, no-op functional stages, callback
+readability) lives in the companion package `martinfrancois/java-functional-style`. Install both when
+Optional cleanup also involves non-trivial callbacks; see
+[Ownership Boundaries](#ownership-boundaries).
 
 ## Contents
 
@@ -227,12 +228,13 @@ Optional Java-version compatibility, and present/empty/error contract preservati
 
 `java-functional-style` owns general Java lambda and functional-interface style: identity
 functions, no-op functional stages, method references, callback readability, supplier/callback
-style, and callback side-effect boundaries.
+style, and callback side-effect boundaries. It is a separate package,
+[`martinfrancois/java-functional-style`](https://github.com/martinfrancois/java-functional-style-skill).
 
 `java-streams` owns stream and collector behavior.
 
-Install `java-optionals` and `java-functional-style` together for Optional cleanup involving
-non-trivial callbacks or generic functional-interface style.
+Each package works on its own. Install `java-optionals` and `java-functional-style` together when
+Optional cleanup also involves non-trivial callbacks or generic functional-interface style.
 
 ## Examples
 

@@ -23,14 +23,23 @@ for Java Optionals.
   style.
 - The expected high-quality setup for Optional cleanup involving non-trivial callbacks or generic
   functional-interface style is both `java-optionals` and `java-functional-style`.
-- Before opening a PR that changes Optional runtime guidance or evals as part of this split, prove:
+- Each package must work on its own. Do not make Optional guidance depend on the companion being
+  installed, and do not remove Optional guidance because the companion also covers it. The
+  lazy-fallback rule stays here because the published Optional evals measure it.
+
+## Composition Check
+
+Before a release of either package changes what the pair does together, prove on the existing
+Optional evals, unchanged:
 
 ```text
-current java-optionals behavior <= slimmed java-optionals + java-functional-style behavior
+java-optionals alone (published) <= java-optionals + java-functional-style (with-context)
 ```
 
-- The comparison must use the existing Optional evals unchanged until the composed setup is equal or
-  better at criterion level. Local validation alone is not enough for that quality gate.
+Run the Optional `evals/` suite (and `evals-reference/` plus `evals-regression/` when budget allows)
+with both skills as context and require 100% with-context for every retained scenario. The
+companion repository ships the runner for this check (`scripts/run_composed_eval.sh` in
+`java-functional-style-skill`). Local validation alone does not satisfy this check.
 
 ## References
 
