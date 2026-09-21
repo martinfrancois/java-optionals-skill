@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested planner": "safety",
+    "Uses direct value binding": "optional_quality",
+    "No repeated Optional reopening": "optional_quality",
+    "No null or fake collection workaround": "optional_quality",
+    "Preserves move behavior": "safety"
+  }
+}

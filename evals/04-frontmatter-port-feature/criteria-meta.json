@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Implements Number and String behavior": "safety",
+    "Handles absent and invalid values": "safety",
+    "Preserves public contract": "safety",
+    "Uses Optional boundary without reopening": "optional_quality",
+    "Avoids null or fake collection workarounds": "optional_quality",
+    "Keeps parser readable": "maintainability"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Chooses Optional boundary": "optional_quality",
+    "Lazy creation": "optional_quality",
+    "No eager fallback": "optional_quality",
+    "No Optional antipattern workaround": "optional_quality"
+  }
+}

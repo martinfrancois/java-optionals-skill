@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects local helper cleanup": "maintainability",
+    "Preserves checked boundary": "safety",
+    "Avoids unchecked wrapper": "optional_quality",
+    "Suggests narrow branch": "optional_quality",
+    "No dependency/style creep": "maintainability"
+  }
+}

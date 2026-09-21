@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Creates revised priority class": "safety",
+    "Uses OptionalInt terminal": "optional_quality",
+    "Removes primitive value-read guard": "optional_quality",
+    "Preserves valid priority writes": "safety",
+    "Preserves invalid priority behavior": "safety"
+  }
+}

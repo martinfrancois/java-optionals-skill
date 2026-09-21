@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Recognizes single Optional": "optional_quality",
+    "Uses direct Optional boundary": "optional_quality",
+    "Removes fake collection": "optional_quality",
+    "Behavior preserved": "safety"
+  }
+}

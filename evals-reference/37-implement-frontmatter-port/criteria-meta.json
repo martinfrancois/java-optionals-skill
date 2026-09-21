@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested lookup": "safety",
+    "Uses Optional map boundary": "optional_quality",
+    "No repeated Optional reopening": "optional_quality",
+    "No null or fake collection workaround": "optional_quality",
+    "Parses supported values": "safety",
+    "Handles absence and malformed values": "safety"
+  }
+}

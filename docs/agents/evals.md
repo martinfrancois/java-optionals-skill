@@ -61,8 +61,12 @@ benchmark claims, or scoring rules.
     with-context and without-context, plus skill-context-dependent checks that are only fair as
     with-context regression coverage. These protect against regressions but should not be part of
     normal lift discovery runs.
-- Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`.
-- Every `criteria.json` must classify `metadata.invocation` and `metadata.task_type`.
+- Every scenario directory must contain `task.md`, `criteria.json`, `criteria-meta.json`, and
+  `capability.txt`. `criteria.json` holds only what Tessl's schema knows (`context`, `type`, and
+  checklist items with `name`, `description`, `max_score`), so `tessl eval lint` stays clean;
+  `criteria-meta.json` holds this repository's `metadata` object and a `categories` map from
+  checklist name to category. The validators read the merged view.
+- Every `criteria-meta.json` must classify `metadata.invocation` and `metadata.task_type`.
 - Use `metadata.evidence_type` when scenario placement needs to be explicit:
   - `ordinary_lift`: an ordinary main or reference scenario where both variants are fair to compare.
     This value is invalid in `evals-regression/`.

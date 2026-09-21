@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested resolver": "safety",
+    "Preserves checked IO contract": "safety",
+    "Uses narrow explicit checked branch": "optional_quality",
+    "No unchecked wrapper or helper": "optional_quality",
+    "Preserves prompt behavior": "safety",
+    "No ordinary Optional workaround": "optional_quality"
+  }
+}

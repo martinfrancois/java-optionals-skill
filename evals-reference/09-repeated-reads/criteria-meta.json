@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Removes repeated get calls": "optional_quality",
+    "Binds or maps once": "optional_quality",
+    "Behavior preserved": "safety",
+    "No null workaround": "optional_quality"
+  }
+}

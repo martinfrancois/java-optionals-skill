@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates revised setup options": "safety",
+    "Uses priority Optional boundaries": "optional_quality",
+    "Removes repeated request value reads": "optional_quality",
+    "Avoids null/list workaround": "optional_quality",
+    "Preserves priority defaults": "safety",
+    "Adds server-port validation": "safety",
+    "Adds board-name validation and trimming": "safety"
+  }
+}

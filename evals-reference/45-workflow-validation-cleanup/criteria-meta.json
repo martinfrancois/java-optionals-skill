@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates revised validation class": "safety",
+    "Uses Optional as validation boundary": "optional_quality",
+    "Removes Optional reopening": "optional_quality",
+    "Avoids null/list workaround": "optional_quality",
+    "Keeps readable helpers": "maintainability",
+    "Preserves board-id behavior": "safety",
+    "Preserves server-port behavior": "safety",
+    "Preserves success result": "safety"
+  }
+}

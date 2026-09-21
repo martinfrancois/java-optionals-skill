@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Recognizes real collection source": "optional_quality",
+    "Keeps readable stream": "maintainability",
+    "findAny rationale": "optional_quality"
+  }
+}

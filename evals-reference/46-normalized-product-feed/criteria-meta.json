@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates revised feed class": "safety",
+    "Flattens stream of Optionals": "optional_quality",
+    "Removes Optional get chain": "optional_quality",
+    "Keeps real stream readable": "maintainability",
+    "Preserves empty-normalize behavior": "safety",
+    "Preserves active filters": "safety",
+    "Adds allowed category filter": "safety"
+  }
+}

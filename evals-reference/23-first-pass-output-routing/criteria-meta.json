@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested router": "safety",
+    "Uses side-effect boundary": "optional_quality",
+    "No value-read branch": "optional_quality",
+    "No null or fake collection workaround": "optional_quality",
+    "Preserves branch behavior": "safety"
+  }
+}

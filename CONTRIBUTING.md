@@ -235,9 +235,11 @@ The main eval set should stay focused on realistic tasks that mirror the motivat
 must include a documented mix of natural activation prompts and explicit invocation prompts,
 reported separately when hosted results are available. Natural scenarios must not mention
 `$java-optionals` or ask to use the skill. Explicit scenarios may name the skill and must be labeled
-as explicit in `criteria.json`.
+as explicit in `criteria-meta.json`.
 
-Every scenario directory must contain `task.md`, `criteria.json`, and `capability.txt`. Main eval
+Every scenario directory must contain `task.md`, `criteria.json`, `criteria-meta.json`, and
+`capability.txt` (`criteria.json` keeps Tessl's schema; `criteria-meta.json` carries this
+repository's metadata and per-item categories). Main eval
 implementation criteria must include compile/artifact checks and behavior correctness checks as
 safety checks, but the main score should mainly measure Optional-specific quality. Each main eval
 criterion must also set `category` to `safety`, `optional_quality`, or `maintainability` so

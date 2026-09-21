@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Uses orElseThrow": "optional_quality",
+    "Preserves exception": "safety",
+    "Does not overgeneralize": "maintainability"
+  }
+}

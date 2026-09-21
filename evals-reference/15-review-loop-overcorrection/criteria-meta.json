@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects unnecessary rewrite": "maintainability",
+    "Recognizes real collection stream": "optional_quality",
+    "Keeps findAny": "optional_quality",
+    "Avoids overgeneralization": "maintainability"
+  }
+}

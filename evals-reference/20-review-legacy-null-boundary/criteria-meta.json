@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Allows isolated boundary": "optional_quality",
+    "No extra null branching": "optional_quality",
+    "Separates API redesign": "maintainability",
+    "No blanket orElse null ban": "optional_quality"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Uses findAny": "optional_quality",
+    "Preserves real collection stream": "safety"
+  }
+}

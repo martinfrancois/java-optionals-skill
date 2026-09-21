@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects bundled API change": "optional_quality",
+    "Recognizes nullable interop": "optional_quality",
+    "Avoids Optional DTO field": "optional_quality",
+    "Separates design work": "maintainability"
+  }
+}
