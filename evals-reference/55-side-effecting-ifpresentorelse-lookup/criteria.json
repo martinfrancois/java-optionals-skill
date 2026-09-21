@@ -1,0 +1,54 @@
+{
+  "context": "Reference cleanup: Java 9+ side-effecting present/empty Optional branches should use ifPresentOrElse when it preserves behavior.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "category": "safety",
+      "max_score": 8,
+      "description": "Returns complete Java 17-compatible PrivateContextRenderer code with imports, methods, records, and checked IOException behavior intact."
+    },
+    {
+      "name": "Uses ifPresentOrElse for side effects",
+      "category": "optional_quality",
+      "max_score": 28,
+      "description": "Replaces isPresent plus orElseThrow with request.lookup().ifPresentOrElse(...) or equivalent single Optional terminal for the present and empty rendering branches."
+    },
+    {
+      "name": "Preserves lookup-only output",
+      "category": "safety",
+      "max_score": 18,
+      "description": "When lookup is present, renders the common header and lookup section but does not render Local Paths or Workflow Identifiers."
+    },
+    {
+      "name": "Preserves full-context output",
+      "category": "safety",
+      "max_score": 16,
+      "description": "When lookup is absent, renders Local Paths and Workflow Identifiers in the original order after the common header."
+    },
+    {
+      "name": "Avoids exception-oriented present read",
+      "category": "optional_quality",
+      "max_score": 12,
+      "description": "Does not use orElseThrow, get, or a repeated lookup() call to retrieve a value already selected by an Optional presence branch."
+    },
+    {
+      "name": "Avoids fake transformations",
+      "category": "optional_quality",
+      "max_score": 10,
+      "description": "Does not use map, stream, or intermediate collections in a way that hides side effects or changes rendering order."
+    },
+    {
+      "name": "Keeps refactor focused",
+      "category": "maintainability",
+      "max_score": 8,
+      "description": "Does not redesign diagnostics rendering, hashing, section names, or public records beyond the Optional branch cleanup."
+    }
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/69"
+  }
+}

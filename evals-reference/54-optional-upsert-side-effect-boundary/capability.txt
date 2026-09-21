@@ -1,0 +1,2 @@
+Refactor Optional upsert code so one present/absent boundary controls side effects while named
+helpers own nontrivial present-branch policy.

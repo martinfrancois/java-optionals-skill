@@ -1,0 +1,54 @@
+{
+  "context": "Reference implementation cleanup: Optional selections should build domain objects in one present/absent flow and keep fallback work lazy.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 25 artifact",
+      "category": "safety",
+      "max_score": 8,
+      "description": "Returns complete Java 25-compatible SetupSelections code with imports, constructor, methods, interfaces, and records intact."
+    },
+    {
+      "name": "Builds MaxAgentsSelection in Optional flow",
+      "category": "optional_quality",
+      "max_score": 22,
+      "description": "Uses workflowConfig.maxAgents(workflowPath).map(...).orElseGet(...) or equivalent to construct MaxAgentsSelection with value and provenance together."
+    },
+    {
+      "name": "Preserves explicit override behavior",
+      "category": "safety",
+      "max_score": 12,
+      "description": "Keeps explicit max-agents input winning before workflow fallback and preserves preservedFromWorkflow=false for explicit or default values."
+    },
+    {
+      "name": "Transforms Codex defaults directly",
+      "category": "optional_quality",
+      "max_score": 18,
+      "description": "Replaces isEmpty plus orElseThrow ordinary value flow with codexModelDefaults().map(...).orElse(boardSetup) or equivalent."
+    },
+    {
+      "name": "Keeps dotenv fallback lazy",
+      "category": "optional_quality",
+      "max_score": 18,
+      "description": "Uses Optional.or or equivalent lazy fallback so load(dotenv) runs only when no environment value is present."
+    },
+    {
+      "name": "Preserves checked prompt boundary",
+      "category": "safety",
+      "max_score": 12,
+      "description": "Keeps promptedMaxAgents as a clear checked-IOException branch instead of forcing readLine through a generic Optional helper."
+    },
+    {
+      "name": "Avoids Optional workarounds",
+      "category": "optional_quality",
+      "max_score": 10,
+      "description": "Does not use orElse(null), fake Optional lists or streams, generic throwing helpers, or repeated isPresent plus value reads for ordinary value flow."
+    }
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/71"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "context": "Reference cleanup: Optional-returning stream terminals should use findAny for equivalent matches and preserve findFirst for ordered first-match contracts.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "category": "safety",
+      "max_score": 8,
+      "description": "Returns complete Java 17-compatible OptionalLookupTerminals code with imports, helper, methods, and record intact."
+    },
+    {
+      "name": "Uses findAny for equivalent matches",
+      "category": "optional_quality",
+      "max_score": 30,
+      "description": "Changes exact and normalized configured-name lookups to findAny because the Optional result does not have an encounter-order contract."
+    },
+    {
+      "name": "Preserves ordered findFirst contracts",
+      "category": "optional_quality",
+      "max_score": 24,
+      "description": "Keeps findFirst for PATH-style executable lookup and first Java version line, where encounter order selects the value."
+    },
+    {
+      "name": "Explains retained findFirst calls",
+      "category": "maintainability",
+      "max_score": 12,
+      "description": "Adds concise comments or equivalent explanation for retained findFirst calls based on semantic order, not current sequential-stream behavior."
+    },
+    {
+      "name": "Avoids mechanical terminal changes",
+      "category": "safety",
+      "max_score": 14,
+      "description": "Does not replace every findFirst blindly and does not preserve every findFirst merely because the code already works."
+    },
+    {
+      "name": "Preserves Optional flattening",
+      "category": "safety",
+      "max_score": 12,
+      "description": "Keeps Optional-returning parsing flattened correctly with Optional::stream or equivalent and does not introduce get(), null, or fake-list handling."
+    }
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/72"
+  }
+}

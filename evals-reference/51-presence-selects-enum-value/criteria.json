@@ -1,0 +1,54 @@
+{
+  "context": "Reference cleanup: Optional presence selecting between enum values should be expressed as Optional value flow when no side effects or checked work are involved.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "category": "safety",
+      "max_score": 8,
+      "description": "Returns complete Java 17-compatible BoardSetupChoices code with imports, enum, interfaces, and methods intact."
+    },
+    {
+      "name": "Uses Optional map for enum selection",
+      "category": "optional_quality",
+      "max_score": 30,
+      "description": "Replaces the dry-run isPresent ternary with options.existingBoardId().map(...).orElse(...) or equivalent Optional value flow."
+    },
+    {
+      "name": "Preserves ignored present value",
+      "category": "optional_quality",
+      "max_score": 12,
+      "description": "Correctly ignores the contained board id when mapping any present value to BoardSetupChoice.EXISTING."
+    },
+    {
+      "name": "Uses appropriate eager constant fallback",
+      "category": "optional_quality",
+      "max_score": 12,
+      "description": "Uses orElse for the trivial BoardSetupChoice.NEW constant fallback rather than noisy orElseGet when no work is deferred."
+    },
+    {
+      "name": "Keeps side-effect branch imperative",
+      "category": "safety",
+      "max_score": 16,
+      "description": "Does not force choiceWithAudit into an Optional chain that hides auditLog.record or changes side-effect ordering."
+    },
+    {
+      "name": "Avoids Optional antipatterns",
+      "category": "optional_quality",
+      "max_score": 14,
+      "description": "Does not introduce get(), orElseThrow(), orElse(null), fake lists, or a custom helper just to select the enum."
+    },
+    {
+      "name": "Keeps behavior focused",
+      "category": "maintainability",
+      "max_score": 8,
+      "description": "Does not change enum values, method signatures, rejectNewBoardInProgress calls, or unrelated setup behavior."
+    }
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/74"
+  }
+}

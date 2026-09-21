@@ -1,0 +1,54 @@
+{
+  "context": "Reference natural implementation: lifecycle selector validation should centralize repeated preflight and bind Optional values at the boundary.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 snippets",
+      "category": "safety",
+      "max_score": 8,
+      "description": "Returns coherent Java 17-compatible revised snippets with lifecycle methods, validation helpers, records, and IOException behavior intact."
+    },
+    {
+      "name": "Centralizes lifecycle preflight",
+      "category": "maintainability",
+      "max_score": 18,
+      "description": "stop, status, and logs share one helper that performs explicit-workflow validation before loading the lifecycle manifest."
+    },
+    {
+      "name": "Uses Optional terminal at boundary",
+      "category": "optional_quality",
+      "max_score": 22,
+      "description": "Uses explicitWorkflow.ifPresent(...) or an equivalent Optional terminal at the boundary instead of passing Optional<Path> to a helper that only inspects presence."
+    },
+    {
+      "name": "Domain helper accepts Path",
+      "category": "optional_quality",
+      "max_score": 14,
+      "description": "The helper that validates the selected workflow accepts Path, not Optional<Path>, so the domain validation is separated from optionality."
+    },
+    {
+      "name": "Removes isEmpty/get flow",
+      "category": "optional_quality",
+      "max_score": 14,
+      "description": "Does not keep Optional.isEmpty() followed by Optional.get() to validate the explicit workflow selector."
+    },
+    {
+      "name": "Preserves validation behavior",
+      "category": "safety",
+      "max_score": 16,
+      "description": "Keeps the missing-workflow message, regular-file validation message, validation-before-manifest-load order, and selectForStop/status/logs behavior; simplifying the redundant exists guard is acceptable when observable behavior is unchanged."
+    },
+    {
+      "name": "Avoids generic Optional utility",
+      "category": "maintainability",
+      "max_score": 8,
+      "description": "Does not introduce broad Optional helpers, fake collections, or unrelated lifecycle redesign to hide the presence check."
+    }
+  ],
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/67"
+  }
+}

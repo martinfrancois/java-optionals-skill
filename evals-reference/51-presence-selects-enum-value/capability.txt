@@ -1,0 +1,2 @@
+Refactor Optional presence checks that only select enum values while preserving side-effecting
+branches as explicit code.

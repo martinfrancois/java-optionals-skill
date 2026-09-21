@@ -148,7 +148,11 @@ benchmark claims, or scoring rules.
 Current active suite structure:
 
 - `evals/`: 4 scenarios, 360 checklist points, 3 natural and 1 explicit.
-- `evals-reference/`: 46 scenarios, 2470 checklist points, broad candidate and diagnostic coverage.
+- `evals-reference/`: 52 scenarios, 3070 checklist points, broad candidate and diagnostic coverage.
+  Reference numbers `51` through `56` cover the July 2026 open-issue sweep for presence-to-enum
+  selection, findAny/findFirst Optional terminals, domain selections with lazy fallback,
+  side-effecting upsert boundaries, ifPresentOrElse rendering branches, and lifecycle Optional
+  helper boundaries.
 - `evals-regression/`: 2 scenarios, 200 checklist points, with-context safety coverage.
 
 ## Checks
