@@ -201,8 +201,12 @@ release-readiness.
 - For maintainer-requested automation tasks where the user has asked for GitHub state, commit and
   push finished changes.
 
+When runtime skill text changes, also run the composition check in
+[Ownership Boundaries](ownership-boundaries.md) so the companion package still composes cleanly.
+
 ## References
 
 - [Project Identity](project-identity.md)
 - [Eval Guidance](evals.md)
 - [Public Metadata And OSS Readiness](public-metadata.md)
+- [Ownership Boundaries](ownership-boundaries.md)

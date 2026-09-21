@@ -26,6 +26,8 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   regression safety-net scenarios. Say that broader Optional coverage in `evals-reference/` and
   solved safety-net coverage in `evals-regression/` should be reported separately from the main
   score.
+- Keep the ownership boundary visible in one short README section that links the companion
+  package; the full list lives in [Ownership Boundaries](ownership-boundaries.md).
 - Use `main score` and `main eval set` consistently in public and maintainer docs.
 - Preserve maintainer-approved package-runner install examples such as `npx`, `yarn dlx`, `pnpx`,
   and `bunx` when they remain valid. Tessl's deprecated global npm install is a separate issue.
@@ -101,6 +103,7 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
 ## References
 
 - [Skill Behavior](skill-behavior.md)
+- [Ownership Boundaries](ownership-boundaries.md)
 - [Public Metadata And OSS Readiness](public-metadata.md)
 - [Maintaining Agent Docs](maintaining-agent-docs.md)
 - Runtime reference: `skills/java-optionals/references/hard-stops.md` lists replacement

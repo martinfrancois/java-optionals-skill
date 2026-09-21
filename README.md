@@ -15,12 +15,16 @@ use a plain branch when checked IO makes that clearer.
 It also tells the agent to check the project Java version first. The right Optional code for a
 Java 8 project may be different from the right code for Java 17 or Java 21.
 
+General lambda and callback style lives in the companion package
+`martinfrancois/java-functional-style`; see [Ownership Boundaries](#ownership-boundaries).
+
 ## Contents
 
 - [Getting Started](#getting-started)
 - [Why This Exists](#why-this-exists)
 - [What Good Looks Like](#what-good-looks-like)
 - [What It Helps With](#what-it-helps-with)
+- [Ownership Boundaries](#ownership-boundaries)
 - [Examples](#examples)
 - [How It's Evaluated](#how-its-evaluated)
 - [Contributing](#contributing)
@@ -213,6 +217,23 @@ Poor fit:
 - large API redesigns, data object changes, or new dependencies without maintainer agreement;
 - changing business behavior just to make code look more functional;
 - replacing every readable branch with a method chain.
+
+## Ownership Boundaries
+
+`martinfrancois/java-optionals` owns Optional behavior. General lambda and callback style
+(identity functions, no-op stages, helper extraction, comparator composition, method-reference
+pitfalls, supplier laziness, checked boundaries in callbacks) is owned by the companion package
+`martinfrancois/java-functional-style`
+([repository](https://github.com/martinfrancois/java-functional-style-skill)), and stream and
+collector behavior by `martinfrancois/java-streams`
+([repository](https://github.com/martinfrancois/java-streams-skill)).
+
+Each package works on its own. Install the companion next to this one when Optional cleanup also
+involves non-trivial callbacks:
+
+```bash
+npx tessl i martinfrancois/java-functional-style
+```
 
 ## Examples
 

@@ -26,6 +26,8 @@ auto-selection wording.
 - Checked IO and prompt boundaries must not be hidden behind generic Optional helpers such as
   `OptionalSupport`, `OptionalIo`, `CheckedOptionals`, throwing suppliers, or supplier `.get()`
   tricks. Prefer a narrow plain branch at the actual boundary.
+- Generic callback style belongs to the companion package; keep this skill focused on Optional
+  behavior. See [Ownership Boundaries](ownership-boundaries.md).
 - The skill must make the `optional.stream().toList()` rule operational. Agents should scan touched
   code before finalizing and rewrite any fake one-Optional collection or `for` loop over
   `optional.stream().toList()`.
@@ -57,3 +59,4 @@ auto-selection wording.
 
 - [README Guidance](readme.md)
 - [Eval Guidance](evals.md)
+- [Ownership Boundaries](ownership-boundaries.md)
