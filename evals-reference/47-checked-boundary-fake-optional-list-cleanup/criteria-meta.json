@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Preserves warehouse prompt behavior": "safety",
+    "Preserves requested port behavior": "safety",
+    "Preserves YAML parsing behavior": "safety",
+    "Uses direct Optional flow for ordinary values": "optional_quality",
+    "Keeps checked boundaries narrow": "optional_quality",
+    "Avoids fake Optional collections and helpers": "optional_quality"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Preserves mutual exclusion": "safety",
+    "Classifies boolean-only validation": "optional_quality",
+    "Uses Optional selector boundaries": "optional_quality",
+    "No null workaround": "optional_quality",
+    "No fake collection workaround": "optional_quality"
+  }
+}

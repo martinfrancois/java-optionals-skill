@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "evidence_type": "solved_regression",
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Preserves workspace resolution order": "safety",
+    "Preserves prompt and checked exception behavior": "safety",
+    "Uses Optional priority for non-IO values": "optional_quality",
+    "Limits plain branch to prompt boundary": "optional_quality",
+    "Avoids helper or dependency overreach": "maintainability",
+    "Avoids null or fake collection workarounds": "optional_quality"
+  }
+}

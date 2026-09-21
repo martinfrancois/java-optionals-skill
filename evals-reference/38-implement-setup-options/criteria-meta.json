@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested planner": "safety",
+    "Uses priority Optional boundaries": "optional_quality",
+    "Keeps boolean validation separate": "safety",
+    "No presence-check value-read antipattern": "optional_quality",
+    "No null or fake collection workaround": "optional_quality",
+    "Preserves defaults": "safety",
+    "Preserves validation errors": "safety"
+  }
+}

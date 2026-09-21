@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects proposed cleanup": "optional_quality",
+    "Identifies fake collection workaround": "optional_quality",
+    "Suggests direct Optional boundary": "optional_quality",
+    "No null workaround": "optional_quality"
+  }
+}

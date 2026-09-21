@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Uses side-effect boundary": "optional_quality",
+    "Removes value-read branch": "optional_quality",
+    "Preserves behavior": "safety",
+    "No workaround": "optional_quality"
+  }
+}

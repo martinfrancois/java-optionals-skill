@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Creates revised check class": "safety",
+    "Uses predicate-only Optional boundary": "optional_quality",
+    "Avoids value-read antipattern": "optional_quality",
+    "Preserves true behavior": "safety",
+    "Preserves false behavior": "safety",
+    "Avoids null/list workaround": "optional_quality"
+  }
+}

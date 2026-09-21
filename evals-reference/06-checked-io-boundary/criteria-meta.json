@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Preserves checked exception contract": "safety",
+    "No unchecked wrapper": "optional_quality",
+    "No new helper or dependency": "maintainability"
+  }
+}

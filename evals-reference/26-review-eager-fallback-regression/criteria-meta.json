@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects eager fallback": "optional_quality",
+    "Identifies eager evaluation": "optional_quality",
+    "Preserves side-effect laziness": "safety",
+    "Suggests orElseGet": "optional_quality"
+  }
+}

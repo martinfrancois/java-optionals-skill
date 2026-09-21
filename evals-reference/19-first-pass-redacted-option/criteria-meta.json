@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested matcher": "safety",
+    "Uses real collection stream": "maintainability",
+    "Uses findAny": "optional_quality",
+    "Preserves matching behavior": "safety",
+    "No null workaround": "optional_quality"
+  }
+}

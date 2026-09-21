@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects findAny change": "optional_quality",
+    "Identifies order contract": "optional_quality",
+    "Keeps real collection stream": "optional_quality",
+    "Suggests test if useful": "safety"
+  }
+}

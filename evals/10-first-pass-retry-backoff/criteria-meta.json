@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Implements fallback behavior exactly": "safety",
+    "Parses only positive whole seconds": "safety",
+    "Preserves lazy fallback timing": "safety",
+    "Uses Optional boundary for header and parse flow": "optional_quality",
+    "Avoids Optional antipatterns": "optional_quality",
+    "Keeps implementation readable": "maintainability"
+  }
+}

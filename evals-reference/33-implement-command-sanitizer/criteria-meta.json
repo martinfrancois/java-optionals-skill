@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested sanitizer": "safety",
+    "Uses real collection Optional lookup": "maintainability",
+    "Uses findAny for equivalent matches": "optional_quality",
+    "Uses Optional result directly": "optional_quality",
+    "Avoids overcomplicated loop control": "optional_quality",
+    "Preserves sanitizer behavior": "safety"
+  }
+}

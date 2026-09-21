@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates revised mover": "safety",
+    "Composes configured target lookup": "optional_quality",
+    "Binds target once": "optional_quality",
+    "Avoids null/list workaround": "optional_quality",
+    "Preserves missing-target behavior": "safety",
+    "Adds already-current no-op": "safety",
+    "Preserves move behavior": "safety",
+    "Uses collection lookup appropriately": "maintainability"
+  }
+}

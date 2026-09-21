@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects proposed cleanup": "optional_quality",
+    "Identifies null-control-flow equivalence": "optional_quality",
+    "Suggests Optional boundary": "optional_quality",
+    "Preserves behavior": "safety"
+  }
+}

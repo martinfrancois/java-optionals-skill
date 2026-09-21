@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested selector": "safety",
+    "Preserves conflict behavior": "safety",
+    "Uses Optional selector boundaries": "optional_quality",
+    "No value-read antipattern": "optional_quality",
+    "No null or fake collection workaround": "optional_quality"
+  }
+}

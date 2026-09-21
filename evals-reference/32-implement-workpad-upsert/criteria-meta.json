@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested service": "safety",
+    "Uses Optional update/create boundary": "optional_quality",
+    "Preserves lazy create path": "safety",
+    "No nullable or fake collection workaround": "optional_quality",
+    "No presence-check value read": "optional_quality",
+    "Preserves all statuses": "safety"
+  }
+}

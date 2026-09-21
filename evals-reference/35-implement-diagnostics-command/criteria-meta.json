@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested command": "safety",
+    "Keeps boolean-only conflict check": "safety",
+    "Uses selector Optional boundaries": "optional_quality",
+    "Uses side-effect boundary": "optional_quality",
+    "No fake collection or null workaround": "optional_quality",
+    "Preserves selection behavior": "safety",
+    "Preserves output behavior": "safety"
+  }
+}

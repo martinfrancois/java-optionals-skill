@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Creates revised configurator": "safety",
+    "Preserves explicit false branch": "safety",
+    "Preserves explicit true branch": "safety",
+    "Preserves absent branch": "safety",
+    "Avoids value-read antipattern": "optional_quality",
+    "Does not collapse absent to false": "optional_quality"
+  }
+}

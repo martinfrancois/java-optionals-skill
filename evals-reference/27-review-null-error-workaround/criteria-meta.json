@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Rejects proposed cleanup": "maintainability",
+    "Identifies null-control-flow workaround": "optional_quality",
+    "Keeps absence-as-error boundary": "optional_quality",
+    "Preserves exception behavior": "safety"
+  }
+}

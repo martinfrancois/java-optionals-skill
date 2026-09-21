@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates requested resolver": "safety",
+    "Uses direct priority boundary": "optional_quality",
+    "No presence-check value read": "optional_quality",
+    "No null or fake collection workaround": "optional_quality",
+    "Preserves priority behavior": "safety"
+  }
+}

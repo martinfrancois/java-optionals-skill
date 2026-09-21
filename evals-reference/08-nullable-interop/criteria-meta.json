@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Allows isolated nullable interop": "optional_quality",
+    "No extra null branching": "optional_quality",
+    "Separates API design from local cleanup": "maintainability"
+  }
+}

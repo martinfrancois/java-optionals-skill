@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "cleanup"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Preserves warehouse selection behavior": "safety",
+    "Preserves workspace selection behavior": "safety",
+    "Preserves port and YAML behavior": "safety",
+    "Uses direct Optional boundaries for ordinary values": "optional_quality",
+    "Handles checked boundaries without generic Optional helpers": "optional_quality",
+    "Avoids replacement Optional antipatterns": "optional_quality",
+    "Keeps cleanup focused": "maintainability"
+  }
+}

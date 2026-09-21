@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "review"
+  },
+  "categories": {
+    "Keeps findFirst": "optional_quality",
+    "Identifies order contract": "optional_quality",
+    "No unnecessary rewrite": "maintainability"
+  }
+}

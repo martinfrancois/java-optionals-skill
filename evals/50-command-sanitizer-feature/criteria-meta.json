@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Implements exact redaction behavior": "safety",
+    "Preserves output order and sequence state": "safety",
+    "Keeps option matching centralized": "maintainability",
+    "Consumes Optional result directly": "optional_quality",
+    "Avoids fake or noisy rewrites": "optional_quality"
+  }
+}

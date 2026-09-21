@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "evidence_type": "solved_regression",
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Implements required workpad behavior": "safety",
+    "Preserves update/create branch timing": "safety",
+    "Uses Optional as update/create boundary": "optional_quality",
+    "Avoids Optional antipatterns": "optional_quality",
+    "Keeps lookup readable and single-purpose": "maintainability"
+  }
+}

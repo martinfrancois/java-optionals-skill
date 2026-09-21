@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "explicit",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Creates revised diagnostics command": "safety",
+    "Preserves conflict check": "safety",
+    "Uses selector Optional boundaries": "optional_quality",
+    "Uses output side-effect boundary": "optional_quality",
+    "Avoids null/list workaround": "optional_quality",
+    "Preserves selection behavior": "safety",
+    "Preserves output behavior": "safety"
+  }
+}
