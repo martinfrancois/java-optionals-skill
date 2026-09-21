@@ -320,3 +320,9 @@ requires the workflow's explicit `allow_non_tag_ref` override.
 
 Renovate keeps GitHub Actions, commitlint, and pinned action digests current. Major updates need
 manual approval from the dependency dashboard.
+
+## Companion Package
+
+General lambda and callback style is owned by `martinfrancois/java-functional-style`; this
+repository keeps Optional semantics. See `docs/agents/ownership-boundaries.md` before moving
+guidance between the two.

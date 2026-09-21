@@ -15,10 +15,8 @@ use a plain branch when checked IO makes that clearer.
 It also tells the agent to check the project Java version first. The right Optional code for a
 Java 8 project may be different from the right code for Java 17 or Java 21.
 
-General lambda and callback style (identity functions, no-op functional stages, callback
-readability) lives in the companion package `martinfrancois/java-functional-style`. Install both when
-Optional cleanup also involves non-trivial callbacks; see
-[Ownership Boundaries](#ownership-boundaries).
+General lambda and callback style lives in the companion package
+`martinfrancois/java-functional-style`; see [Ownership Boundaries](#ownership-boundaries).
 
 ## Contents
 
@@ -222,19 +220,20 @@ Poor fit:
 
 ## Ownership Boundaries
 
-`java-optionals` owns Optional behavior: absence and fallback handling, Optional API choice,
-fallback laziness as Optional behavior, checked IO and prompt boundaries, primitive Optionals,
-Optional Java-version compatibility, and present/empty/error contract preservation.
+`martinfrancois/java-optionals` owns Optional behavior. General lambda and callback style
+(identity functions, no-op stages, helper extraction, comparator composition, method-reference
+pitfalls, supplier laziness, checked boundaries in callbacks) is owned by the companion package
+`martinfrancois/java-functional-style`
+([repository](https://github.com/martinfrancois/java-functional-style-skill)), and stream and
+collector behavior by `martinfrancois/java-streams`
+([repository](https://github.com/martinfrancois/java-streams-skill)).
 
-`java-functional-style` owns general Java lambda and functional-interface style: identity
-functions, no-op functional stages, method references, callback readability, supplier/callback
-style, and callback side-effect boundaries. It is a separate package,
-[`martinfrancois/java-functional-style`](https://github.com/martinfrancois/java-functional-style-skill).
+Each package works on its own. Install the companion next to this one when Optional cleanup also
+involves non-trivial callbacks:
 
-`java-streams` owns stream and collector behavior.
-
-Each package works on its own. Install `java-optionals` and `java-functional-style` together when
-Optional cleanup also involves non-trivial callbacks or generic functional-interface style.
+```bash
+npx tessl i martinfrancois/java-functional-style
+```
 
 ## Examples
 
