@@ -1,0 +1,1 @@
+Audit Optional-producing stream lookups and choose findAny only when all matches are equivalent.

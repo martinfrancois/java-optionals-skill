@@ -1,0 +1,2 @@
+Refactor lifecycle validation so Optional selector handling happens at one boundary and the domain
+validation helper accepts the selected Path directly.
