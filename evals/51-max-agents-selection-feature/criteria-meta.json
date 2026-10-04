@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation"
+  },
+  "categories": {
+    "Compiles and creates requested artifact": "safety",
+    "Preserves explicit CLI behavior": "safety",
+    "Preserves existing workflow value": "safety",
+    "Uses lazy fallback": "optional_quality",
+    "Builds selection inside Optional flow": "optional_quality",
+    "Avoids presence-flag drift shape": "optional_quality",
+    "No helper or dependency overreach": "maintainability"
+  }
+}
