@@ -7,8 +7,8 @@ Usage:
   scripts/run_eval_suite.sh <main|reference|regression> [scenario ...] [-- tessl eval run args...]
 
 Runs hosted Tessl evals with the repository's variant policy:
-  main       -> without-context and with-context
-  reference  -> without-context and with-context
+  main       -> baseline control and with-context
+  reference  -> baseline control and with-context
   regression -> with-context only
 
 Examples:
@@ -16,7 +16,9 @@ Examples:
   scripts/run_eval_suite.sh reference 01-display-name -- --label "targeted reference"
   scripts/run_eval_suite.sh regression -- --label "regression safety"
 
-Do not pass --variant. This script chooses variants from the suite purpose.
+Do not pass --variant or --skip-baseline. This script chooses variants from the suite purpose.
+The default Tessl solver is used unless an explicit --agent is passed after --; model selection
+returns an entitlement error on plans without it.
 USAGE
 }
 
@@ -42,15 +44,12 @@ shift
 case "$suite" in
   main)
     source_dir="evals"
-    variants=(--variant without-context --variant with-context)
     ;;
   reference)
     source_dir="evals-reference"
-    variants=(--variant without-context --variant with-context)
     ;;
   regression)
     source_dir="evals-regression"
-    variants=(--variant with-context)
     ;;
   -h|--help|help)
     usage
@@ -72,8 +71,8 @@ while [[ $# -gt 0 ]]; do
       extra_args=("$@")
       break
       ;;
-    --variant|--variant=*)
-      echo "Do not pass --variant; scripts/run_eval_suite.sh chooses variants by suite." >&2
+    --variant|--variant=*|--skip-baseline|--skip-baseline=*)
+      echo "Do not pass --variant or --skip-baseline; scripts/run_eval_suite.sh chooses variants by suite." >&2
       exit 2
       ;;
     *)
@@ -85,8 +84,8 @@ done
 
 for arg in "${extra_args[@]}"; do
   case "$arg" in
-    --variant|--variant=*)
-      echo "Do not pass --variant; scripts/run_eval_suite.sh chooses variants by suite." >&2
+    --variant|--variant=*|--skip-baseline|--skip-baseline=*)
+      echo "Do not pass --variant or --skip-baseline; scripts/run_eval_suite.sh chooses variants by suite." >&2
       exit 2
       ;;
   esac
@@ -97,6 +96,31 @@ if ! command -v tessl >/dev/null 2>&1; then
   exit 127
 fi
 
+eval_run_help="$(tessl eval run --help 2>&1 || true)"
+# Match the whole flag: newer CLIs list --variant-json but reject --variant.
+if grep -qE -- '--variant([^-[:alnum:]]|$)' <<<"$eval_run_help"; then
+  case "$suite" in
+    main|reference)
+      variants=(--variant without-context --variant with-context)
+      ;;
+    regression)
+      variants=(--variant with-context)
+      ;;
+  esac
+elif grep -q -- "--skip-baseline" <<<"$eval_run_help"; then
+  case "$suite" in
+    main|reference)
+      variants=()
+      ;;
+    regression)
+      variants=(--skip-baseline)
+      ;;
+  esac
+else
+  echo "Unsupported tessl eval run CLI: expected --variant or --skip-baseline support." >&2
+  exit 2
+fi
+
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 source_path="$repo_root/$source_dir"
 if [[ ! -d "$source_path" ]]; then
@@ -104,29 +128,15 @@ if [[ ! -d "$source_path" ]]; then
   exit 1
 fi
 
-has_agent=false
-for arg in "${extra_args[@]}"; do
-  case "$arg" in
-    --agent|--agent=*)
-      has_agent=true
-      ;;
-  esac
-done
-
-agent_args=()
-if [[ "$has_agent" == false ]]; then
-  agent_args=(--agent claude:claude-sonnet-4-6)
-fi
-
 if [[ "$suite" == "main" && "${#scenarios[@]}" -eq 0 ]]; then
   echo "Running main eval suite from the linked plugin path."
   echo "Scenarios:"
   print_suite_scenarios "$source_path"
-  echo "Variants: ${variants[*]}"
+  echo "Variants: ${variants[*]:-baseline control + with-context}"
 
   (
     cd "$repo_root"
-    tessl eval run "${agent_args[@]}" "${variants[@]}" "${extra_args[@]}" .
+    tessl eval run ${variants[@]+"${variants[@]}"} ${extra_args[@]+"${extra_args[@]}"} .
   )
   exit 0
 fi
@@ -194,9 +204,9 @@ fi
 echo "Running $suite eval suite from the linked plugin path with a temporary evals/ staging area."
 echo "Scenarios:"
 print_suite_scenarios "$staged_evals"
-echo "Variants: ${variants[*]}"
+echo "Variants: ${variants[*]:-baseline control + with-context}"
 
 (
   cd "$repo_root"
-  tessl eval run "${agent_args[@]}" "${variants[@]}" "${extra_args[@]}" .
+  tessl eval run ${variants[@]+"${variants[@]}"} ${extra_args[@]+"${extra_args[@]}"} .
 )
