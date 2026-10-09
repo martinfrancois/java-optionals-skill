@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/69"
+  },
+  "categories": {
+    "Creates coherent Java 17 artifact": "safety",
+    "Uses ifPresentOrElse for side effects": "optional_quality",
+    "Preserves lookup-only output": "safety",
+    "Preserves full-context output": "safety",
+    "Avoids exception-oriented present read": "optional_quality",
+    "Avoids fake transformations": "optional_quality",
+    "Keeps refactor focused": "maintainability"
+  }
+}
