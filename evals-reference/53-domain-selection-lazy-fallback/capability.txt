@@ -1,0 +1,2 @@
+Build domain selections directly from Optional present and absent branches while keeping expensive
+fallbacks lazy and checked prompt boundaries explicit.

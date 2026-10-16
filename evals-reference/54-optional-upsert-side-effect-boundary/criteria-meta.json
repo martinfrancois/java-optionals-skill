@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/70"
+  },
+  "categories": {
+    "Creates coherent Java 17 artifact": "safety",
+    "Uses one Optional decision boundary": "optional_quality",
+    "Extracts present-branch policy": "maintainability",
+    "Preserves side-effect behavior": "safety",
+    "Keeps exception boundary": "safety",
+    "Avoids Optional antipatterns": "optional_quality",
+    "Keeps code focused": "maintainability"
+  }
+}

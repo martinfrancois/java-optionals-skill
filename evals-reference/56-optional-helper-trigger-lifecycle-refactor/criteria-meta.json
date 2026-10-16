@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/67"
+  },
+  "categories": {
+    "Creates coherent Java 17 snippets": "safety",
+    "Centralizes lifecycle preflight": "maintainability",
+    "Uses Optional terminal at boundary": "optional_quality",
+    "Domain helper accepts Path": "optional_quality",
+    "Removes isEmpty/get flow": "optional_quality",
+    "Preserves validation behavior": "safety",
+    "Avoids generic Optional utility": "maintainability"
+  }
+}

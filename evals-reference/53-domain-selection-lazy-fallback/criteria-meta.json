@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/71"
+  },
+  "categories": {
+    "Creates coherent Java 25 artifact": "safety",
+    "Builds MaxAgentsSelection in Optional flow": "optional_quality",
+    "Preserves explicit override behavior": "safety",
+    "Transforms Codex defaults directly": "optional_quality",
+    "Keeps dotenv fallback lazy": "optional_quality",
+    "Preserves checked prompt boundary": "safety",
+    "Avoids Optional workarounds": "optional_quality"
+  }
+}

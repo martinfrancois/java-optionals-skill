@@ -15,10 +15,24 @@ Examples:
   scripts/run_eval_suite.sh main -- --label "main check"
   scripts/run_eval_suite.sh reference 01-display-name -- --label "targeted reference"
   scripts/run_eval_suite.sh regression -- --label "regression safety"
+  scripts/run_eval_suite.sh main -- --agent claude:claude-sonnet-4-6 --label "representative model check"
+
+Model-selection note:
+  Do not pin Sonnet in default commands; the script runs with the current Tessl default solver.
+  On accounts without model-selection entitlements (including many free plans), passing
+  `--agent` for a specific model (for example, `claude:claude-sonnet-4-6`) can return
+  a "Missing required entitlement" error. Prefer default commands for routine checks and
+  save explicit model pins for accounts where modelSelection is enabled.
+  If model-selection is available, Sonnet 4.6 or a better model is a good representative check.
+  See Tessl model-selection and default-model discussions:
+  - https://docs.tessl.io/changelog
+  - https://tessl.io/blog/why-were-changing-our-default-eval-model/
 
 Do not pass --variant or --skip-baseline. This script chooses variants from the suite purpose.
-The default Tessl solver is used unless an explicit --agent is passed after --; model selection
-returns an entitlement error on plans without it.
+The default Tessl solver is used unless an explicit --agent is passed after --.
+The runner passes --skill java-optionals so with-context runs exercise this skill instead of relying
+on solver auto-selection for final readiness evidence. It also passes --force so runs after a skill
+or runner fix cannot reuse stale hosted solutions.
 USAGE
 }
 
@@ -123,6 +137,8 @@ fi
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 source_path="$repo_root/$source_dir"
+skill_args=(--skill java-optionals)
+freshness_args=(--force)
 if [[ ! -d "$source_path" ]]; then
   echo "Missing suite directory: $source_path" >&2
   exit 1
@@ -136,7 +152,7 @@ if [[ "$suite" == "main" && "${#scenarios[@]}" -eq 0 ]]; then
 
   (
     cd "$repo_root"
-    tessl eval run ${variants[@]+"${variants[@]}"} ${extra_args[@]+"${extra_args[@]}"} .
+    tessl eval run ${variants[@]+"${variants[@]}"} "${skill_args[@]}" "${freshness_args[@]}" ${extra_args[@]+"${extra_args[@]}"} .
   )
   exit 0
 fi
@@ -208,5 +224,5 @@ echo "Variants: ${variants[*]:-baseline control + with-context}"
 
 (
   cd "$repo_root"
-  tessl eval run ${variants[@]+"${variants[@]}"} ${extra_args[@]+"${extra_args[@]}"} .
+  tessl eval run ${variants[@]+"${variants[@]}"} "${skill_args[@]}" "${freshness_args[@]}" ${extra_args[@]+"${extra_args[@]}"} .
 )

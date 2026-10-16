@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/72"
+  },
+  "categories": {
+    "Creates coherent Java 17 artifact": "safety",
+    "Uses findAny for equivalent matches": "optional_quality",
+    "Preserves ordered findFirst contracts": "optional_quality",
+    "Explains retained findFirst calls": "maintainability",
+    "Avoids mechanical terminal changes": "safety",
+    "Preserves Optional flattening": "safety"
+  }
+}
