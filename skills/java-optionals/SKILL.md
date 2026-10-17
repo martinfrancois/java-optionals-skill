@@ -1,14 +1,12 @@
 ---
 name: java-optionals
 license: MIT
-description: Write, review, and refactor Java Optional code using best practices, improving readability, and preventing common Optional antipatterns such as null-style control flow and readability regressions. Use whenever writing, reviewing, or refactoring Java code that introduces, changes, or reasons about Optional; handles absent, missing, nullable, fallback, or default values where Optional may be appropriate; or touches isPresent/isEmpty, get/orElseThrow, orElse(null), optional.stream(), findFirst/findAny, checked exceptions inside Optional chains, or nullable control flow.
+description: Write, review, and refactor Java Optional code using best practices, improving readability, and preventing common Optional antipatterns such as null-style control flow and readability regressions. Use whenever writing, reviewing, or refactoring Java code that introduces, changes, or reasons about Optional; decides whether a nullable return, missing value, or fallback default should become an Optional; or touches isPresent/isEmpty, get/orElseThrow, orElse(null), optional.stream(), findFirst/findAny, or checked exceptions inside Optional chains.
 ---
 
 # Java Optional Skill
 
-Use this skill before writing Java code that may introduce `Optional`, and when reviewing or
-refactoring existing Optional code. Preserve behavior, exception contracts, public output, laziness,
-and readability.
+Preserve behavior, exception contracts, public output, laziness, and readability.
 
 ## Reference Bundle
 
