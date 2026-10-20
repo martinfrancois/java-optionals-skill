@@ -196,8 +196,8 @@ history simple and use one clear commit for a focused pull request.
 Hosted evals are useful when a change affects the skill behavior, benchmark scenarios, or README
 score claims. They require Tessl authentication and a linked Tessl project.
 
-Use Sonnet 4.6 for this repository's main eval checks. Prefer `scripts/run_eval_suite.sh`; it runs
-from the plugin root and chooses variants by suite purpose.
+Use Tessl's default solver. Prefer `scripts/run_eval_suite.sh`; it runs from the plugin root,
+chooses variants by suite purpose, and passes the skill and `--force`.
 
 Run hosted eval variants by suite purpose:
 
@@ -254,12 +254,17 @@ Use `metadata.evidence_type` when scenario placement needs to be explicit:
 
 - `ordinary_lift`: both variants are fair to compare, so the scenario can live in main or reference.
   This value is invalid in `evals-regression/`.
-- `solved_regression`: hosted history shows both variants solve the scenario at 100%. This value is
-  invalid outside `evals-regression/`.
+- `solved_regression`: both variants solve the scenario at 100%, shown by hosted history or, until
+  the hosted run exists, by the local screen described in `docs/agents/local-screening.md` (baseline
+  and skill arm at 98 to 100 in every run; the local judge takes a point or two on focus items in
+  otherwise correct runs). A scenario whose local skill arm dips keeps the type only until the
+  hosted run. This value is invalid outside `evals-regression/`.
 - `skill_context_dependent`: the scenario requires exact skill-provided text, commands, procedures,
   checklists, headers, or bundled reference text. It must live in `evals-regression/`.
 
-When adding a new scenario, classify it from an isolated hosted run:
+When adding a new scenario, screen it locally first (`scripts/local_screen.sh`, see
+`docs/agents/local-screening.md`), place it from that screen, and confirm the placement from an
+isolated hosted run when credits allow:
 
 ```bash
 tessl eval view <run-id> --json > /tmp/eval-run.json

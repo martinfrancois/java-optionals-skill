@@ -70,8 +70,11 @@ benchmark claims, or scoring rules.
 - Use `metadata.evidence_type` when scenario placement needs to be explicit:
   - `ordinary_lift`: an ordinary main or reference scenario where both variants are fair to compare.
     This value is invalid in `evals-regression/`.
-  - `solved_regression`: a regression scenario moved because hosted evidence shows both variants
-    repeatedly score 100%.
+  - `solved_regression`: a regression scenario that both variants solve at 100%, shown by hosted
+    history or, until the hosted run exists, by the local screen (baseline 98 to 100 in every run;
+    the local judge takes a point or two on focus and concision items in otherwise correct runs,
+    so 98 counts as solved, and the local skill arm at 98 or more). A scenario whose local skill
+    arm dips keeps the type only until the hosted run and is listed in this file as provisional.
   - `skill_context_dependent`: a regression scenario that requires skill-package or agent-instruction
     context, so without-context comparison is not fair.
 - Every main eval criterion must classify `category` as `safety`, `optional_quality`, or
@@ -155,6 +158,17 @@ Current active suite structure:
 - `evals-reference/`: 46 scenarios, 2470 checklist points, broad candidate and diagnostic coverage.
 - `evals-regression/`: 2 scenarios, 200 checklist points, with-context safety coverage.
 
+## Local Baseline Screening
+
+Hosted Tessl runs cost credits (20 per scenario with both variants on the free plan) and the
+daily pool is shared with the other skill repositories. Screen locally first with
+`scripts/local_screen.sh`, which runs a scenario through the model behind Tessl's default solver
+for one to two cents and grades it with a Claude judge. Setup, commands, placement thresholds, and the
+skill-tuning loop are in [Local Screening With DeepSeek](local-screening.md). Local numbers decide
+placement and go into the `NUMBERING.md` notes as local screening results. They are not hosted
+evidence: benchmark claims, release-readiness claims, and the registry score still need the hosted
+runs described above.
+
 ## Checks
 
 Run the shared validation commands in [Workflow](workflow.md). When editing eval criteria, also run
@@ -164,3 +178,4 @@ the criteria JSON check listed there.
 
 - [Workflow](workflow.md)
 - [Skill Behavior](skill-behavior.md)
+- [Local Screening With DeepSeek](local-screening.md)
