@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/76"
+  },
+  "categories": {
+    "Creates coherent Java 25 artifact": "safety",
+    "Implements the catalog behavior exactly": "safety",
+    "Rejects with the advertised values": "safety",
+    "Binds the catalog Optional once": "optional_quality",
+    "Keeps the fixed-list fallback in Optional flow": "optional_quality",
+    "Avoids Optional antipatterns": "optional_quality",
+    "Keeps the change focused": "maintainability"
+  }
+}

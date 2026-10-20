@@ -1,0 +1,41 @@
+{
+  "context": "The skill should select a fallback strategy through the owning container's fallback operation and invoke the selected strategy once.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 25 artifact",
+      "description": "Returns complete Java 25-compatible PropertyLookup code that uses ScopedValue with both methods and their signatures intact.",
+      "max_score": 8
+    },
+    {
+      "name": "Preserves lookup behavior",
+      "description": "Bound lookups answer inside withLookup, the system property answers outside, a null lookup result stays null, and nested bindings restore the outer lookup.",
+      "max_score": 16
+    },
+    {
+      "name": "Selects the strategy with the container fallback",
+      "description": "get resolves the lookup function with LOOKUP.orElse(...) or an equivalent single fallback operation that yields a function, then calls apply once.",
+      "max_score": 30
+    },
+    {
+      "name": "Avoids presence check plus read",
+      "description": "Does not pair isBound() with get(), does not keep a null sentinel for the absent strategy, and does not wrap the ScopedValue in an Optional only to unwrap it.",
+      "max_score": 18
+    },
+    {
+      "name": "Keeps the fallback strategy prebuilt",
+      "description": "The system-property strategy is a constant or method reference selected eagerly, with no supplier or lazy wrapper for work that costs nothing.",
+      "max_score": 12
+    },
+    {
+      "name": "Binds with the ScopedValue API",
+      "description": "withLookup binds through ScopedValue.where(...) and runs the body inside that scope instead of mutating shared state.",
+      "max_score": 8
+    },
+    {
+      "name": "Keeps the change focused",
+      "description": "Does not add caches, extra public types, or behavior beyond the two methods.",
+      "max_score": 8
+    }
+  ]
+}

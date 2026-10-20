@@ -1,0 +1,41 @@
+{
+  "context": "The skill should give an Optional upsert one present/absent boundary with the present-branch policy in a named helper.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "description": "Returns complete Java 17-compatible WaitingCommentSync code with imports, logger, methods, and records intact.",
+      "max_score": 8
+    },
+    {
+      "name": "Uses one Optional decision boundary",
+      "description": "Consumes prerequisiteWaitingComment(config, card.id()) once with ifPresentOrElse or an equivalent single present/absent boundary instead of two pipelines over the same Optional.",
+      "max_score": 24
+    },
+    {
+      "name": "Extracts present-branch policy",
+      "description": "Moves the same-text no-op, blank-id create, and update decisions into a named helper or an equally clear method boundary.",
+      "max_score": 18
+    },
+    {
+      "name": "Preserves side-effect behavior",
+      "description": "Keeps absent create, same-text no-op, different-text update when the id is nonblank, different-text create when the id is blank, and the original add/update arguments.",
+      "max_score": 22
+    },
+    {
+      "name": "Keeps exception boundary",
+      "description": "Keeps runtime exception handling around the upsert operation and preserves the warning.",
+      "max_score": 10
+    },
+    {
+      "name": "Avoids Optional antipatterns",
+      "description": "Does not use orElse(null), isPresent plus get, generic helpers, or fake collections.",
+      "max_score": 12
+    },
+    {
+      "name": "Keeps code focused",
+      "description": "Does not redesign logging, comments, config, or repository access beyond clarifying the upsert flow.",
+      "max_score": 6
+    }
+  ]
+}

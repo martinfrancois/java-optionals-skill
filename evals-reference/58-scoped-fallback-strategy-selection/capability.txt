@@ -1,0 +1,1 @@
+Select a fallback strategy through the owning container's fallback operation and invoke the selected strategy once.
