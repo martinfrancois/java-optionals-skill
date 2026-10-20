@@ -15,10 +15,24 @@ Examples:
   scripts/run_eval_suite.sh main -- --label "main check"
   scripts/run_eval_suite.sh reference 01-display-name -- --label "targeted reference"
   scripts/run_eval_suite.sh regression -- --label "regression safety"
+  scripts/run_eval_suite.sh main -- --agent claude:claude-sonnet-4-6 --label "representative model check"
+
+Model-selection note:
+  Do not pin Sonnet in default commands; the script runs with the current Tessl default solver.
+  On accounts without model-selection entitlements (including many free plans), passing
+  `--agent` for a specific model (for example, `claude:claude-sonnet-4-6`) can return
+  a "Missing required entitlement" error. Prefer default commands for routine checks and
+  save explicit model pins for accounts where modelSelection is enabled.
+  If model-selection is available, Sonnet 4.6 or a better model is a good representative check.
+  See Tessl model-selection and default-model discussions:
+  - https://docs.tessl.io/changelog
+  - https://tessl.io/blog/why-were-changing-our-default-eval-model/
 
 Do not pass --variant or --skip-baseline. This script chooses variants from the suite purpose.
-The default Tessl solver is used unless an explicit --agent is passed after --; model selection
-returns an entitlement error on plans without it.
+The default Tessl solver is used unless an explicit --agent is passed after --.
+The runner passes --skill java-optionals so with-context runs exercise this skill instead of relying on
+solver auto-selection for final readiness evidence. It also passes --force so runs after a skill or
+runner fix cannot reuse stale hosted solutions.
 USAGE
 }
 
@@ -44,12 +58,15 @@ shift
 case "$suite" in
   main)
     source_dir="evals"
+    variant_label="baseline control + with-context"
     ;;
   reference)
     source_dir="evals-reference"
+    variant_label="baseline control + with-context"
     ;;
   regression)
     source_dir="evals-regression"
+    variant_label="with-context only"
     ;;
   -h|--help|help)
     usage
@@ -101,19 +118,19 @@ eval_run_help="$(tessl eval run --help 2>&1 || true)"
 if grep -qE -- '--variant([^-[:alnum:]]|$)' <<<"$eval_run_help"; then
   case "$suite" in
     main|reference)
-      variants=(--variant without-context --variant with-context)
+      variant_args=(--variant without-context --variant with-context)
       ;;
     regression)
-      variants=(--variant with-context)
+      variant_args=(--variant with-context)
       ;;
   esac
 elif grep -q -- "--skip-baseline" <<<"$eval_run_help"; then
   case "$suite" in
     main|reference)
-      variants=()
+      variant_args=()
       ;;
     regression)
-      variants=(--skip-baseline)
+      variant_args=(--skip-baseline)
       ;;
   esac
 else
@@ -123,6 +140,8 @@ fi
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 source_path="$repo_root/$source_dir"
+skill_args=(--skill java-optionals)
+freshness_args=(--force)
 if [[ ! -d "$source_path" ]]; then
   echo "Missing suite directory: $source_path" >&2
   exit 1
@@ -132,11 +151,11 @@ if [[ "$suite" == "main" && "${#scenarios[@]}" -eq 0 ]]; then
   echo "Running main eval suite from the linked plugin path."
   echo "Scenarios:"
   print_suite_scenarios "$source_path"
-  echo "Variants: ${variants[*]:-baseline control + with-context}"
+  echo "Eval mode: $variant_label"
 
   (
     cd "$repo_root"
-    tessl eval run ${variants[@]+"${variants[@]}"} ${extra_args[@]+"${extra_args[@]}"} .
+    tessl eval run "${variant_args[@]}" "${skill_args[@]}" "${freshness_args[@]}" "${extra_args[@]}" .
   )
   exit 0
 fi
@@ -204,9 +223,9 @@ fi
 echo "Running $suite eval suite from the linked plugin path with a temporary evals/ staging area."
 echo "Scenarios:"
 print_suite_scenarios "$staged_evals"
-echo "Variants: ${variants[*]:-baseline control + with-context}"
+echo "Eval mode: $variant_label"
 
 (
   cd "$repo_root"
-  tessl eval run ${variants[@]+"${variants[@]}"} ${extra_args[@]+"${extra_args[@]}"} .
+  tessl eval run "${variant_args[@]}" "${skill_args[@]}" "${freshness_args[@]}" "${extra_args[@]}" .
 )
