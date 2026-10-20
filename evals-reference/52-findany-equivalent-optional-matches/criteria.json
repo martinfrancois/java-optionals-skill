@@ -1,0 +1,36 @@
+{
+  "context": "The skill should keep findFirst where encounter order selects the value and switch to findAny where every match is equivalent.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "description": "Returns complete Java 17-compatible OptionalLookupTerminals code with imports, helper, methods, and record intact.",
+      "max_score": 8
+    },
+    {
+      "name": "Uses findAny for equivalent matches",
+      "description": "Changes the exact-name and normalized-name list lookups to findAny because the Optional result has no encounter-order contract.",
+      "max_score": 30
+    },
+    {
+      "name": "Preserves ordered findFirst contracts",
+      "description": "Keeps findFirst for the search-path executable lookup and the first Java version line, where encounter order selects the value.",
+      "max_score": 24
+    },
+    {
+      "name": "Explains retained findFirst calls",
+      "description": "Adds a concise comment for each retained findFirst based on the order contract, not on current sequential-stream behavior.",
+      "max_score": 12
+    },
+    {
+      "name": "Avoids mechanical terminal changes",
+      "description": "Does not replace every findFirst blindly and does not keep every findFirst merely because the code already works.",
+      "max_score": 14
+    },
+    {
+      "name": "Preserves Optional flattening",
+      "description": "Keeps Optional-returning parsing flattened with Optional::stream or equivalent and does not introduce get(), null, or fake-list handling.",
+      "max_score": 12
+    }
+  ]
+}

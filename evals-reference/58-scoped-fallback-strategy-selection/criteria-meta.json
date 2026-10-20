@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/77"
+  },
+  "categories": {
+    "Creates coherent Java 25 artifact": "safety",
+    "Preserves lookup behavior": "safety",
+    "Selects the strategy with the container fallback": "optional_quality",
+    "Avoids presence check plus read": "optional_quality",
+    "Keeps the fallback strategy prebuilt": "optional_quality",
+    "Binds with the ScopedValue API": "optional_quality",
+    "Keeps the change focused": "maintainability"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "context": "The skill should bind an Optional selector once at the boundary and hand the selected Path to a domain validation helper.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "description": "Returns complete Java 17-compatible LocalWorkerManager code with lifecycle methods, validation helpers, records, and IOException behavior intact.",
+      "max_score": 8
+    },
+    {
+      "name": "Centralizes lifecycle preflight",
+      "description": "stop, status, and logs share one helper that performs the explicit-workflow validation before loading the lifecycle manifest.",
+      "max_score": 18
+    },
+    {
+      "name": "Uses Optional terminal at boundary",
+      "description": "Binds the selected workflow once with ifPresent, map, or an equivalent Optional terminal at the boundary instead of passing Optional<Path> to a helper that only inspects presence.",
+      "max_score": 22
+    },
+    {
+      "name": "Domain helper accepts Path",
+      "description": "The helper that validates the selected workflow accepts Path, not Optional<Path>, so domain validation is separated from optionality.",
+      "max_score": 14
+    },
+    {
+      "name": "Removes isEmpty/get flow",
+      "description": "Does not keep Optional.isEmpty() followed by Optional.get() to validate the explicit workflow selector.",
+      "max_score": 14
+    },
+    {
+      "name": "Preserves validation behavior",
+      "description": "Keeps the missing-workflow message, the regular-file message, validation before manifest load, and the selectForStop/status/logs behavior; simplifying the redundant exists guard is acceptable when observable behavior is unchanged.",
+      "max_score": 16
+    },
+    {
+      "name": "Avoids generic Optional utility",
+      "description": "Does not introduce broad Optional helpers, fake collections, or unrelated lifecycle redesign to hide the presence check.",
+      "max_score": 8
+    }
+  ]
+}

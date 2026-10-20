@@ -1,0 +1,1 @@
+Implement validation backed by an Optional-returning catalog lookup so the present list is bound once instead of checked and then read repeatedly.

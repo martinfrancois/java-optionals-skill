@@ -1,0 +1,1 @@
+Implement side-effecting Optional present and absent branches with one Optional terminal while preserving rendering order and checked boundaries.
