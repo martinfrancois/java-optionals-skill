@@ -1,7 +1,7 @@
 {
   "metadata": {
     "evidence_type": "solved_regression",
-    "invocation": "explicit",
+    "invocation": "natural",
     "task_type": "implementation"
   },
   "categories": {

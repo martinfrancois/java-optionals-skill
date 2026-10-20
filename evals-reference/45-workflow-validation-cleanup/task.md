@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to create `WorkflowConfigValidation.java` with the revised class.
+Create `WorkflowConfigValidation.java` with the revised class.
 
 This is adapted from a real AI-assisted maintainability cleanup. The original task was a broad
 readability/refactor pass that had to preserve the same behavior. The code below works, but the
