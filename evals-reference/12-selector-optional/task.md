@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to improve this selection code without changing behavior:
+Improve this selection code without changing behavior:
 
 ```java
 import java.nio.file.Path;

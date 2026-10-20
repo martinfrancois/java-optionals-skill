@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to create `DeliveryRouter.java`.
+Create `DeliveryRouter.java`.
 
 Implement:
 

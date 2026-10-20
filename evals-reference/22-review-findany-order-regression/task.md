@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to review this proposed change. Create `review.md` with a short review
+Review this proposed change. Create `review.md` with a short review
 decision and rationale.
 
 Before:

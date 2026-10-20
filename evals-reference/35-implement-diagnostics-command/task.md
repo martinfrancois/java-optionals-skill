@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to create `DiagnosticsCommand.java`.
+Create `DiagnosticsCommand.java`.
 
 Implement two methods:
 

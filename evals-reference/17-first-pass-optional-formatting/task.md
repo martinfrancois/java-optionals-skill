@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to create `AssigneeFormatter.java`.
+Create `AssigneeFormatter.java`.
 
 Implement a small Java class `AssigneeFormatter` with:
 

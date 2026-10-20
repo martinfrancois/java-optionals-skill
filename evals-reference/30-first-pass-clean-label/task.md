@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to create `LabelFormatter.java`.
+Create `LabelFormatter.java`.
 
 Implement:
 

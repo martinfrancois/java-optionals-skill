@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to improve this lookup without changing its error behavior:
+Improve this lookup without changing its error behavior:
 
 ```java
 import java.util.Map;

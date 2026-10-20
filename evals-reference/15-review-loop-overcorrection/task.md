@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to review this proposed rewrite. Create `review.md` with a short review
+Review this proposed rewrite. Create `review.md` with a short review
 decision and rationale.
 
 Before:

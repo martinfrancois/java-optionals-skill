@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to improve this Java code without changing behavior. Create
+Improve this Java code without changing behavior. Create
 `CustomerSessionCheck.java` with the revised class.
 
 ```java

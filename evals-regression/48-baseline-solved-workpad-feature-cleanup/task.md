@@ -1,6 +1,6 @@
 # Add workpad safeguards while cleaning up the implementation
 
-Use `$java-optionals` to create `WorkpadService.java` with the revised class.
+Create `WorkpadService.java` with the revised class.
 Assume Java 17.
 
 The current implementation was written during an AI-assisted maintainability pass. It works for the

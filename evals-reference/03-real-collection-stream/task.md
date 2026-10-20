@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to review this lookup. Create `review.md` with a short review decision and
+Review this lookup. Create `review.md` with a short review decision and
 rationale. Do not modify the Java code.
 
 ```java

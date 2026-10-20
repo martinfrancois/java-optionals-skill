@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to improve this lookup while preserving behavior:
+Improve this lookup while preserving behavior:
 
 ```java
 import java.util.Optional;

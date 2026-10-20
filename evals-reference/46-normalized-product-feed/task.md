@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Use `$java-optionals` to create `CatalogFeed.java` with the revised class.
+Create `CatalogFeed.java` with the revised class.
 
 This is adapted from a real AI-written Java method that normalized raw records before filtering
 them. The code works, but the product feed now needs one extra rule and the stream should be left
