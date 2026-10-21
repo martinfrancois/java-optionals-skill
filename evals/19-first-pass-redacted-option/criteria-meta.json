@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation",
+    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 65 without the skill, 100 with it; local screen 58 unaided"
+  },
+  "categories": {
+    "Creates requested matcher": "safety",
+    "Uses real collection stream": "optional_quality",
+    "Uses findAny": "optional_quality",
+    "Preserves matching behavior": "safety",
+    "No null workaround": "optional_quality"
+  }
+}

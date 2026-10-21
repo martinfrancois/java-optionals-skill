@@ -86,7 +86,9 @@ measured against: `skill-v0` is the 1.0.1 text, `skill-v1` adds the rules from i
 | `58-scoped-fallback-strategy-selection` | 2 | 34 (32 to 35) | 90 (87 to 92) (2, skill-v2) | reference |
 | `59-checked-boundary-selection-cleanup` | 2 | 54 (50 to 57) | 90 (88 to 93) (2, skill-v2) | reference |
 
-Placement follows the table: `13`, `48`, `51`, `55`, and `57` joined `10` in `evals/`; `04`,
+Placement followed the table: `13`, `48`, `51`, `55`, and `57` joined `10` in `evals/`, then the
+hosted runs of 2026-10-21 sent `13` and `48` back here (baseline 100 on Tessl) and promoted `19`,
+`35`, and `37` (see `evals/NUMBERING.md`); `04`,
 `06`, `22`, `24`, `26`, `30`, `31`, `38`, `44`, `46`, and `52` moved to `evals-regression/`;
 `48` and `49` came back from regression because the natural prompt fails unaided; the former main
 scenarios `50` and `59` moved here because their skill arm sits at 90 to 97 on the current text.
