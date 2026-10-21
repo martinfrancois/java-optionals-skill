@@ -43,8 +43,7 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
 
    The same rule covers a presence check that only picks one of two constants:
    `promoCode.isPresent() ? Shipping.EXPRESS : Shipping.STANDARD` becomes
-   `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`, with no helper written
-   just to pick. When the present branch also does something (logs, sends, writes), keep it a
+   `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`. When the present branch also does something (logs, sends, writes), keep it a
    plain `if (promoCode.isPresent())` branch or an `ifPresent`; never hide that inside `map`.
    One Optional, one terminal. Decide present or absent once, and give helpers the value, never
    the `Optional`: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
@@ -104,8 +103,7 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
      defines absence as `null`, so the Optional ends here.
 
      ```java
-     // LegacyTicket.note() is null when there is no note; the legacy API, not this code, owns that.
-     return new LegacyTicket(id, note.orElse(null));
+     return new LegacyTicket(id, note.orElse(null));   // LegacyTicket.note() is null when absent
      ```
 8. Verify each changed branch. Run focused tests or trace present/absent/fallback cases. Confirm
    return values, exceptions, prompts, side effects, laziness, output, and branch order. Run the
