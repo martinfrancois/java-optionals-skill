@@ -9,6 +9,7 @@
     "Uses real collection stream": "optional_quality",
     "Uses findAny": "optional_quality",
     "Preserves matching behavior": "safety",
-    "No null workaround": "optional_quality"
+    "No null workaround": "optional_quality",
+    "Keeps the change focused": "maintainability"
   }
 }

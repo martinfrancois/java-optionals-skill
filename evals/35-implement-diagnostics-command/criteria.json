@@ -29,13 +29,18 @@
     },
     {
       "name": "Preserves selection behavior",
-      "max_score": 8,
+      "max_score": 6,
       "description": "Returns board, workflow, and all selections with the required values and configDir.resolve(workflowValue)."
     },
     {
       "name": "Preserves output behavior",
-      "max_score": 8,
+      "max_score": 5,
       "description": "Calls write only when output is present and print only when absent."
+    },
+    {
+      "name": "Keeps the change focused",
+      "max_score": 5,
+      "description": "Adds no public types, caches, overloads, or behavior beyond the requested command."
     }
   ]
 }

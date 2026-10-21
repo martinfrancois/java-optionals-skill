@@ -11,6 +11,7 @@
     "Uses side-effect boundary": "optional_quality",
     "No fake collection or null workaround": "optional_quality",
     "Preserves selection behavior": "safety",
-    "Preserves output behavior": "maintainability"
+    "Preserves output behavior": "safety",
+    "Keeps the change focused": "maintainability"
   }
 }

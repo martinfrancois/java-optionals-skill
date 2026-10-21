@@ -29,8 +29,13 @@
     },
     {
       "name": "Handles absence and malformed values",
-      "max_score": 10,
+      "max_score": 5,
       "description": "Returns Optional.empty() for absent front matter, missing key, blank strings, non-numeric strings, and unsupported value types without throwing."
+    },
+    {
+      "name": "Keeps the change focused",
+      "max_score": 5,
+      "description": "Adds no public types, caches, overloads, or behavior beyond the requested lookup."
     }
   ]
 }

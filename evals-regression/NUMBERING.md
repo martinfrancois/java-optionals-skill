@@ -13,5 +13,5 @@ Moved here with `evidence_type` `solved_regression` after the local screen in
 with-context run against the new skill text is still to come; keep them only if it scores 100.
 
 `48` and `49` left: with natural prompts their baseline is 43 and 64, so they are lift material
-(`48` is now main, `49` reference). They had been placed here on hosted evidence from explicit
+(both reference after the hosted runs; `48` scored 100 unaided on Tessl). They had been placed here on hosted evidence from explicit
 prompts under the September solver.

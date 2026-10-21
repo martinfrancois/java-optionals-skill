@@ -10,6 +10,7 @@
     "No repeated Optional reopening": "optional_quality",
     "No null or fake collection workaround": "optional_quality",
     "Parses supported values": "safety",
-    "Handles absence and malformed values": "maintainability"
+    "Handles absence and malformed values": "safety",
+    "Keeps the change focused": "maintainability"
   }
 }

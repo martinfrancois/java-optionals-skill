@@ -14,7 +14,7 @@
     },
     {
       "name": "Uses findAny",
-      "max_score": 25,
+      "max_score": 20,
       "description": "Uses findAny() because any matching redacted option is equivalent."
     },
     {
@@ -26,6 +26,11 @@
       "name": "No null workaround",
       "max_score": 25,
       "description": "Does not use null sentinels, orElse(null), or local null-control-flow."
+    },
+    {
+      "name": "Keeps the change focused",
+      "max_score": 5,
+      "description": "Adds no public types, caches, overloads, or behavior beyond the requested matcher."
     }
   ]
 }

@@ -11,7 +11,7 @@
     "Selects the strategy with the container fallback": "optional_quality",
     "Avoids presence check plus read": "optional_quality",
     "Keeps the fallback strategy prebuilt": "optional_quality",
-    "Binds with the ScopedValue API": "optional_quality",
+    "Leaves the binding alone": "optional_quality",
     "Keeps the change focused": "maintainability"
   }
 }

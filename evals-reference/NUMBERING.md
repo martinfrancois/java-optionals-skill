@@ -39,13 +39,13 @@ measured against: `skill-v0` is the 1.0.1 text, `skill-v1` adds the rules from i
 | `10-first-pass-retry-backoff` | 2 | 32 (30 to 34) | 100 (99 to 100) (2, skill-v0) | evals |
 | `11-lazy-cache-writing` | 2 | 95 (90 to 100) | 100 (2, skill-v0) | reference |
 | `12-selector-optional` | 2 | 93 | 100 (2, skill-v0) | reference |
-| `13-output-path-side-effect` | 2 | 42 | 100 (2, skill-v0) | evals |
+| `13-output-path-side-effect` | 2 | 42 | 100 (2, skill-v0) | reference |
 | `14-review-null-workaround` | 2 | 94 (91 to 97) | 98 (97 to 100) (2, skill-v0) | reference |
 | `15-review-loop-overcorrection` | 2 | 72 (43 to 100) | 98 (97 to 100) (2, skill-v0) | reference |
 | `16-review-checked-helper` | 2 | 81 (70 to 92) | 99 (98 to 100) (2, skill-v0) | reference |
 | `17-first-pass-optional-formatting` | 2 | 96 (91 to 100) | 97 (2, skill-v0) | reference |
 | `18-first-pass-selector-writing` | 2 | 89 (88 to 90) | 100 (2, skill-v1) | reference |
-| `19-first-pass-redacted-option` | 2 | 58 (55 to 60) | 100 (2, skill-v0) | reference |
+| `19-first-pass-redacted-option` | 2 | 58 (55 to 60) | 100 (2, skill-v0) | evals |
 | `20-review-legacy-null-boundary` | 2 | 75 | 100 (2, skill-v1) | reference |
 | `21-review-optional-dto-overreach` | 2 | 78 (75 to 80) | 100 (2, skill-v1) | reference |
 | `22-review-findany-order-regression` | 2 | 100 | 100 (2, skill-v1) | regression |
@@ -60,9 +60,9 @@ measured against: `skill-v0` is the 1.0.1 text, `skill-v1` adds the rules from i
 | `32-implement-workpad-upsert` | 2 | 79 (58 to 100) | 100 (2, skill-v0) | reference |
 | `33-implement-command-sanitizer` | 2 | 54 (40 to 69) | 100 (2, skill-v1) | reference |
 | `34-implement-workspace-resolution` | 2 | 94 (91 to 98) | 99 (98 to 100) (2, skill-v0) | reference |
-| `35-implement-diagnostics-command` | 2 | 60 (60 to 61) | 100 (2, skill-v0) | reference |
+| `35-implement-diagnostics-command` | 2 | 60 (60 to 61) | 100 (2, skill-v0) | evals |
 | `36-implement-card-move-if-configured` | 2 | 85 (70 to 100) | 100 (2, skill-v0) | reference |
-| `37-implement-frontmatter-port` | 2 | 69 | 100 (2, skill-v0) | reference |
+| `37-implement-frontmatter-port` | 2 | 69 | 100 (2, skill-v0) | evals |
 | `38-implement-setup-options` | 2 | 100 (99 to 100) | 100 (2, skill-v0) | regression |
 | `39-diagnostics-feature-cleanup` | 2 | 56 (54 to 58) | 99 (98 to 100) (2, skill-v0) | reference |
 | `40-card-move-feature` | 2 | 80 | 100 (2, skill-v0) | reference |
@@ -73,7 +73,7 @@ measured against: `skill-v0` is the 1.0.1 text, `skill-v1` adds the rules from i
 | `45-workflow-validation-cleanup` | 2 | 62 (56 to 67) | 100 (2, skill-v1) | reference |
 | `46-normalized-product-feed` | 2 | 100 | 100 (2, skill-v0) | regression |
 | `47-checked-boundary-fake-optional-list-cleanup` | 2 | 94 (94 to 95) | 100 (2, skill-v0) | reference |
-| `48-workpad-feature-cleanup` | 2 | 43 (42 to 44) | 100 (2, skill-v0) | evals |
+| `48-workpad-feature-cleanup` | 2 | 43 (42 to 44) | 100 (2, skill-v0) | reference |
 | `49-workspace-prompt-feature` | 2 | 64 (60 to 67) | 96 (94 to 97) (2, skill-v1) | reference |
 | `50-command-sanitizer-feature` | 2 | 53 (44 to 62) | 96 (95 to 98) (2, skill-v2) | reference |
 | `51-presence-selects-enum-value` | 2 | 42 (40 to 44) | 100 (99 to 100) (2, skill-v2) | evals |
