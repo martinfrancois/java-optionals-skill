@@ -42,13 +42,13 @@ read, fallback work done before the check, and one Optional turned into a collec
    ```
 
    The same rule covers a presence check that only picks one of two constants:
-   `cart.isPresent() ? Mode.EXISTING : Mode.NEW` becomes
-   `cart.map(ignored -> Mode.EXISTING).orElse(Mode.NEW)`, with no helper written just to pick.
-   When the present branch also writes something (a log line, an audit record, a file), keep it a
-   plain `if (cart.isPresent())` branch or an `ifPresent`; never hide the write inside `map`.
+   `promoCode.isPresent() ? Shipping.EXPRESS : Shipping.STANDARD` becomes
+   `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`, with no helper written
+   just to pick. When the present branch also does something (logs, sends, writes), keep it a
+   plain `if (promoCode.isPresent())` branch or an `ifPresent`; never hide that inside `map`.
    One Optional, one terminal. Decide present or absent once; a present-branch policy with
    several cases goes into a named helper that takes the value. Helpers take the value, not the
-   `Optional`; the caller binds it: `workflow.map(Path::toAbsolutePath).ifPresent(this::requireExisting)`.
+   `Optional`; the caller binds it: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
 
 2. Match the API to the operation: `map` for transforms, `flatMap` for Optional-returning calls,
    `orElseGet` for non-trivial fallback work, and `orElseThrow` only when absence is an error. Keep
@@ -65,9 +65,9 @@ read, fallback work done before the check, and one Optional turned into a collec
 
 3. Keep real streams readable. A lookup over a collection that yields zero or one element is
    `stream().filter(...).findAny()` consumed with `map`/`orElse`, not a loop with `break` or a
-   null sentinel. Preserve `findFirst()` when order matters: the first line of some output, the
-   first directory on a search path, the first entry of a priority list. Use `findAny()` only when
-   all matches are equivalent (an exact or normalized name among unique names). Flatten
+   null sentinel. Preserve `findFirst()` when an earlier element must win because the source is
+   ordered. Use `findAny()` only when every match would do, as with a key that is unique in its
+   collection. Flatten
    `Stream<Optional<T>>` with `flatMap(Optional::stream)` on Java 9+.
 4. Bind selectors once and keep fallback lazy.
    - Treat `Optional<Boolean>` as three states when absence differs from `false`.
@@ -96,12 +96,13 @@ read, fallback work done before the check, and one Optional turned into a collec
 7. In a review, keep the scope honest.
    - A proposal that changes a public record, accessor, parameter, or return type (a nullable
      field to `Optional`, `Optional` in a DTO or parameter) is an API change, not a local
-     cleanup: say so, keep the local code as it is, and ask for that redesign as separate scoped
-     work with its own compatibility review.
-   - Where `findFirst()` stays because the input is ordered, say that encounter order is the
-     contract and name the test that proves it: two matches, the earlier one wins.
-   - Where `orElse(null)` stays, state the condition that makes it acceptable: the legacy type
-     defines absence as `null`.
+     cleanup: say so, keep the local code as it is, and ask for that redesign as its own change,
+     reviewed for what it breaks.
+   - Where `findFirst()` stays because the input is ordered, say that the order is the contract
+     and describe a test that fails under `findAny()`: several matches, and the result must be
+     the first of them.
+   - Where `orElse(null)` stays, state why: the type on the other side defines absence as
+     `null`, so the Optional ends here.
 
      ```java
      // LegacyTicket.note() is null when there is no note; the legacy API, not this code, owns that.

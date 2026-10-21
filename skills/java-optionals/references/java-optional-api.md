@@ -52,16 +52,16 @@ The container selects the value or the fallback in one call; the code then acts 
 returns.
 
 ```java
-// Java 25
-private static final Function<String, String> FROM_PROPERTIES = System::getProperty;
-private static final ScopedValue<Function<String, String>> LOOKUP = ScopedValue.newInstance();
+// Java 25: a test can bind a fixed clock; production code never checks isBound()
+private static final Clock WALL_CLOCK = Clock.systemUTC();
+private static final ScopedValue<Clock> CLOCK = ScopedValue.newInstance();
 
-static String setting(String name) {
-    return LOOKUP.orElse(FROM_PROPERTIES).apply(name);       // not isBound() ? LOOKUP.get()... : ...
+static Instant now() {
+    return CLOCK.orElse(WALL_CLOCK).instant();               // not isBound() ? CLOCK.get()... : ...
 }
 
-static <T> T withOverride(Function<String, String> override, Supplier<T> body) {
-    return ScopedValue.where(LOOKUP, override).get(body);    // get(Supplier); call(...) declares a checked exception
+static <T> T atFixedTime(Clock fixed, Supplier<T> body) {
+    return ScopedValue.where(CLOCK, fixed).get(body);         // get(Supplier); call(...) declares a checked exception
 }
 
 int port = portByHost.getOrDefault(host, DEFAULT_PORT);      // not containsKey() then get()
