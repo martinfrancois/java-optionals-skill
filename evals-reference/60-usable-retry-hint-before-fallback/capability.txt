@@ -1,0 +1,1 @@
+Implement an Optional-based retry hint that filters a parsed but unusable value into absence before the lazy fallback.
