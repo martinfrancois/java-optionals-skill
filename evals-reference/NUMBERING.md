@@ -83,7 +83,7 @@ measured against: `skill-v0` is the 1.0.1 text, `skill-v1` adds the rules from i
 | `55-side-effecting-ifpresentorelse-lookup` | 2 | 64 (63 to 65) | 100 (2, skill-v0) | evals |
 | `56-optional-helper-trigger-lifecycle-refactor` | 2 | 61 (50 to 72) | 96 (95 to 96) (2, skill-v2) | reference |
 | `57-catalog-validation-bound-once` | 2 | 64 (59 to 68) | 100 (1, skill-v2) | evals |
-| `58-scoped-fallback-strategy-selection` | 2 | 34 (32 to 35) | 90 (87 to 92) (2, skill-v2) | reference |
+| `58-scoped-fallback-strategy-selection` | 2 | 30 on the corrected task (34 before) | 100 (2, final text) | reference |
 | `59-checked-boundary-selection-cleanup` | 2 | 54 (50 to 57) | 90 (88 to 93) (2, skill-v2) | reference |
 
 Placement followed the table: `13`, `48`, `51`, `55`, and `57` joined `10` in `evals/`, then the
@@ -102,5 +102,7 @@ correcting it to `call`; the task now uses `call` itself. Its hosted both-arms r
 (`01a15c16-e557-7343-a72a-49d6240fe607`) scored 100 unaided, so like `13` and `48` it stays
 reference: solved on Tessl once, failed locally more often than not.
 
-`33` and `45` fail unaided (54 and 62) but their skill arm was below 100 in one local run each
-(45 and 94), so they wait here under the with-context rule rather than joining main.
+`33` and `45` fail unaided (54 and 62). On the 1.0.1 text (`skill-v0`) their skill arm scored 45
+and 94 in one run each; on `skill-v1` both scored 100 twice, as the table shows. They wait here
+until a hosted run shows the skill arm at 100, which the main-suite rule asks for before a
+promotion.
