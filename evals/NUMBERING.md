@@ -73,8 +73,8 @@ sentence that hinted at the fix and screened at 37 to 41 unaided in four runs of
 in the other two), and its skill arm stayed at 100 in every run; `57` scored 100 in four runs of
 four with the skill after its binding item was reworded to judge one method. The main suite is `10`, `19`, `35`,
 `37`, `51`, `55`, `57`: 309 without the skill against 700 with it on these two hosted runs, about
-2.3x. The whole suite then ran on the final skill text in `01a15c11-3ac0-7586-a566-3cff1dd3955d`
-(2026-10-21, both arms):
+2.3x. The whole suite then ran on the text after the code review (commit `44ca38a`) in
+`01a15c11-3ac0-7586-a566-3cff1dd3955d` (2026-10-21, both arms):
 
 | Scenario | Baseline | With skill |
 | --- | --- | --- |
@@ -91,6 +91,6 @@ through `ifPresent`, which the skill text had allowed next to a plain branch; th
 a present branch that also writes something as a plain branch. `51` then ran targeted twice,
 once on the text before that rule (`01a15c17-6b8e-779d-b95e-7821ec3a34d9`) and once on the final
 text (`01a15c17-f69d-778f-b366-a392b597cc21`): 33 without the skill and 100 with it both times.
-On the final text every main scenario therefore stands at 100 with the skill, 280 without, out of
-700. `58` ran as a further candidate (`01a15c16-e557-7343-a72a-49d6240fe607`) and scored 100 in
+Two wording commits to the skill followed that run, so the whole suite runs once more on the
+final text; that run is recorded below. `58` ran as a further candidate (`01a15c16-e557-7343-a72a-49d6240fe607`) and scored 100 in
 both arms, so it stays in reference.
