@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "review",
+    "evidence_type": "solved_regression"
+  },
+  "categories": {
+    "Rejects eager fallback": "optional_quality",
+    "Identifies eager evaluation": "optional_quality",
+    "Preserves side-effect laziness": "safety",
+    "Suggests orElseGet": "optional_quality"
+  }
+}

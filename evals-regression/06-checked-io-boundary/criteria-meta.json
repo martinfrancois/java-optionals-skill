@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "solved_regression"
+  },
+  "categories": {
+    "Preserves checked exception contract": "safety",
+    "No unchecked wrapper": "optional_quality",
+    "No new helper or dependency": "maintainability"
+  }
+}

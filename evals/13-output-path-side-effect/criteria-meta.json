@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation",
+    "evidence_type": "ordinary_lift"
+  },
+  "categories": {
+    "Uses side-effect boundary": "optional_quality",
+    "Removes value-read branch": "optional_quality",
+    "Preserves behavior": "safety",
+    "No workaround": "optional_quality",
+    "Keeps the change focused": "maintainability",
+    "Creates coherent Java 17 artifact": "safety"
+  }
+}
