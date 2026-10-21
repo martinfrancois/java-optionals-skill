@@ -1,35 +1,30 @@
-# Replace the ThreadLocal override with a ScopedValue
+# Tidy the property lookup override
 
-Create `PropertyLookup.java`. Assume Java 25.
+Create `PropertyLookup.java` with the revised class. Assume Java 25.
+
+Tests bind a lookup function for the duration of a block; production code reads system properties.
+The override was migrated to `ScopedValue` last week and works. Tidy `get` where that makes it
+clearer, keep both signatures, and keep the behavior: inside `withLookup` the given lookup answers,
+outside it the system property does, a lookup that returns `null` still yields `null`, and nested
+calls restore the outer lookup when the inner body finishes. Return the complete Java code only.
 
 ```java
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 final class PropertyLookup {
-    private static final ThreadLocal<Function<String, String>> LOOKUP = new ThreadLocal<>();
+    private static final ScopedValue<Function<String, String>> LOOKUP = ScopedValue.newInstance();
 
     static String get(String name) {
-        Function<String, String> lookup = LOOKUP.get();
-        return lookup == null ? System.getProperty(name) : lookup.apply(name);
+        if (LOOKUP.isBound()) {
+            Function<String, String> lookup = LOOKUP.get();
+            return lookup.apply(name);
+        }
+        return System.getProperty(name);
     }
 
-    static <T> T withLookup(Function<String, String> lookup, java.util.function.Supplier<T> body) {
-        Function<String, String> previous = LOOKUP.get();
-        LOOKUP.set(lookup);
-        try {
-            return body.get();
-        } finally {
-            if (previous == null) {
-                LOOKUP.remove();
-            } else {
-                LOOKUP.set(previous);
-            }
-        }
+    static <T> T withLookup(Function<String, String> lookup, Supplier<T> body) {
+        return ScopedValue.where(LOOKUP, lookup).get(body);
     }
 }
 ```
-
-Migrate the override from `ThreadLocal` to `ScopedValue`. Keep `get` and `withLookup` with the same
-signatures and the same observable behavior: inside `withLookup` the given lookup answers, outside it
-the system property does, a lookup that returns `null` still yields `null`, and nested calls restore
-the outer lookup when the inner body finishes. Return the complete Java code only.

@@ -1,8 +1,7 @@
 # Refactor lifecycle selector validation
 
 Refactor this lifecycle selector validation so `status`, `stop`, and `logs` share the same explicit
-workflow preflight before loading the manifest, and tidy the preflight itself while you are there.
-Preserve behavior and public messages. Keep the change small. Assume Java 17. Create
+workflow preflight before loading the manifest. Preserve behavior and public messages. Keep the change small. Assume Java 17. Create
 `LocalWorkerManager.java` with the revised class and return the complete revised Java code only.
 
 ```java

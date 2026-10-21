@@ -38,5 +38,4 @@ final class BoardSetupChoices {
 }
 ```
 
-The dry-run choice does not depend on which board id is present, only on whether one is. Keep the
-audit record call and when it happens.
+Keep the audit record call and when it happens.
