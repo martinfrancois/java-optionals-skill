@@ -86,10 +86,9 @@ benchmark claims, or scoring rules.
   subtotal because the skill is not primarily trying to improve compilation.
 - For main eval scenarios, use roughly `15` safety points, `80` Optional-quality points, and `5`
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
-- `evals/11-checked-boundary-selection-cleanup` is intentionally weighted as a 60-point main eval
-  case because checked-boundary scoring is noisier and should not dominate the combined main eval
-  score. Its category ratio still follows the main eval policy: roughly 15% safety, 80%
-  Optional-quality, and 5% maintainability.
+- `evals-reference/59-checked-boundary-selection-cleanup` (formerly main `11`) keeps its 60-point
+  checklist because checked-boundary scoring is noisier; its category ratio still follows the
+  main eval policy.
 - `evals-reference/45-workflow-validation-cleanup` remains reference coverage. It is intentionally
   not part of the focused main eval set because the active main eval set should stay concentrated on
   the clearest Optional-quality signal.
@@ -154,9 +153,15 @@ benchmark claims, or scoring rules.
 
 Current active suite structure:
 
-- `evals/`: 4 scenarios, 360 checklist points, 3 natural and 1 explicit.
-- `evals-reference/`: 46 scenarios, 2470 checklist points, broad candidate and diagnostic coverage.
-- `evals-regression/`: 2 scenarios, 200 checklist points, with-context safety coverage.
+- `evals/`: 6 scenarios, 600 checklist points, all natural: `10`, `13`, `48`, `51`, `55`, `57`.
+- `evals-reference/`: 43 scenarios, 2552 checklist points, broad candidate and diagnostic coverage,
+  with `54` as the explicit-invocation coverage.
+- `evals-regression/`: 11 scenarios, 766 checklist points, with-context safety coverage.
+
+Every placement made on 2026-10-21 rests on the local screen and is provisional until the hosted
+runs exist; the suite `NUMBERING.md` files hold the per-scenario numbers. Explicit prompts prime
+this solver to write the Optional shapes the skill teaches, so the main suite is natural only
+until an explicit scenario clears the 30-point floor.
 
 ## Local Baseline Screening
 

@@ -1,8 +1,9 @@
 # Regression Evals
 
 This directory is for scenarios that are consistently solved by both the with-context and
-without-context variants in hosted runs, plus skill-context-dependent scenarios that are only fair as
-with-context regression checks.
+without-context variants, shown by hosted runs or, until the hosted run exists, by the local screen
+in `docs/agents/local-screening.md` (98 to 100 in every run of both arms), plus
+skill-context-dependent scenarios that are only fair as with-context regression checks.
 
 Keep these scenarios out of the main lift score and out of normal reference-candidate runs. Run
 them as a final safety check before release, after broad skill changes, or when the changed area is

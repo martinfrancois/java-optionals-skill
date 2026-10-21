@@ -1,0 +1,36 @@
+{
+  "context": "The skill should use Optional as a side-effect branch boundary for an optional output path.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {
+      "name": "Creates coherent Java 17 artifact",
+      "description": "Creates ReportCommand.java as Java 17-compatible code that compiles as written, with finish, write, and print present.",
+      "max_score": 5
+    },
+    {
+      "name": "Uses side-effect boundary",
+      "max_score": 45,
+      "description": "Uses output.ifPresentOrElse(path -> write(path, report), () -> print(report)) or an equivalent Optional side-effect boundary."
+    },
+    {
+      "name": "Removes value-read branch",
+      "max_score": 20,
+      "description": "Removes isPresent() plus orElseThrow value read from the output branch."
+    },
+    {
+      "name": "Preserves behavior",
+      "max_score": 10,
+      "description": "Preserves both write and print branches and does not change their arguments."
+    },
+    {
+      "name": "No workaround",
+      "max_score": 15,
+      "description": "Does not introduce null-control-flow or a fake collection/list workaround."
+    },
+    {
+      "name": "Keeps the change focused",
+      "description": "Changes only the finish method; write and print keep their signatures, and no helper, type, field, or comment is added beyond the branch rewrite.",
+      "max_score": 5
+    }
+  ]
+}
