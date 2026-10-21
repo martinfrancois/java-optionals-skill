@@ -33,6 +33,8 @@ jobs:
 
       - name: Validate eval criteria
         run: python3 scripts/validate_eval_criteria.py evals evals-reference evals-regression
+      - name: Test the eval criteria validator
+        run: python3 scripts/test_validate_eval_criteria.py
 
       - name: Compile validation scripts
         run: python3 -m py_compile scripts/*.py

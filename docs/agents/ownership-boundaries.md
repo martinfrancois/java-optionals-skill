@@ -12,6 +12,8 @@ for Java Optionals. This page holds the only full list of who owns what; other p
   IO, prompt, and parser boundaries, and present/empty/error contract preservation. It keeps its own
   lazy-fallback rule and its rule against hiding checked boundaries behind generic Optional helpers,
   because the published Optional evals measure them.
+  Selecting a value or its fallback from another owning container (`ScopedValue.orElse`,
+  `Map.getOrDefault`, `Objects.requireNonNullElse`) is the same decision and belongs here too.
 - `martinfrancois/java-functional-style` owns general Java lambda and functional-interface style:
   identity functions, no-op functional stages, helper extraction from block callbacks, comparator
   composition, method-reference pitfalls (receiver binding, overloads, boxing), supplier laziness as
