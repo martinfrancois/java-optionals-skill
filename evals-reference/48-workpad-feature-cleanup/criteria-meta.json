@@ -2,7 +2,8 @@
   "metadata": {
     "evidence_type": "ordinary_lift",
     "invocation": "natural",
-    "task_type": "implementation"
+    "task_type": "implementation",
+    "reference_selection": "The local screen scored 19 to 44 unaided in four runs, but the hosted both-arms run of 2026-10-21 scored 100 without the skill, so it misses the 30-point main floor and stays reference coverage until another hosted baseline fails."
   },
   "categories": {
     "Compiles and creates requested artifact": "safety",

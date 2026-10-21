@@ -1,7 +1,8 @@
 {
   "metadata": {
     "invocation": "natural",
-    "task_type": "implementation"
+    "task_type": "implementation",
+    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 60 without the skill, 100 with it; local screen 69 unaided"
   },
   "categories": {
     "Creates requested lookup": "safety",
@@ -9,6 +10,6 @@
     "No repeated Optional reopening": "optional_quality",
     "No null or fake collection workaround": "optional_quality",
     "Parses supported values": "safety",
-    "Handles absence and malformed values": "safety"
+    "Handles absence and malformed values": "maintainability"
   }
 }

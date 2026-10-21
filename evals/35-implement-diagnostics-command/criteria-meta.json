@@ -1,15 +1,16 @@
 {
   "metadata": {
     "invocation": "natural",
-    "task_type": "implementation"
+    "task_type": "implementation",
+    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 52 without the skill, 100 with it; local screen 60 unaided"
   },
   "categories": {
     "Creates requested command": "safety",
-    "Keeps boolean-only conflict check": "safety",
+    "Keeps boolean-only conflict check": "optional_quality",
     "Uses selector Optional boundaries": "optional_quality",
     "Uses side-effect boundary": "optional_quality",
     "No fake collection or null workaround": "optional_quality",
     "Preserves selection behavior": "safety",
-    "Preserves output behavior": "safety"
+    "Preserves output behavior": "maintainability"
   }
 }

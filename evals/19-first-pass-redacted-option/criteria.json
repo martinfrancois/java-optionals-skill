@@ -4,17 +4,17 @@
   "checklist": [
     {
       "name": "Creates requested matcher",
-      "max_score": 4,
+      "max_score": 5,
       "description": "Creates CommandOptionMatcher.java with the requested REDACTED_VALUE_OPTIONS set and static redactedValueOption(String arg)."
     },
     {
       "name": "Uses real collection stream",
-      "max_score": 10,
+      "max_score": 35,
       "description": "Uses REDACTED_VALUE_OPTIONS.stream().filter(...) or an equivalent readable real collection lookup rather than treating the lookup as a single Optional workaround."
     },
     {
       "name": "Uses findAny",
-      "max_score": 10,
+      "max_score": 25,
       "description": "Uses findAny() because any matching redacted option is equivalent."
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "name": "No null workaround",
-      "max_score": 6,
+      "max_score": 25,
       "description": "Does not use null sentinels, orElse(null), or local null-control-flow."
     }
   ]

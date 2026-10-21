@@ -157,13 +157,15 @@ benchmark claims, or scoring rules.
 
 Current active suite structure:
 
-- `evals/`: 6 scenarios, 600 checklist points, all natural: `10`, `13`, `48`, `51`, `55`, `57`.
-- `evals-reference/`: 43 scenarios, 2552 checklist points, broad candidate and diagnostic coverage,
-  with `54` as the explicit-invocation coverage.
+- `evals/`: 7 scenarios, 700 checklist points, all natural: `10`, `19`, `35`, `37`, `51`, `55`,
+  `57`. Hosted both-arms runs on 2026-10-21 scored them 309 without the skill and 700 with it.
+- `evals-reference/`: 42 scenarios, 2552 checklist points, broad candidate and diagnostic coverage,
+  with `54` as the explicit-invocation coverage; `13` and `48` sit here because their hosted
+  baseline scored 100 although the local screen fails them more often than not.
 - `evals-regression/`: 11 scenarios, 766 checklist points, with-context safety coverage.
 
-Every placement made on 2026-10-21 rests on the local screen and is provisional until the hosted
-runs exist; the suite `NUMBERING.md` files hold the per-scenario numbers. Explicit prompts prime
+Main placements rest on hosted runs; reference and regression placements made on 2026-10-21 rest
+on the local screen and are provisional until the hosted runs exist; the suite `NUMBERING.md` files hold the per-scenario numbers. Explicit prompts prime
 this solver to write the Optional shapes the skill teaches, so the main suite is natural only
 until an explicit scenario clears the 30-point floor.
 
