@@ -73,4 +73,20 @@ sentence that hinted at the fix and screened at 37 to 41 unaided in four runs of
 in the other two), and its skill arm stayed at 100 in every run; `57` scored 100 in four runs of
 four with the skill after its binding item was reworded to judge one method. The main suite is `10`, `19`, `35`,
 `37`, `51`, `55`, `57`: 309 without the skill against 700 with it on these two hosted runs, about
-2.3x. The publish-time run of the whole suite is recorded here when it exists.
+2.3x. The whole suite then ran on the final skill text in `01a15c11-3ac0-7586-a566-3cff1dd3955d`
+(2026-10-21, both arms):
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `10-first-pass-retry-backoff` | 34 | 100 |
+| `19-first-pass-redacted-option` | 45 | 100 |
+| `35-implement-diagnostics-command` | 44 | 100 |
+| `37-implement-frontmatter-port` | 54 | 100 |
+| `51-presence-selects-enum-value` | 33 | 98 |
+| `55-side-effecting-ifpresentorelse-lookup` | 35 | 100 |
+| `57-catalog-validation-bound-once` | 35 | 100 |
+
+280 without the skill against 698 with it. `51` lost two points for routing the audit branch
+through `ifPresent`, which the skill text had allowed next to a plain branch; the rule now keeps
+a present branch that also writes something as a plain branch, and `51` is rerun targeted on that
+text below.
