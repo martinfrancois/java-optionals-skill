@@ -91,6 +91,22 @@ through `ifPresent`, which the skill text had allowed next to a plain branch; th
 a present branch that also writes something as a plain branch. `51` then ran targeted twice,
 once on the text before that rule (`01a15c17-6b8e-779d-b95e-7821ec3a34d9`) and once on the final
 text (`01a15c17-f69d-778f-b366-a392b597cc21`): 33 without the skill and 100 with it both times.
-Two wording commits to the skill followed that run, so the whole suite runs once more on the
-final text; that run is recorded below. `58` ran as a further candidate (`01a15c16-e557-7343-a72a-49d6240fe607`) and scored 100 in
+`58` ran as a further candidate (`01a15c16-e557-7343-a72a-49d6240fe607`) and scored 100 in
 both arms, so it stays in reference.
+
+Two wording commits to the skill followed the run above, so the whole suite ran once more on the
+final text (commit `83ea794` of the skill) in `01a15c21-7bb2-73fe-813e-d177ea0f2a88`:
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `10-first-pass-retry-backoff` | 24 | 100 |
+| `19-first-pass-redacted-option` | 80 | 100 |
+| `35-implement-diagnostics-command` | 58 | 100 |
+| `37-implement-frontmatter-port` | 59 | 100 |
+| `51-presence-selects-enum-value` | 29 | 100 |
+| `55-side-effecting-ifpresentorelse-lookup` | 35 | 100 |
+| `57-catalog-validation-bound-once` | 53 | 100 |
+
+338 without the skill against 700 with it, about 2.1x; every main scenario at 100 with the
+skill on the text that ships. `19` swings between 45 and 80 unaided across runs, which the
+baseline columns of the three runs above show.
