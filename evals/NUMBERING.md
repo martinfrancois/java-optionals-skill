@@ -88,5 +88,9 @@ four with the skill after its binding item was reworded to judge one method. The
 
 280 without the skill against 698 with it. `51` lost two points for routing the audit branch
 through `ifPresent`, which the skill text had allowed next to a plain branch; the rule now keeps
-a present branch that also writes something as a plain branch, and `51` is rerun targeted on that
-text below.
+a present branch that also writes something as a plain branch. `51` then ran targeted twice,
+once on the text before that rule (`01a15c17-6b8e-779d-b95e-7821ec3a34d9`) and once on the final
+text (`01a15c17-f69d-778f-b366-a392b597cc21`): 33 without the skill and 100 with it both times.
+On the final text every main scenario therefore stands at 100 with the skill, 280 without, out of
+700. `58` ran as a further candidate (`01a15c16-e557-7343-a72a-49d6240fe607`) and scored 100 in
+both arms, so it stays in reference.

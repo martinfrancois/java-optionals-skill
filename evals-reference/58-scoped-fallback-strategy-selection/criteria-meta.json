@@ -3,7 +3,8 @@
     "invocation": "natural",
     "task_type": "cleanup",
     "evidence_type": "ordinary_lift",
-    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/77"
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/77",
+    "reference_selection": "Bimodal unaided. The local screen scored 30 on the corrected task and 100 in the hosted both-arms run of 2026-10-21, so it misses the 30-point main floor and stays reference coverage."
   },
   "categories": {
     "Creates coherent Java 25 artifact": "safety",
