@@ -98,8 +98,9 @@ after the code review to start from an existing `ScopedValue` as the issue descr
 scores 30 (the `isBound()` branch stays; one run of two wrote no file), with the skill 100 in
 both runs. Earlier drafts of the task bound the
 value with `Carrier.get(Supplier)`, which Java 23 removed, and penalized the solver for
-correcting it to `call`; the task now uses `call` itself. It stays reference until a hosted run
-shows where it lands.
+correcting it to `call`; the task now uses `call` itself. Its hosted both-arms run
+(`01a15c16-e557-7343-a72a-49d6240fe607`) scored 100 unaided, so like `13` and `48` it stays
+reference: solved on Tessl once, failed locally more often than not.
 
 `33` and `45` fail unaided (54 and 62) but their skill arm was below 100 in one local run each
 (45 and 94), so they wait here under the with-context rule rather than joining main.
