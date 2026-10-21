@@ -27,6 +27,9 @@ asks for `OptionalLookupTerminals.java`, and the rerun on that prompt
 100 with the skill on the released text. `53` in reference had the same wording and the same fix;
 its rerun with both arms (`01a15e33-5353-7278-9944-b0c5c13b045f`) scored 100 and 100.
 
-The composition check from java-functional-style-skill, main suite with both skills as context,
-`01a15e1e-be18-70e0-966e-0a4cba97a5e8`: six of seven at 100; `19` chose `findFirst` once and
-scored 100 on its targeted rerun `01a15e29-f382-74b5-ba9d-dd315d3c479e`.
+The composition check from java-functional-style-skill on 2026-10-21
+(`01a15e1e-be18-70e0-966e-0a4cba97a5e8`, and the rerun of `19`,
+`01a15e29-f382-74b5-ba9d-dd315d3c479e`) activated neither skill on any scenario. The composed
+runner passed no `--skill` until java-functional-style-skill#52, so those runs measured the
+solver alone and are not evidence. The rerun with the fixed runner is
+java-functional-style-skill#51.
