@@ -43,8 +43,9 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
 
    The same rule covers a presence check that only picks one of two constants:
    `promoCode.isPresent() ? Shipping.EXPRESS : Shipping.STANDARD` becomes
-   `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`. When the present branch also does something (logs, sends, writes), keep it a
-   plain `if (promoCode.isPresent())` branch or an `ifPresent`; never hide that inside `map`.
+   `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`. When the present branch
+   also does something (logs, sends, writes) before returning its value, keep it a plain
+   `if (promoCode.isPresent())` branch; neither `map` nor `ifPresent` is clearer there.
    One Optional, one terminal. Decide present or absent once, and give helpers the value, never
    the `Optional`: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
 
