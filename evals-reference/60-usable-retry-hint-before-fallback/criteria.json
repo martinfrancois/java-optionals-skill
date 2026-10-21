@@ -1,0 +1,13 @@
+{
+  "context": "The skill should turn a parsed but unusable retry hint into absence with filter before the lazy fallback, instead of letting a negative duration skip the backoff.",
+  "type": "weighted_checklist",
+  "checklist": [
+    {"name": "Creates coherent Java 21 artifact", "max_score": 5, "description": "Creates WebhookRedelivery.java as Java 21-compatible code with pauseBefore, parseRetryIn, the RetryPolicy record, and the imports it needs."},
+    {"name": "Implements the fallback exactly", "max_score": 10, "description": "A usable Retry-In value is returned as that many seconds; a missing, blank, or non-numeric header and a null response fall back to policy.baseDelay().multipliedBy(1L << Math.min(attempt - 1, 6))."},
+    {"name": "Rejects a hint the sleep cannot use", "max_score": 40, "description": "A Retry-In value that parses but is negative does not reach the sleep: the Optional pipeline turns it into absence with filter (for example filter(d -> !d.isNegative()) or a check on the parsed number) before the fallback is chosen, so the exponential backoff applies. Zero stays a usable hint. Score 0 if a negative value is returned as a Duration or clamped to zero without the fallback."},
+    {"name": "Keeps the fallback lazy", "max_score": 15, "description": "The exponential backoff is computed inside orElseGet or an equivalent supplier, only when no usable hint exists; it is not computed before the header is examined."},
+    {"name": "Binds the header once", "max_score": 15, "description": "The header flows through Optional operations (ofNullable, flatMap, filter, map, orElseGet) from the response to the result; no isPresent or isEmpty followed by get or orElseThrow, no orElse(null), no null sentinel for the parsed duration."},
+    {"name": "Keeps the parse boundary narrow", "max_score": 10, "description": "parseRetryIn returns Optional.empty() for text that is not a whole number and Optional.of(Duration.ofSeconds(n)) otherwise, with no null returns and no generic Optional helper."},
+    {"name": "Keeps the change focused", "max_score": 5, "description": "Adds no retry loop, caches, extra public types, overloads, or logging beyond the two methods and the record."}
+  ]
+}

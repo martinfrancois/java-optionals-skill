@@ -160,7 +160,7 @@ Current active suite structure:
 - `evals/`: 7 scenarios, 700 checklist points, all natural: `10`, `19`, `35`, `37`, `51`, `55`,
   `57`. The hosted both-arms run of the shipped text on 2026-10-21 scored them 338 without the
   skill and 700 with it; the run IDs are in `evals/NUMBERING.md`.
-- `evals-reference/`: 42 scenarios, 2552 checklist points, broad candidate and diagnostic coverage,
+- `evals-reference/`: 43 scenarios, 2652 checklist points, broad candidate and diagnostic coverage,
   with `54` as the explicit-invocation coverage; `13` and `48` sit here because their hosted
   baseline scored 100 although the local screen fails them more often than not.
 - `evals-regression/`: 11 scenarios, 766 checklist points, with-context safety coverage.

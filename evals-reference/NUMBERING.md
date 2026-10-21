@@ -109,3 +109,12 @@ reference: solved on Tessl once, failed locally more often than not.
 and 94 in one run each; on `skill-v1` both scored 100 twice, as the table shows. They wait here
 until a hosted run shows the skill arm at 100, which the main-suite rule asks for before a
 promotion.
+
+## Scenario 60 for issue #78 (2026-10-21)
+
+`60-usable-retry-hint-before-fallback` is the parsed-but-unusable retry hint from issue #78 in a
+new domain (a payment gateway's `Retry-In` header). Local screen: 84 unaided in three runs (the
+solver parses with a digits-only check, which rejects a negative value by accident of the regex and
+then reads the Optional with `isPresent` and `get`), 99 with the skill (98 to 100). The gap is under
+the 30-point main floor, so it is reference coverage; its hosted placement run is recorded here when
+it exists.

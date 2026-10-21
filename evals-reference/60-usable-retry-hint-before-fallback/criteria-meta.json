@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation",
+    "evidence_type": "ordinary_lift",
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/78"
+  },
+  "categories": {
+    "Creates coherent Java 21 artifact": "safety",
+    "Implements the fallback exactly": "safety",
+    "Rejects a hint the sleep cannot use": "optional_quality",
+    "Keeps the fallback lazy": "optional_quality",
+    "Binds the header once": "optional_quality",
+    "Keeps the parse boundary narrow": "optional_quality",
+    "Keeps the change focused": "maintainability"
+  }
+}
