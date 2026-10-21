@@ -25,6 +25,19 @@ from 12 to 100 points and gained an artifact and a focus item.
 | `55-side-effecting-ifpresentorelse-lookup` | 2 | 64 (63 to 65) | `isPresent()` then `orElseThrow()` for the lookup branch |
 | `57-catalog-validation-bound-once` | 2 | 64 (59 to 68) | `isPresent()` paired with `get()` twice in the validator |
 
-With the skill, locally, each scored 100 in every run on the final text (the runs are listed
-below once the final screen completes). Hosted confirmation of the main suite with both arms is
-recorded here when it exists.
+### After the reweighting, on the final skill text (2026-10-21)
+
+Baseline two runs each against the main-policy checklists (six for `13`, which is bimodal), skill
+arm three runs each (`57` six, after its "binds once" item was reworded to say it judges one
+method, not whether two methods may each call the catalog):
+
+| Scenario | Without skill | With skill |
+| --- | --- | --- |
+| `10-first-pass-retry-backoff` | 41 (31 to 50) | 99 (97 to 100): the local judge docks a point for a hand-written digit scan |
+| `13-output-path-side-effect` | 57 (35 in three runs, 100 in three) | 100 |
+| `48-workpad-feature-cleanup` | 23 (19 to 27) | 100 |
+| `51-presence-selects-enum-value` | 37 (36 to 38) | 100 |
+| `55-side-effecting-ifpresentorelse-lookup` | 40 (39 to 40) | 100 |
+| `57-catalog-validation-bound-once` | 46 (42 to 50) | 100 |
+
+Hosted confirmation of the main suite with both arms is recorded here when it exists.

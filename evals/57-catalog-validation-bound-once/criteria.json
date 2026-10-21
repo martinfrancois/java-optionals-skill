@@ -19,7 +19,7 @@
     },
     {
       "name": "Binds the catalog Optional once",
-      "description": "Validation reads the advertised list through one value-binding operation such as map, filter, or orElseGet, or binds it once at a single boundary; it does not pair isEmpty or isPresent with repeated get() or orElseThrow() reads.",
+      "description": "Inside validateReasoningEffort, the advertised list is read through one value-binding operation such as map, filter, or orElseGet, or bound once at a single boundary; the method does not pair isEmpty or isPresent with repeated get() or orElseThrow() reads. Each method may call the catalog on its own; this item is about how one method consumes the Optional it holds.",
       "max_score": 40
     },
     {
