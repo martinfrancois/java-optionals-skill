@@ -22,8 +22,10 @@ With context only, run `01a15e1e-acc4-7308-869b-a0e060cb4183`: ten of the eleven
 `52-findany-equivalent-optional-matches` scored 0 there and again in the targeted rerun
 `01a15e29-e8da-7519-b1d6-ba25773b8246`: the agent wrote no file, because the prompt said "return
 the revised Java code only" without naming one, and Tessl's judge grades files. The prompt now
-asks for `OptionalLookupTerminals.java`; the rerun on that prompt is recorded below. `53` in
-reference had the same wording and the same fix.
+asks for `OptionalLookupTerminals.java`, and the rerun on that prompt
+(`01a15e33-46b8-74ab-8c3a-34f47f2ebb31`) scored 100, so all eleven regression scenarios stand at
+100 with the skill on the released text. `53` in reference had the same wording and the same fix;
+its rerun with both arms (`01a15e33-5353-7278-9944-b0c5c13b045f`) scored 100 and 100.
 
 The composition check from java-functional-style-skill, main suite with both skills as context,
 `01a15e1e-be18-70e0-966e-0a4cba97a5e8`: six of seven at 100; `19` chose `findFirst` once and

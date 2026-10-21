@@ -92,7 +92,10 @@ hosted runs of 2026-10-21 sent `13` and `48` back here (baseline 100 on Tessl) a
 `06`, `22`, `24`, `26`, `30`, `31`, `38`, `44`, `46`, and `52` moved to `evals-regression/`;
 `48` and `49` came back from regression because the natural prompt fails unaided; the former main
 scenarios `50` and `59` moved here because their skill arm sits at 90 to 97 on the current text.
-`53` stays here although both arms are near 100 because its skill arm dipped to 96 in one run.
+`53` stays here although both arms are near 100 because its skill arm dipped to 96 in one local
+run; its prompt now names the file to create, and the hosted run on that prompt
+(`01a15e33-5353-7278-9944-b0c5c13b045f`) scored 100 in both arms, so a second clean hosted run
+moves it to regression.
 `54` stays here as the explicit-invocation coverage. `58` is the ScopedValue case from issue #77, rewritten
 after the code review to start from an existing `ScopedValue` as the issue describes; unaided it
 scores 30 (the `isBound()` branch stays; one run of two wrote no file), with the skill 100 in
