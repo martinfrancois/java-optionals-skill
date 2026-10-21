@@ -172,8 +172,10 @@ until an explicit scenario clears the 30-point floor.
 
 ## Local Baseline Screening
 
-Hosted Tessl runs cost credits (20 per scenario with both variants on the free plan) and the
-daily pool is shared with the other skill repositories. Screen locally first with
+Hosted Tessl runs cost credits (20 per scenario with both variants on the free plan), and the
+plan's 1,000 credits per calendar month are shared with the other skill repositories;
+`tessl org usage` shows what is left and when it resets. `tessl eval run` also prints a separate
+daily run counter, which is not the allowance. Screen locally first with
 `scripts/local_screen.sh`, which runs a scenario through the model behind Tessl's default solver
 for one to two cents and grades it with a Claude judge. Setup, commands, placement thresholds, and the
 skill-tuning loop are in [Local Screening With DeepSeek](local-screening.md). Local numbers decide
