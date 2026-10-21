@@ -30,7 +30,7 @@
     {
       "name": "Leaves the binding alone",
       "max_score": 5,
-      "description": "withLookup keeps ScopedValue.where(...).get(body); no ThreadLocal, no call(...) with a checked exception, no new binding helper."
+      "description": "withLookup keeps its ScopedValue.where(...).call(...) binding; no ThreadLocal, no new binding helper, no Optional wrapped around the body."
     },
     {
       "name": "Keeps the change focused",

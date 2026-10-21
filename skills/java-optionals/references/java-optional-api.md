@@ -29,7 +29,7 @@ explicitly. Don't use newer APIs just because the current JDK supports them.
 | `Optional.stream()` | 9 | Flatten `Stream<Optional<T>>` with `flatMap(Optional::stream)`. |
 | no-arg `Optional.orElseThrow()` | 10 | Throws `NoSuchElementException`; clearer than `get()` when absence should throw. |
 | `Optional.isEmpty()` | 11 | Empty predicate; avoid `isEmpty()` plus later value reopening. |
-| `ScopedValue.orElse(T)`, `ScopedValue.where(key, value).get(Supplier)` | 25 | `orElse` selects the bound value or the fallback in one call; `isBound()` plus `get()` is the presence-check-plus-read shape. Keep an existing `where(...).get(body)` binding as it is. |
+| `ScopedValue.orElse(T)`, `ScopedValue.where(key, value).call(op)` | 25 | `orElse` selects the bound value or the fallback in one call; `isBound()` plus `get()` is the presence-check-plus-read shape. `Carrier.call` takes a `CallableOp` whose exception type is inferred, so a `Supplier` body declares nothing. |
 | `OptionalInt`, `OptionalLong`, `OptionalDouble` | 8 | Primitive Optional classes; don't box only to reuse generic Optional examples. |
 | primitive `empty`, `of`, `getAsInt`, `getAsLong`, `getAsDouble` | 8 | Prefer safer terminals to `getAs*` for ordinary absence-safe value flow. |
 | primitive `isPresent`, `ifPresent` | 8 | Uses primitive consumers. |
@@ -61,7 +61,7 @@ static Instant now() {
 }
 
 static <T> T atFixedTime(Clock fixed, Supplier<T> body) {
-    return ScopedValue.where(CLOCK, fixed).get(body);         // the Carrier runs the body; nothing checked to declare
+    return ScopedValue.where(CLOCK, fixed).call(body::get);   // CallableOp infers RuntimeException from a Supplier
 }
 
 int port = portByHost.getOrDefault(host, DEFAULT_PORT);      // not containsKey() then get()

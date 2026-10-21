@@ -24,7 +24,7 @@ final class PropertyLookup {
     }
 
     static <T> T withLookup(Function<String, String> lookup, Supplier<T> body) {
-        return ScopedValue.where(LOOKUP, lookup).get(body);
+        return ScopedValue.where(LOOKUP, lookup).call(body::get);
     }
 }
 ```
