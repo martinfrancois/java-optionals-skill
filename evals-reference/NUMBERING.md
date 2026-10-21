@@ -95,6 +95,10 @@ scenarios `50` and `59` moved here because their skill arm sits at 90 to 97 on t
 `53` stays here although both arms are near 100 because its skill arm dipped to 96 in one run.
 `54` stays here as the explicit-invocation coverage. `58` is the ScopedValue case from issue #77, rewritten
 after the code review to start from an existing `ScopedValue` as the issue describes; unaided it
-now scores 97 to 100 (the presence check is the only miss), and with the skill 86 to 93 because
-the solver rewrites the working `where(...).get(body)` binding to `call(...)`, which does not
-compile. It stays reference until a hosted run shows where it lands.
+scores 97 to 100 (the presence check is the only miss). Earlier drafts of the task bound the
+value with `Carrier.get(Supplier)`, which Java 23 removed, and penalized the solver for
+correcting it to `call`; the task now uses `call` itself. It stays reference until a hosted run
+shows where it lands.
+
+`33` and `45` fail unaided (54 and 62) but their skill arm was below 100 in one local run each
+(45 and 94), so they wait here under the with-context rule rather than joining main.

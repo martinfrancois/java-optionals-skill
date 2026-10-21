@@ -18,9 +18,9 @@ Preserve behavior, exception contracts, public output, laziness, and readability
 
 ## Hard Stops
 
-Check last, with [hard-stops.md](references/hard-stops.md): a presence check followed by a value
-read, fallback work done before the check, and one Optional turned into a collection, a loop, an
-`orElse(null)` branch, or a generic unwrapping helper.
+Check last, with [hard-stops.md](references/hard-stops.md), for a presence check followed by a
+value read, fallback work done before the check, and one Optional turned into a collection, a
+loop, an `orElse(null)` branch, or a generic unwrapping helper.
 
 ## Core Workflow
 
@@ -95,13 +95,13 @@ read, fallback work done before the check, and one Optional turned into a collec
 7. In a review, keep the scope honest.
    - A proposal that changes a public record, accessor, parameter, or return type (a nullable
      field to `Optional`, `Optional` in a DTO or parameter) is an API change, not a local
-     cleanup: say so, keep the local code as it is, and ask for that redesign as its own change,
+     cleanup. Say so, keep the local code as it is, and ask for that redesign as its own change,
      reviewed for what it breaks.
    - Where `findFirst()` stays because the input is ordered, say that the order is the contract
-     and describe a test that fails under `findAny()`: several matches, and the result must be
-     the first of them.
-   - Where `orElse(null)` stays, state why: the type on the other side defines absence as
-     `null`, so the Optional ends here.
+     and describe a test that fails under `findAny()`, with several matches where the result
+     must be the first of them.
+   - Where `orElse(null)` stays, state why it may, which is that the type on the other side
+     defines absence as `null`, so the Optional ends here.
 
      ```java
      // LegacyTicket.note() is null when there is no note; the legacy API, not this code, owns that.
