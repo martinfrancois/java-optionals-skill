@@ -116,5 +116,6 @@ promotion.
 new domain (a payment gateway's `Retry-In` header). Local screen: 84 unaided in three runs (the
 solver parses with a digits-only check, which rejects a negative value by accident of the regex and
 then reads the Optional with `isPresent` and `get`), 99 with the skill (98 to 100). The gap is under
-the 30-point main floor, so it is reference coverage; its hosted placement run is recorded here when
-it exists.
+the 30-point main floor, so it is reference coverage. Its hosted placement run
+(`01a15fb7-dba0-726a-b90f-5346cdba1596`) scored 100 in both arms, so like `13`, `48`, and `58` it
+is solved on Tessl once and failed locally; a second clean hosted run moves it to regression.
