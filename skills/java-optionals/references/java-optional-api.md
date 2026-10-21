@@ -29,6 +29,7 @@ explicitly. Don't use newer APIs just because the current JDK supports them.
 | `Optional.stream()` | 9 | Flatten `Stream<Optional<T>>` with `flatMap(Optional::stream)`. |
 | no-arg `Optional.orElseThrow()` | 10 | Throws `NoSuchElementException`; clearer than `get()` when absence should throw. |
 | `Optional.isEmpty()` | 11 | Empty predicate; avoid `isEmpty()` plus later value reopening. |
+| `ScopedValue.orElse(T)`, `ScopedValue.where(key, value).get(Supplier)` | 25 | `orElse` selects the bound value or the fallback in one call; `isBound()` plus `get()` is the presence-check-plus-read shape. `Carrier.get(Supplier)` runs a body that throws nothing checked; `Carrier.call(...)` declares the body's checked exception type. |
 | `OptionalInt`, `OptionalLong`, `OptionalDouble` | 8 | Primitive Optional classes; don't box only to reuse generic Optional examples. |
 | primitive `empty`, `of`, `getAsInt`, `getAsLong`, `getAsDouble` | 8 | Prefer safer terminals to `getAs*` for ordinary absence-safe value flow. |
 | primitive `isPresent`, `ifPresent` | 8 | Uses primitive consumers. |
@@ -44,6 +45,28 @@ different from `false`; don't collapse absent to false unless the domain says to
 Primitive Optional classes aren't drop-in replacements for `Optional<T>`. They don't have the same
 `map`, `flatMap`, `filter`, `or`, or `ofNullable` API surface. Use their primitive methods and
 streams deliberately.
+
+## Other Owning Containers With A Fallback Operation
+
+The container selects the value or the fallback in one call; the code then acts once on what it
+returns.
+
+```java
+// Java 25
+private static final Function<String, String> FROM_PROPERTIES = System::getProperty;
+private static final ScopedValue<Function<String, String>> LOOKUP = ScopedValue.newInstance();
+
+static String setting(String name) {
+    return LOOKUP.orElse(FROM_PROPERTIES).apply(name);       // not isBound() ? LOOKUP.get()... : ...
+}
+
+static <T> T withOverride(Function<String, String> override, Supplier<T> body) {
+    return ScopedValue.where(LOOKUP, override).get(body);    // get(Supplier); call(...) declares a checked exception
+}
+
+int port = portByHost.getOrDefault(host, DEFAULT_PORT);      // not containsKey() then get()
+String label = Objects.requireNonNullElse(given, "unnamed");
+```
 
 ## Stream And Collector APIs Returning Optional Values
 
