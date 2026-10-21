@@ -93,6 +93,8 @@ hosted runs of 2026-10-21 sent `13` and `48` back here (baseline 100 on Tessl) a
 `48` and `49` came back from regression because the natural prompt fails unaided; the former main
 scenarios `50` and `59` moved here because their skill arm sits at 90 to 97 on the current text.
 `53` stays here although both arms are near 100 because its skill arm dipped to 96 in one run.
-`54` stays here as the explicit-invocation coverage. `58` is the ScopedValue case from issue #77:
-the solver keeps writing `Carrier.call` with its checked exception; the skill text names
-`get(Supplier)` and the scenario stays reference until the hosted run shows where it lands.
+`54` stays here as the explicit-invocation coverage. `58` is the ScopedValue case from issue #77, rewritten
+after the code review to start from an existing `ScopedValue` as the issue describes; unaided it
+now scores 97 to 100 (the presence check is the only miss), and with the skill 86 to 93 because
+the solver rewrites the working `where(...).get(body)` binding to `call(...)`, which does not
+compile. It stays reference until a hosted run shows where it lands.

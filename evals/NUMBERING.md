@@ -68,6 +68,9 @@ and run hosted as the next candidates in `01a15bfa-b287-71d3-b44d-bc199631c480`:
 | `35-implement-diagnostics-command` | 52 | 100 |
 | `37-implement-frontmatter-port` | 60 | 100 |
 
-All three clear the 30-point floor and joined the suite. The main suite is `10`, `19`, `35`,
+All three clear the 30-point floor and joined the suite. After the code review, `51` lost a
+sentence that hinted at the fix and screened at 37 to 41 unaided in four runs of six (88 and 100
+in the other two), and its skill arm stayed at 100 in every run; `57` scored 100 in four runs of
+four with the skill after its binding item was reworded to judge one method. The main suite is `10`, `19`, `35`,
 `37`, `51`, `55`, `57`: 309 without the skill against 700 with it on these two hosted runs, about
 2.3x. The publish-time run of the whole suite is recorded here when it exists.

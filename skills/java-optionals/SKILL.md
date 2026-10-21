@@ -46,9 +46,8 @@ read, fallback work done before the check, and one Optional turned into a collec
    `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`, with no helper written
    just to pick. When the present branch also does something (logs, sends, writes), keep it a
    plain `if (promoCode.isPresent())` branch or an `ifPresent`; never hide that inside `map`.
-   One Optional, one terminal. Decide present or absent once; a present-branch policy with
-   several cases goes into a named helper that takes the value. Helpers take the value, not the
-   `Optional`; the caller binds it: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
+   One Optional, one terminal. Decide present or absent once, and give helpers the value, never
+   the `Optional`: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
 
 2. Match the API to the operation: `map` for transforms, `flatMap` for Optional-returning calls,
    `orElseGet` for non-trivial fallback work, and `orElseThrow` only when absence is an error. Keep
@@ -69,7 +68,7 @@ read, fallback work done before the check, and one Optional turned into a collec
    ordered. Use `findAny()` only when every match would do, as with a key that is unique in its
    collection. Flatten
    `Stream<Optional<T>>` with `flatMap(Optional::stream)` on Java 9+.
-4. Bind selectors once and keep fallback lazy.
+4. Bind selectors once.
    - Treat `Optional<Boolean>` as three states when absence differs from `false`.
    - Predicate-only presence checks are fine when the value isn't read.
    - Use `ifPresent` or Java 9+ `ifPresentOrElse` for side-effect boundaries.
