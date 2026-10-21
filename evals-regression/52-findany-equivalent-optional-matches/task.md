@@ -2,8 +2,8 @@
 
 We use `findFirst()` a lot. Go through every one in `OptionalLookupTerminals.java`: where the order
 of the stream decides which value comes back, keep it and add a one-line comment saying why; where any
-match would do, or only one match can exist, switch to `findAny()`. Assume Java 17. Return the
-revised Java code only.
+match would do, or only one match can exist, switch to `findAny()`. Assume Java 17. Create
+`OptionalLookupTerminals.java` with the revised class.
 
 ```java
 import java.nio.file.Path;

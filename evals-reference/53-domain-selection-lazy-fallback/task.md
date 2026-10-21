@@ -1,7 +1,7 @@
 # Build domain selections from Optional values
 
-Refactor `SetupSelections.java` for readability without changing behavior. Assume Java 25. Return the
-revised Java code only.
+Refactor `SetupSelections.java` for readability without changing behavior. Assume Java 25. Create
+`SetupSelections.java` with the revised class.
 
 ```java
 import java.io.IOException;
