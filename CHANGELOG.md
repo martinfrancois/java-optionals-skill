@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.2](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.1...v1.0.2) (2026-10-21)
+
+
+### Bug Fixes
+
+* **evals:** bind the ScopedValue in 58 with call, which Java 25 has ([840ca32](https://github.com/martinfrancois/java-optionals-skill/commit/840ca329f65eb32e6ad30e34dc46319d98fdb87b))
+* **evals:** follow the issues more closely after the code review ([dc542b3](https://github.com/martinfrancois/java-optionals-skill/commit/dc542b36bacc6f0404fe260fd5e5f1f295011619))
+* **evals:** say which method the catalog binding item judges ([cb4d41c](https://github.com/martinfrancois/java-optionals-skill/commit/cb4d41cbaab0af83fe36d1586cab26331f7e0578))
+* **scripts:** run the local solver in restricted mode ([fce13e5](https://github.com/martinfrancois/java-optionals-skill/commit/fce13e5db0e4b03a680da146048e7822f0aab9a6))
+* **skill:** bind once, keep side effects plain, and pass the review gate ([657865b](https://github.com/martinfrancois/java-optionals-skill/commit/657865b124838b65c2872a7d25ff4d609e8435f9))
+* **skill:** drop two phrases the review judge found said twice ([8fc0011](https://github.com/martinfrancois/java-optionals-skill/commit/8fc0011f42a7404695c3b52c969cc021cc2d4b63))
+* **skill:** keep a present branch that also writes as a plain branch ([7784b07](https://github.com/martinfrancois/java-optionals-skill/commit/7784b0725877ac74c08e70fafa2702e49fe21058))
+* **skill:** keep the examples out of the scenarios' domains ([dbba40d](https://github.com/martinfrancois/java-optionals-skill/commit/dbba40d0ee619c15ec13d87560274147d856d206))
+* **skill:** state the helper rule once and the lazy-fallback rule once ([a3d9fce](https://github.com/martinfrancois/java-optionals-skill/commit/a3d9fce75bd490c2a0eefee1255a6470379f1dce))
+* **skill:** stop naming the checked Carrier.call in the ScopedValue note ([1fb0be5](https://github.com/martinfrancois/java-optionals-skill/commit/1fb0be585558f09670007fcd23ec12a5b8d6bb06))
+
 ## [1.0.1](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.0...v1.0.1) (2026-10-02)
 
 
