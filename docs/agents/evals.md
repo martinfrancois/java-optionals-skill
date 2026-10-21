@@ -38,10 +38,14 @@ benchmark claims, or scoring rules.
   solves it and the skill adds little measurable value. Keep low-delta diagnostic cases in
   `evals-reference/`; move repeatedly solved cases to `evals-regression/` only when hosted history
   shows both with-context and without-context are consistently 100%.
-- Keep a documented mix of invocation styles:
+- Keep a documented mix of invocation styles. A prompt is natural unless the source issue shows
+  the maintainer named the skill. The main set needs at least one natural scenario; `evals/` and
+  `evals-reference/` together need both styles (the validator checks both rules):
   - Natural activation scenarios don't mention `$java-optionals`, "use the skill", or similar
     command-style phrasing.
-  - Explicit invocation scenarios may say `Use $java-optionals`.
+  - Explicit invocation scenarios may say `Use $java-optionals`. On the current default solver an
+    explicit prompt primes the Optional shapes the skill teaches, so explicit scenarios rarely
+    show lift; keep them as coverage, not as main candidates, until one clears the floor.
   - Report natural, explicit, main eval combined, reference, and regression results separately when
     hosted data is available.
 - Include evals where the agent writes new Optional code, not only reviews or refactors snippets.

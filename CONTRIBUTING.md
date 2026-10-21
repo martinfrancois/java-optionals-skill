@@ -231,9 +231,10 @@ capabilities and gives more weight to scenario families where hosted runs show t
 improvement with the skill versus without it. The main score should be read as "where this skill
 measurably helps most," not as an evenly sampled survey of every Optional API.
 
-The main eval set should stay focused on realistic tasks that mirror the motivating failures. It
-must include a documented mix of natural activation prompts and explicit invocation prompts,
-reported separately when hosted results are available. Natural scenarios must not mention
+The main eval set should stay focused on realistic tasks that mirror the motivating failures. A
+prompt is natural unless the source issue shows the maintainer named the skill; the main set must
+hold at least one natural scenario, and `evals/` and `evals-reference/` together must hold both
+styles, reported separately when hosted results are available. Natural scenarios must not mention
 `$java-optionals` or ask to use the skill. Explicit scenarios may name the skill and must be labeled
 as explicit in `criteria-meta.json`.
 
