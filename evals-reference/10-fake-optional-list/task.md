@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Improve this Optional-based fallback:
+Improve this Optional-based fallback. Create `GreetingService.java` with the revised class:
 
 ```java
 import java.util.Optional;

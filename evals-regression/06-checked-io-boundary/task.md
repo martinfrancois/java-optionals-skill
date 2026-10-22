@@ -3,7 +3,7 @@
 Assume Java 17.
 
 Improve this method's Optional handling without changing its exception
-contract:
+contract. Create `WorkspaceSelector.java` with the revised class:
 
 ```java
 import java.io.IOException;

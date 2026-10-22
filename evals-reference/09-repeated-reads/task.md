@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Improve this method without changing behavior:
+Improve this method without changing behavior. Create `CardMover.java` with the revised class:
 
 ```java
 import java.util.Optional;
