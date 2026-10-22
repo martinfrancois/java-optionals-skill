@@ -119,3 +119,66 @@ then reads the Optional with `isPresent` and `get`), 99 with the skill (98 to 10
 the 30-point main floor, so it is reference coverage. Its hosted placement run
 (`01a15fb7-dba0-726a-b90f-5346cdba1596`) scored 100 in both arms, so like `13`, `48`, and `58` it
 is solved on Tessl once and failed locally; a second clean hosted run moves it to regression.
+
+## Hosted run against 1.0.2, cut off (2026-10-21)
+
+Both arms, run `01a1604b-4e37-71f6-8737-adb2daf08687`, ended as failed when the organization's
+Tessl credits ran out (the account switched to `blocked: true` mid-run). Forty of the forty-three
+scenarios have at least one finished cell; every with-skill cell had the skill activated.
+Percentages:
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `01-display-name` | 100 | 100 |
+| `02-lazy-upsert` | 100 | 100 |
+| `03-real-collection-stream` | 83 | 100 |
+| `04-keep-findfirst` | 100 | 100 |
+| `05-use-findany` | not run | 38 |
+| `07-absence-as-error` | 100 | 100 |
+| `08-nullable-interop` | 38 | 100 |
+| `09-repeated-reads` | 100 | 100 |
+| `10-fake-optional-list` | 100 | 100 |
+| `11-lazy-cache-writing` | not run | 100 |
+| `13-output-path-side-effect` | 95 | 100 |
+| `14-review-null-workaround` | 100 | 100 |
+| `15-review-loop-overcorrection` | 47 | 100 |
+| `16-review-checked-helper` | 95 | 100 |
+| `17-first-pass-optional-formatting` | 50 | 100 |
+| `18-first-pass-selector-writing` | 75 | 100 |
+| `20-review-legacy-null-boundary` | 92 | 100 |
+| `21-review-optional-dto-overreach` | 100 | 100 |
+| `23-first-pass-output-routing` | 45 | 100 |
+| `25-review-single-optional-stream-loop` | 100 | 100 |
+| `27-review-null-error-workaround` | 100 | 100 |
+| `28-first-pass-card-move-plan` | 85 | 100 |
+| `32-implement-workpad-upsert` | not run | 100 |
+| `33-implement-command-sanitizer` | 50 | 100 |
+| `34-implement-workspace-resolution` | 100 | 100 |
+| `36-implement-card-move-if-configured` | 74 | 100 |
+| `39-diagnostics-feature-cleanup` | 100 | 100 |
+| `40-card-move-feature` | 80 | 100 |
+| `41-setup-defaults-feature` | 58 | 100 |
+| `42-primitive-optional-side-effect` | 100 | 100 |
+| `43-tri-state-optional-boolean` | 100 | 100 |
+| `45-workflow-validation-cleanup` | 42 | not run |
+| `47-checked-boundary-fake-optional-list-cleanup` | 95 | 100 |
+| `48-workpad-feature-cleanup` | 20 | 100 |
+| `49-workspace-prompt-feature` | 61 | 100 |
+| `50-command-sanitizer-feature` | 58 | 100 |
+| `53-domain-selection-lazy-fallback` | 100 | 90 |
+| `54-optional-upsert-side-effect-boundary` | not run | 100 |
+| `56-optional-helper-trigger-lifecycle-refactor` | 50 | 100 |
+| `58-scoped-fallback-strategy-selection` | 30 | 100 |
+
+Two with-skill misses, each one run: `05-use-findany` kept `findFirst` and wrote a comment arguing
+that encounter order is the contract for a `Set` lookup, and `53` wrapped the prompt's answer in
+`Optional.ofNullable(...)` instead of keeping the checked prompt a plain branch. Their local
+rescreen is recorded below. `48` scored 20 unaided here against 100 on its earlier hosted run, and
+`58` 30 against 100; both are bimodal and stay reference.
+
+`05` wrote no file in three local runs of three, because its prompt named none; the hosted cell
+scored 6 of 16 for the same reason. Its prompt now asks for `FlagMatcher.java`, as `52` and `53`
+were fixed earlier. `53` scored 98 (97 to 100) in three local runs with the skill, so its hosted 90
+was a single slip.
+`01`, `07`, `09`, `10`, `12`, and regression `06` had the same gap and now name their file too;
+they had scored well only because the agent happened to write one.
