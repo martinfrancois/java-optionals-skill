@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Improve this lookup without changing its error behavior:
+Improve this lookup without changing its error behavior. Create `ConfigLookup.java` with the revised class:
 
 ```java
 import java.util.Map;

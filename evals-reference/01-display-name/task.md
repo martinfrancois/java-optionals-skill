@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Improve this Java code without changing behavior:
+Improve this Java code without changing behavior. Create `UserService.java` with the revised class:
 
 ```java
 import java.util.Optional;

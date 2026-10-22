@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Improve this lookup while preserving behavior:
+Improve this lookup while preserving behavior. Create `FlagMatcher.java` with the revised class.
 
 ```java
 import java.util.Optional;

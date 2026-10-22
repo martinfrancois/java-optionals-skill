@@ -2,7 +2,7 @@
 
 Assume Java 17.
 
-Improve this selection code without changing behavior:
+Improve this selection code without changing behavior. Create `DiagnosticSelector.java` with the revised class:
 
 ```java
 import java.nio.file.Path;
