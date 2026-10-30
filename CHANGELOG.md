@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.2...v1.0.3) (2026-10-30)
+
+
+### Bug Fixes
+
+* **evals:** name the file 52 and 53 must create ([89d7a66](https://github.com/martinfrancois/java-optionals-skill/commit/89d7a6608fe82fb64205ba7808cd587523f5fda1))
+* **evals:** name the output file in seven prompts that named none ([0e59589](https://github.com/martinfrancois/java-optionals-skill/commit/0e5958912ee874cb9034c2af834fba96fc944ecd))
+
 ## [1.0.2](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.1...v1.0.2) (2026-10-21)
 
 
