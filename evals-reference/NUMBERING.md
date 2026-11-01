@@ -219,4 +219,5 @@ on the prompt that named no file, so their baseline is bimodal.
 The classifier's main recommendations come from one run each and are not acted on here: main
 membership changes the public lift score and needs the capability-coverage check in
 `docs/agents/evals.md`. `60` scored 93 unaided, so it stays reference rather than moving to
-regression. `07` and `10` scored 100 in both arms on both hosted runs.
+regression. `07` and `10` scored 100 in both arms on both hosted runs, so they moved to
+`evals-regression/` (see `evals-regression/NUMBERING.md`).

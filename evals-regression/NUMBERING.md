@@ -33,3 +33,14 @@ The composition check from java-functional-style-skill on 2026-10-21
 runner passed no `--skill` until java-functional-style-skill#52, so those runs measured the
 solver alone and are not evidence. The rerun with the fixed runner is
 java-functional-style-skill#51.
+## Moves from reference after the 1.0.2 remainder run (2026-11-01)
+
+`07-absence-as-error` and `10-fake-optional-list` moved here from `evals-reference/` with
+`evidence_type` `solved_regression`. Both scored 100 in both arms on two hosted runs: the cut-off
+run `01a1604b-4e37-71f6-8737-adb2daf08687` and the remainder run
+`01a19905-f63c-760a-8068-9fdd88056e3a`, the second on the prompt that names the file. `07` failed
+unaided in the local screen (75), so its local and hosted baselines disagree; two clean hosted runs
+outweigh the local screen, as `evals-reference/NUMBERING.md` sets for `53` and `60`.
+
+`06-checked-io-boundary` scored 100 with context on its changed prompt, which now names the file,
+in run `01a19906-1bca-746f-86b1-43cbf7148eb2`.
