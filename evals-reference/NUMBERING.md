@@ -182,3 +182,41 @@ were fixed earlier. `53` scored 98 (97 to 100) in three local runs with the skil
 was a single slip.
 `01`, `07`, `09`, `10`, `12`, and regression `06` had the same gap and now name their file too;
 they had scored well only because the agent happened to write one.
+
+## Hosted run of the remainder against 1.0.2 (2026-11-01)
+
+Both arms, run `01a19905-f63c-760a-8068-9fdd88056e3a`, on the nine reference scenarios the cut-off
+run left open: `45` (no with-skill cell), `12`, `59`, and `60` (no cell at all), and the prompts
+that #155 changed to name their file (`01`, `05`, `07`, `09`, `10`, `12`). Regression `06`, the
+seventh changed prompt, ran with context only in `01a19906-1bca-746f-86b1-43cbf7148eb2` and scored
+100. Every with-skill cell had the skill activated and scored 100, so none of them needed a rerun.
+Percentages:
+
+| Scenario | Baseline | With skill | Classifier |
+| --- | --- | --- | --- |
+| `01-display-name` | 63 | 100 | main (37.5 pp) |
+| `05-use-findany` | 0 | 100 | main (100 pp) |
+| `07-absence-as-error` | 100 | 100 | regression |
+| `09-repeated-reads` | 42 | 100 | main (58.3 pp) |
+| `10-fake-optional-list` | 100 | 100 | regression |
+| `12-selector-optional` | 50 | 100 | main (50 pp) |
+| `45-workflow-validation-cleanup` | 56 | 100 | main (44.3 pp) |
+| `59-checked-boundary-selection-cleanup` | 53 | 100 | main (46.7 pp) |
+| `60-usable-retry-hint-before-fallback` | 93 | 100 | reference |
+
+`53` had scored 90 with the skill in the cut-off run, when the solver ran the checked prompt
+through `Optional.ofNullable(...)`. Its isolated rerun with both arms
+(`01a1990f-dcbb-7541-84a1-740a83f3de65`) scored 100 with the skill and 76 unaided (the baseline read
+the same Optional with `orElseGet` and then `isPresent`), so the 90 was a single slip. With these
+runs every reference scenario has a with-skill cell at 100 on the 1.0.2 text. `53` stays reference:
+its three hosted baselines are 100, 100, and 76.
+
+The baseline misses are real Optional misses, not missing files: `05` replaced the stream with a
+for-each loop and kept first-match semantics, `09` and `12` returned the code unchanged, and `01`
+only flipped `isPresent()` to `isEmpty()`. `01` and `09` had scored 100 unaided in the cut-off run
+on the prompt that named no file, so their baseline is bimodal.
+
+The classifier's main recommendations come from one run each and are not acted on here: main
+membership changes the public lift score and needs the capability-coverage check in
+`docs/agents/evals.md`. `60` scored 93 unaided, so it stays reference rather than moving to
+regression. `07` and `10` scored 100 in both arms on both hosted runs.
