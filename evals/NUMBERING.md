@@ -195,3 +195,22 @@ they moved. `05`'s capability matched `19`'s.
 
 The main suite is `09`, `37`, `45`, `51`, `55`, `57`: 273 without the skill against 600 with it
 in `01a19cac-5099-75d5-adec-f704024dd23c`, about 2.20x.
+
+## Hosted run after the presence-read rule was stated once (2026-11-02)
+
+The skill text changed after the 1.0.3 release: the rule against reading a value again after a
+presence check is now stated once in the workflow, and the step 8 scan points to Hard Stops
+instead of linking `hard-stops.md` a third time. Both arms, run
+`01a19cda-1b44-71b3-ba4e-50c2b77e0001`; every with-skill cell had the skill activated:
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `09-repeated-reads` | 100 | 100 |
+| `37-implement-frontmatter-port` | 100 | 100 |
+| `45-workflow-validation-cleanup` | 35 | 100 |
+| `51-presence-selects-enum-value` | 38 | 100 |
+| `55-side-effecting-ifpresentorelse-lookup` | 35 | 100 |
+| `57-catalog-validation-bound-once` | 45 | 100 |
+
+353 without the skill against 600 with it, about 1.70x. `09` scored 35 and `37` 55 unaided in
+`01a19cac-5099-75d5-adec-f704024dd23c`, so both swing between runs; neither moved on one run.
