@@ -12,8 +12,9 @@ Use this when naming the repository, skill, package, workspace, or public source
 - Tessl workspace: `martinfrancois`.
 - The GitHub repository is public. Keep public docs free of private paths, local transcript paths,
   unpublished workspace details, and secret references.
-- The Tessl plugin manifest is public with `"private": false`; keep it that way unless the
-  maintainer asks to return to private package metadata.
+- The Tessl plugin is published on the registry as public, from `.tessl-plugin/plugin.json` with
+  `"private": false`. Tessl calls making a plugin public irreversible, so keep `"private": false`
+  and never set it back to `true`.
 - If `tessl project repair` cannot relink this checkout and the Tessl project needs to be
   recreated, use the pinned CLI project command:
 
