@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "implementation",
+    "evidence_type": "ordinary_lift",
+    "main_eval_selection": "promoted after hosted both-arms run 01a19cac-5099-75d5-adec-f704024dd23c (2026-11-02): 55 without the skill, 100 with it; its capability text is the same as 37's, and martinfrancois's go-ahead to promote it is the reason it moved",
+    "runtime_reference_overlap_rationale": "Shares ordinary names such as Path, board, isBlank, and Optional.of, plus serverPort, which appears in a three-line snippet about naming domain helpers inside map(...).orElseGet(...). No example has this validation method or its warning messages."
+  },
+  "categories": {
+    "Creates revised validation class": "safety",
+    "Uses Optional as validation boundary": "optional_quality",
+    "Removes Optional reopening": "optional_quality",
+    "Avoids null/list workaround": "optional_quality",
+    "Keeps readable helpers": "maintainability",
+    "Preserves board-id behavior": "safety",
+    "Preserves server-port behavior": "safety",
+    "Preserves success result": "safety"
+  }
+}

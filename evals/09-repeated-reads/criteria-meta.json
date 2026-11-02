@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "invocation": "natural",
+    "task_type": "cleanup",
+    "evidence_type": "ordinary_lift",
+    "main_eval_selection": "promoted after hosted both-arms run 01a19cac-5099-75d5-adec-f704024dd23c (2026-11-02): 35 without the skill, 100 with it; its bind-once cleanup overlaps 57's bind-once item, and martinfrancois's go-ahead to promote it is the reason it moved",
+    "runtime_reference_overlap_rationale": "One prose line in the references' list of observed failures names target.isEmpty() followed by repeated target.get() reads and says the value was bound once. That states the general bind-once rule; no example has code for this method or for moving a card."
+  },
+  "categories": {
+    "Creates coherent Java 17 artifact": "safety",
+    "Removes repeated get calls": "optional_quality",
+    "Binds or maps once": "optional_quality",
+    "No null workaround": "optional_quality",
+    "Behavior preserved": "safety",
+    "Keeps the change focused": "maintainability"
+  }
+}

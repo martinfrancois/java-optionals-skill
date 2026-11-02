@@ -134,3 +134,64 @@ or a one-line prose description of a general rule; each `criteria-meta.json` say
 scored 183 without the skill against 400 with it, about 2.19x. Main now has no `findAny`, retry
 header, or selector scenario; moving those skill examples to another domain would let the three
 scenarios come back.
+
+## Promotion of the six reference candidates (2026-11-02)
+
+The reference run on the 1.0.2 text recommended main for `01`, `05`, `09`, `12`, `45`, and `59`
+from one run each (see `evals-reference/NUMBERING.md`). `12` was not run: it is the selector
+example in the runtime references, starting code and better shape included. For the runs below,
+`01`, `05`, `09`, and `45` were reweighted to the main policy (15 safety, 80 Optional quality, 5
+maintainability, 100 points); `01`, `05`, and `09` gained an artifact item and a focus item.
+`59` kept its documented 60-point checklist, whose ratio already matches.
+
+Local screen on the main-policy checklists (DeepSeek V4.1 Flash, Haiku judge, not hosted evidence):
+
+| Scenario | Without skill | With skill |
+| --- | --- | --- |
+| `01-display-name` | 100 (2 runs) | 100 (2) |
+| `05-use-findany` | 62 (12 to 100, 6 runs: 12, 15, 45, and three 100s) | 100 (2) |
+| `09-repeated-reads` | 99 (93 to 100, 6) | 94 (92 to 95, 2), then 100 (2) after the reword below |
+| `45-workflow-validation-cleanup` | 51 (47 to 55, 2) | 100 (2) |
+| `59-checked-boundary-selection-cleanup` | 54 (53 to 55, 2) | 76 (70 to 90, 4) |
+
+`09` lost points with the skill only on "Binds or maps once", whose old wording ("Uses map plus a
+helper") let the judge demand a named helper for a correct `filter(...).map(...).orElse(card)`
+chain; it now says the helper is optional. The local judge docked `59` for an `isEmpty()` guard
+whose empty branch prompts and throws `IOException`, a shape its checklist awards full credit,
+so `59` went to the hosted run unchanged.
+
+Hosted run of the twelve-scenario suite with both arms, `01a19cac-5099-75d5-adec-f704024dd23c`,
+on the 1.0.2 skill text; every with-skill cell had the skill activated:
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `01-display-name` | 100 | 100 |
+| `05-use-findany` | 15 | 98 |
+| `09-repeated-reads` | 35 | 100 |
+| `10-first-pass-retry-backoff` | 19 | 100 |
+| `19-first-pass-redacted-option` | 80 | 100 |
+| `35-implement-diagnostics-command` | 44 | 100 |
+| `37-implement-frontmatter-port` | 55 | 100 |
+| `45-workflow-validation-cleanup` | 55 | 100 |
+| `51-presence-selects-enum-value` | 40 | 100 |
+| `55-side-effecting-ifpresentorelse-lookup` | 35 | 100 |
+| `57-catalog-validation-bound-once` | 53 | 100 |
+| `59-checked-boundary-selection-cleanup` | 80 | 100 |
+
+`09` and `45` joined main. `01` solved unaided and `59` missed the 30-point floor by ten points,
+so both stay in `evals-reference/`. `05` lost two points with the skill on its new focus item for
+moving the match condition into a private helper; the item was reworded to allow that, and the
+targeted rerun `01a19cb7-c943-7411-813a-b961529c7126` scored 18 without the skill and 100 with
+it. Review then found that `05` is the references' `CommandRedactor` example with renamed
+identifiers: a `Set` stream filtered on `arg.equals(x) || arg.startsWith(x + "=")` ending in
+`findFirst()`, whose better shape uses `findAny()`, the item worth 50 of its 100 points. Under the
+rule in `docs/agents/evals.md` it stays in reference too.
+
+Capability coverage, which the promotion rule asks for besides the 30-point gap: `45`'s
+capability text is the same as `37`'s (and `35`'s, now in reference), Optional fallback logic in
+an implementation task, and `09`'s bind-once cleanup overlaps the bind-once item of `57`. Neither
+adds a new capability area; martinfrancois's go-ahead to promote these candidates is the reason
+they moved. `05`'s capability matched `19`'s.
+
+The main suite is `09`, `37`, `45`, `51`, `55`, `57`: 273 without the skill against 600 with it
+in `01a19cac-5099-75d5-adec-f704024dd23c`, about 2.20x.

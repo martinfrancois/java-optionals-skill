@@ -92,19 +92,18 @@ benchmark claims, or scoring rules.
   maintainability points per 100-point scenario unless a scenario has a documented reason to differ.
 - `evals-reference/59-checked-boundary-selection-cleanup` (formerly main `11`) keeps its 60-point
   checklist because checked-boundary scoring is noisier; its category ratio still follows the
-  main eval policy.
-- `evals-reference/45-workflow-validation-cleanup` remains reference coverage. It is intentionally
-  not part of the focused main eval set because the active main eval set should stay concentrated on
-  the clearest Optional-quality signal.
+  main eval policy. It stays reference: its latest hosted baseline scored 80, a gap under the
+  30-point floor.
 - A scenario is not main evidence when its starting code, or the behavior its task specifies, and
   its expected answer both appear as a worked example in the runtime references, with the same
   identifiers or renamed ones: the skill arm reads the answer. Shared Optional API names, or a
   one-line prose description of a general rule, do not count; state that overlap in plain words in
   `metadata.runtime_reference_overlap_rationale` of the scenario's `criteria-meta.json`. Such
   scenarios stay in `evals-reference/` until the skill's example moves to another domain:
-  `evals-reference/10-first-pass-retry-backoff`, `evals-reference/12-selector-optional`,
-  `evals-reference/13-output-path-side-effect`, `evals-reference/19-first-pass-redacted-option`,
-  and `evals-reference/35-implement-diagnostics-command`.
+  `evals-reference/05-use-findany`, `evals-reference/10-first-pass-retry-backoff`,
+  `evals-reference/12-selector-optional`, `evals-reference/13-output-path-side-effect`,
+  `evals-reference/19-first-pass-redacted-option`, and
+  `evals-reference/35-implement-diagnostics-command`.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.
 - Every Java scenario, including temporary candidate scenarios, must state the Java version to
@@ -166,10 +165,10 @@ benchmark claims, or scoring rules.
 
 Current active suite structure:
 
-- `evals/`: 4 scenarios, 400 checklist points, all natural: `37`, `51`, `55`, `57`. The hosted
-  both-arms run of the shipped text on 2026-11-02 scored them 183 without the skill and 400 with
-  it; the run IDs are in `evals/NUMBERING.md`.
-- `evals-reference/`: 44 scenarios, 2944 checklist points, broad candidate and diagnostic coverage,
+- `evals/`: 6 scenarios, 600 checklist points, all natural: `09`, `37`, `45`, `51`, `55`, `57`.
+  The hosted both-arms run of the shipped text on 2026-11-02 scored them 273 without the skill and
+  600 with it; the run IDs are in `evals/NUMBERING.md`.
+- `evals-reference/`: 42 scenarios, 2744 checklist points, broad candidate and diagnostic coverage,
   with `54` as the explicit-invocation coverage; `13` and `48` sit here because their hosted
   baseline scored 100 although the local screen fails them more often than not.
 - `evals-regression/`: 13 scenarios, 786 checklist points, with-context safety coverage.
