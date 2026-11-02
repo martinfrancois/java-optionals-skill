@@ -4,7 +4,7 @@
     "task_type": "implementation",
     "evidence_type": "ordinary_lift",
     "main_eval_selection": "promoted after hosted both-arms run 01a19cac-5099-75d5-adec-f704024dd23c (2026-11-02): 55 without the skill, 100 with it; its capability text is the same as 37's, and martinfrancois's go-ahead to promote it is the reason it moved",
-    "runtime_reference_overlap_rationale": "Shares ordinary names such as Path, board, isBlank, and Optional.of, plus serverPort, which appears in a three-line snippet about naming domain helpers inside map(...).orElseGet(...). No example has this validation method or its warning messages."
+    "runtime_reference_overlap_rationale": "Shares names with the examples, not code: board, text, and trim are ordinary local names and calls, match comes from a warning message, and port and serverPort also appear in a three-line snippet about naming domain helpers inside map(...).orElseGet(...). No example validates a workflow map, parses a port, or has these warning messages."
   },
   "categories": {
     "Creates revised validation class": "safety",

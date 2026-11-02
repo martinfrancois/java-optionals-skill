@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -58,50 +59,106 @@ EXPLICIT_INVOCATION_PATTERNS = (
     r"\buse\s+the\s+java-optionals\s+skill\b",
     r"\bjava-optionals\s+skill\b",
 )
-IDENTIFIER_STOP_WORDS = {
+# Java keywords, JDK and Optional API names, and generic words such as message: every Java
+# scenario shares them with the references, so counting them would flag all of them.
+JAVA_VOCABULARY_IDENTIFIERS = {
     "abstractmap",
     "api",
     "arraylist",
     "bigdecimal",
     "boolean",
+    "catch",
     "class",
     "collectors",
     "comparator",
-    "completablefuture",
     "comparing",
+    "completablefuture",
+    "consumer",
     "double",
+    "else",
+    "empty",
+    "enum",
+    "equals",
     "exception",
+    "false",
     "filter",
+    "final",
+    "findany",
+    "findfirst",
+    "flatmap",
     "function",
     "gatherers",
+    "getasdouble",
+    "getasint",
+    "getaslong",
     "hashmap",
+    "ifpresent",
+    "ifpresentorelse",
+    "illegalargumentexception",
+    "illegalstateexception",
+    "import",
+    "instant",
+    "int",
     "integer",
+    "interface",
     "intoptional",
+    "ioexception",
+    "isblank",
+    "isbound",
+    "isempty",
+    "ispresent",
     "java",
     "list",
     "long",
     "longoptional",
     "map",
+    "message",
+    "new",
+    "newinstance",
+    "nosuchelementexception",
+    "null",
     "object",
     "objects",
+    "ofnullable",
     "optional",
+    "optionaldouble",
+    "optionalint",
+    "optionallong",
+    "orelse",
+    "orelseget",
+    "orelsethrow",
+    "override",
+    "package",
     "parallel",
     "paralleloptional",
+    "path",
     "predicate",
+    "private",
+    "public",
     "record",
+    "return",
     "runtimeexception",
+    "scopedvalue",
     "set",
     "simpleimmutableentry",
     "sorted",
-    "string",
+    "static",
     "stream",
     "streams",
+    "string",
+    "supplier",
     "system",
+    "this",
     "throw",
+    "throws",
     "tolist",
     "total",
-    "null",
+    "true",
+    "uncheckedioexception",
     "unsupportedoperationexception",
+    "util",
+    "value",
+    "var",
     "void",
 }
 SCENARIO_REFERENCE_FILES = (
@@ -267,27 +324,20 @@ def task_similarity(left: str, right: str) -> float:
 
 
 def domain_identifiers(text: str) -> set[str]:
-    identifiers = set(re.findall(r"\b[A-Za-z_][A-Za-z0-9_]*\b", code_like_text(text)))
+    return code_identifiers(code_like_text(text))
+
+
+def code_identifiers(code: str) -> set[str]:
+    identifiers = set(re.findall(r"\b[A-Za-z_][A-Za-z0-9_]*\b", code))
     result: set[str] = set()
     for identifier in identifiers:
         lowered = identifier.lower()
-        if lowered in IDENTIFIER_STOP_WORDS or len(identifier) < 4:
+        if lowered in JAVA_VOCABULARY_IDENTIFIERS or len(identifier) < 4:
             continue
         if identifier.isupper() and len(identifier) <= 6:
             continue
         result.add(identifier)
     return result
-
-
-def api_markers(text: str) -> set[str]:
-    markers = set(
-        re.findall(
-            r"\b[A-Z][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)+\b"
-            r"|\b[A-Za-z_][A-Za-z0-9_]*::[A-Za-z_][A-Za-z0-9_]*\b",
-            text,
-        )
-    )
-    return {marker for marker in markers if marker not in {"System.out"}}
 
 
 def is_skill_context_dependent_text(text: str) -> bool:
@@ -515,93 +565,105 @@ def validate_cross_suite_duplicates(dirs: list[Path]) -> list[str]:
     return failures
 
 
-def validate_runtime_reference_overlap(dirs: list[Path]) -> list[str]:
-    failures: list[str] = []
-    references_root = Path("skills/java-optionals/references")
-    if not references_root.exists():
-        return failures
+RUNTIME_REFERENCES_ROOT = Path("skills/java-optionals/references")
+RUNTIME_OVERLAP_SUITES = {"evals", "evals-reference"}
+RUNTIME_OVERLAP_RUN_WORDS = 8
+RUNTIME_OVERLAP_MIN_IDENTIFIERS = 4
+RUNTIME_OVERLAP_MIN_RUNS = 3
+# Every example and starting file opens with the same imports, which say nothing about the answer.
+JAVA_HEADER_LINE = re.compile(r"(?m)^[ \t]*(?:import|package)[ \t].*$")
 
-    runtime_text = "\n".join(
-        path.read_text(encoding="utf-8") for path in sorted(references_root.glob("*.md"))
-    )
+
+@dataclass(frozen=True)
+class RuntimeReferenceOverlap:
+    scenario: Path
+    shared_identifiers: list[str]
+    shared_runs: int
+    rationale: str
+
+    def severity(self) -> str | None:
+        """Return "error", "warning", or None; main fails, reference only warns, a rationale silences both."""
+        if self.rationale:
+            return None
+        flagged = (
+            len(self.shared_identifiers) >= RUNTIME_OVERLAP_MIN_IDENTIFIERS
+            or self.shared_runs >= RUNTIME_OVERLAP_MIN_RUNS
+        )
+        near = len(self.shared_identifiers) >= RUNTIME_OVERLAP_MIN_IDENTIFIERS - 1 or self.shared_runs >= 1
+        suite = self.scenario.parent.name
+        if suite == "evals" and flagged:
+            return "error"
+        if (suite == "evals-reference" and flagged) or (suite == "evals" and near):
+            return "warning"
+        return None
+
+    def describe(self) -> str:
+        return (
+            f"{len(self.shared_identifiers)} shared identifiers "
+            f"({', '.join(self.shared_identifiers[:12]) or 'none'}), "
+            f"{self.shared_runs} shared {RUNTIME_OVERLAP_RUN_WORDS}-word runs"
+        )
+
+
+def java_text_without_headers(paths: list[Path]) -> str:
+    return JAVA_HEADER_LINE.sub("", "\n".join(path.read_text(encoding="utf-8") for path in paths))
+
+
+def runtime_reference_overlaps(dirs: list[Path]) -> list[RuntimeReferenceOverlap]:
+    """Measure how much of each main and reference scenario the runtime references already contain.
+
+    The solver sees task.md and any Java files shipped with the scenario, so those are compared
+    against the references after import and package lines are removed. Regression scenarios may
+    overlap and are skipped, as are scenarios that only make sense with skill context.
+    """
+    if not RUNTIME_REFERENCES_ROOT.exists():
+        return []
+    runtime_text = java_text_without_headers(sorted(RUNTIME_REFERENCES_ROOT.glob("*.md")))
     runtime_identifiers = domain_identifiers(runtime_text)
-    runtime_words = normalized_words(runtime_text)
-    runtime_grams = ngrams(runtime_words, 12)
+    runtime_runs = ngrams(normalized_words(runtime_text), RUNTIME_OVERLAP_RUN_WORDS)
 
+    overlaps: list[RuntimeReferenceOverlap] = []
     for scenario in dirs:
-        if scenario.parent.name != "evals":
-            continue
         task_file = scenario / "task.md"
-        if not task_file.exists():
+        if scenario.parent.name not in RUNTIME_OVERLAP_SUITES or not task_file.is_file():
             continue
-        task_text = task_file.read_text(encoding="utf-8")
+        task_text = java_text_without_headers([task_file])
         if is_skill_context_dependent_text(f"{scenario.name}\n{task_text}"):
             continue
-
-        task_identifiers = domain_identifiers(task_text)
-        shared_identifiers = sorted(task_identifiers & runtime_identifiers)
-        task_words = normalized_words(task_text)
-        task_grams = ngrams(task_words, 12)
-        long_overlap_count = len(task_grams & runtime_grams)
-
-        if long_overlap_count >= 8 and len(shared_identifiers) >= 8:
-            failures.append(
-                f"{scenario}: task.md overlaps runtime references too closely; shared identifiers: "
-                f"{', '.join(shared_identifiers[:12])}"
+        java_text = java_text_without_headers(sorted(scenario.rglob("*.java")))
+        identifiers = (domain_identifiers(task_text) | code_identifiers(java_text)) & runtime_identifiers
+        runs = ngrams(normalized_words(f"{task_text}\n{java_text}"), RUNTIME_OVERLAP_RUN_WORDS) & runtime_runs
+        data, _ = load_criteria(scenario / "criteria.json")
+        metadata = data.get("metadata") if data else None
+        rationale = metadata.get("runtime_reference_overlap_rationale") if isinstance(metadata, dict) else None
+        overlaps.append(
+            RuntimeReferenceOverlap(
+                scenario=scenario,
+                shared_identifiers=sorted(identifiers),
+                shared_runs=len(runs),
+                rationale=rationale.strip() if isinstance(rationale, str) else "",
             )
-    return failures
-
-
-def runtime_reference_overlap_warnings(dirs: list[Path]) -> list[str]:
-    warnings: list[str] = []
-    references_root = Path("skills/java-optionals/references")
-    if not references_root.exists():
-        return warnings
-
-    runtime_text = "\n".join(
-        path.read_text(encoding="utf-8") for path in sorted(references_root.glob("*.md"))
-    )
-    runtime_identifiers = domain_identifiers(runtime_text)
-    runtime_api_markers = api_markers(runtime_text)
-    runtime_words = normalized_words(runtime_text)
-    runtime_grams = ngrams(runtime_words, 12)
-
-    for scenario in dirs:
-        if scenario.parent.name != "evals":
-            continue
-        task_file = scenario / "task.md"
-        criteria_file = scenario / "criteria.json"
-        if not task_file.exists() or not criteria_file.exists():
-            continue
-        task_text = task_file.read_text(encoding="utf-8")
-        criteria_text = criteria_file.read_text(encoding="utf-8")
-        combined_text = f"{task_text}\n{criteria_text}"
-        if is_skill_context_dependent_text(f"{scenario.name}\n{combined_text}"):
-            continue
-
-        shared_identifiers = sorted(domain_identifiers(combined_text) & runtime_identifiers)
-        shared_api_markers = sorted(api_markers(combined_text) & runtime_api_markers)
-        combined_grams = ngrams(normalized_words(combined_text), 12)
-        long_overlap_count = len(combined_grams & runtime_grams)
-        repeated_api_shape = (
-            "blocking" in combined_text.lower()
-            and "bounded" in combined_text.lower()
-            and "Gatherers.mapConcurrent" in shared_api_markers
-            and "Map.entry" in shared_api_markers
         )
-        if (
-            len(shared_identifiers) >= 4
-            or (len(shared_identifiers) >= 3 and long_overlap_count)
-            or repeated_api_shape
-        ):
-            warnings.append(
-                f"{scenario}: task.md plus criteria.json are close to runtime references; "
-                f"document a focused-coverage rationale if intentional. Shared identifiers: "
-                f"{', '.join(shared_identifiers[:12]) or '(none)'}; shared API markers: "
-                f"{', '.join(shared_api_markers[:12]) or '(none)'}"
-            )
+    return overlaps
 
-    return warnings
+
+def validate_runtime_reference_overlap(overlaps: list[RuntimeReferenceOverlap]) -> list[str]:
+    return [
+        f"{overlap.scenario}: task.md overlaps runtime references too closely ({overlap.describe()}); "
+        "move the example out of the references or record runtime_reference_overlap_rationale "
+        "in criteria-meta.json"
+        for overlap in overlaps
+        if overlap.severity() == "error"
+    ]
+
+
+def runtime_reference_overlap_warnings(overlaps: list[RuntimeReferenceOverlap]) -> list[str]:
+    return [
+        f"{overlap.scenario}: task.md is close to runtime references ({overlap.describe()}); "
+        "record runtime_reference_overlap_rationale before it counts as main evidence"
+        for overlap in overlaps
+        if overlap.severity() == "warning"
+    ]
 
 
 def validate_scenario_path_references() -> list[str]:
@@ -753,8 +815,9 @@ def main() -> int:
         if path.is_dir():
             failures.extend(validate_numbering(path))
     failures.extend(validate_cross_suite_duplicates(dirs))
-    failures.extend(validate_runtime_reference_overlap(dirs))
-    warnings = runtime_reference_overlap_warnings(dirs)
+    overlaps = runtime_reference_overlaps(dirs)
+    failures.extend(validate_runtime_reference_overlap(overlaps))
+    warnings = runtime_reference_overlap_warnings(overlaps)
     failures.extend(validate_scenario_path_references())
     failures.extend(validate_runtime_references())
     failures.extend(validate_agent_docs_self_contained())
