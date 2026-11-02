@@ -229,3 +229,23 @@ regression. `07` and `10` scored 100 in both arms on both hosted runs, so they m
 their expected answer as a worked example (see `evals/NUMBERING.md`). They keep their main-policy
 checklists. In hosted run `01a19cac-5099-75d5-adec-f704024dd23c` they scored 19, 80, and 44
 without the skill and 100 with it.
+
+## Promotion check of the six main candidates (2026-11-02)
+
+`09` and `45` moved to `evals/` (numbers and runs in `evals/NUMBERING.md`). Four stay here:
+
+- `01-display-name` scored 100 in both arms in hosted run `01a19cac-5099-75d5-adec-f704024dd23c`
+  and 100 unaided in both local runs, on a 100-point main-policy checklist made for that run (an
+  artifact item and a focus item added). It came back with its original 8-point checklist, so that
+  run measured a checklist it no longer has. On the original checklist its hosted baselines are
+  100 (cut-off run, older prompt) and 63, so it is bimodal; a second run at 100 in both arms on the
+  current checklist would make it regression material.
+- `05-use-findany` is the runtime references' `CommandRedactor` example with renamed identifiers,
+  and its `findAny()` answer is in that example (see `evals/NUMBERING.md`). It also came back with
+  its original 16-point checklist; its two hosted runs on the main-policy checklist (15 and 18
+  without the skill, 98 and 100 with it) don't apply to the current one.
+- `12-selector-optional` was not run: the runtime references carry its starting code and its
+  better shape as a worked example. `13` has the same overlap with the output-sink example.
+- `59-checked-boundary-selection-cleanup` scored 80 unaided and 100 with the skill in the same
+  hosted run, a 20-point gap under the main floor. Its hosted baselines are now 53 and 80, and the
+  local screen put it at 53 and 55 unaided.
