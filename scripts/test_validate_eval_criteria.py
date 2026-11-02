@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fixture tests for the invocation rules in validate_eval_criteria.py."""
+"""Fixture tests for the invocation and runtime-reference overlap rules in validate_eval_criteria.py."""
 
 from __future__ import annotations
 
@@ -85,6 +85,29 @@ class InvocationRuleTests(unittest.TestCase):
             result = self.run_validator(root, scenario)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("natural scenario explicitly invokes the skill", result.stderr)
+
+
+    def test_main_task_copying_runtime_reference_fails(self) -> None:
+        example = (
+            "```java\n"
+            "Optional<Workspace> chosen = configuredWorkspace(options)\n"
+            "        .or(() -> environmentWorkspace(environment))\n"
+            "        .map(workspace -> workspace.withRegion(defaultRegion))\n"
+            "        .filter(Workspace::isActive);\n"
+            "return chosen.map(Workspace::displayName).orElseGet(fallbackNames::next);\n"
+            "```"
+        )
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_scenario(root, "evals", "01-natural", f"Tidy this lookup.\n\n{example}")
+            unique = self.run_validator(root, root / "evals")
+            references = root / "skills" / "java-optionals" / "references"
+            references.mkdir(parents=True)
+            (references / "examples.md").write_text(f"# Examples\n\n{example}\n", encoding="utf-8")
+            copied = self.run_validator(root, root / "evals")
+        self.assertEqual(unique.returncode, 0, unique.stderr)
+        self.assertNotEqual(copied.returncode, 0)
+        self.assertIn("overlaps runtime references too closely", copied.stderr)
 
 
 if __name__ == "__main__":

@@ -753,6 +753,7 @@ def main() -> int:
         if path.is_dir():
             failures.extend(validate_numbering(path))
     failures.extend(validate_cross_suite_duplicates(dirs))
+    failures.extend(validate_runtime_reference_overlap(dirs))
     warnings = runtime_reference_overlap_warnings(dirs)
     failures.extend(validate_scenario_path_references())
     failures.extend(validate_runtime_references())
