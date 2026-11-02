@@ -3,7 +3,8 @@
     "invocation": "natural",
     "task_type": "implementation",
     "evidence_type": "ordinary_lift",
-    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/69"
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/69",
+    "runtime_reference_overlap_rationale": "Shares ordinary names such as IOException, Instant, and body. ifPresentOrElse appears in the skill as the general side-effect rule and in the output-sink example, but no example renders report sections or adds a lookup branch to existing code."
   },
   "categories": {
     "Creates coherent Java 17 artifact": "safety",

@@ -2,7 +2,7 @@
   "metadata": {
     "invocation": "natural",
     "task_type": "implementation",
-    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 65 without the skill, 100 with it; local screen 58 unaided"
+    "reference_selection": "Moved from main on 2026-11-02: the task specifies the runtime references' CommandRedactor lookup (a Set of options matched on equals or startsWith(option + \"=\")) and the example's better shape ends in findAny(), so the skill arm reads the answer. Hosted 80 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c."
   },
   "categories": {
     "Creates requested matcher": "safety",

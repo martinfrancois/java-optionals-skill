@@ -221,3 +221,11 @@ membership changes the public lift score and needs the capability-coverage check
 `docs/agents/evals.md`. `60` scored 93 unaided, so it stays reference rather than moving to
 regression. `07` and `10` scored 100 in both arms on both hosted runs, so they moved to
 `evals-regression/` (see `evals-regression/NUMBERING.md`).
+
+## Former main scenarios 10, 19, and 35 (2026-11-02)
+
+`10-first-pass-retry-backoff`, `19-first-pass-redacted-option`, and
+`35-implement-diagnostics-command` came back from `evals/` because the runtime references carry
+their expected answer as a worked example (see `evals/NUMBERING.md`). They keep their main-policy
+checklists. In hosted run `01a19cac-5099-75d5-adec-f704024dd23c` they scored 19, 80, and 44
+without the skill and 100 with it.

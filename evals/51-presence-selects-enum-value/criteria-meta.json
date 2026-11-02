@@ -3,7 +3,8 @@
     "invocation": "natural",
     "task_type": "cleanup",
     "evidence_type": "ordinary_lift",
-    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/74"
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/74",
+    "runtime_reference_overlap_rationale": "Shares ordinary Java and Optional words such as isPresent, enum, options, and message. No example in the references selects an enum constant from a presence check or keeps an audit branch."
   },
   "categories": {
     "Creates coherent Java 17 artifact": "safety",

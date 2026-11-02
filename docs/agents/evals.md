@@ -96,6 +96,15 @@ benchmark claims, or scoring rules.
 - `evals-reference/45-workflow-validation-cleanup` remains reference coverage. It is intentionally
   not part of the focused main eval set because the active main eval set should stay concentrated on
   the clearest Optional-quality signal.
+- A scenario is not main evidence when its starting code, or the behavior its task specifies, and
+  its expected answer both appear as a worked example in the runtime references, with the same
+  identifiers or renamed ones: the skill arm reads the answer. Shared Optional API names, or a
+  one-line prose description of a general rule, do not count; state that overlap in plain words in
+  `metadata.runtime_reference_overlap_rationale` of the scenario's `criteria-meta.json`. Such
+  scenarios stay in `evals-reference/` until the skill's example moves to another domain:
+  `evals-reference/10-first-pass-retry-backoff`, `evals-reference/12-selector-optional`,
+  `evals-reference/13-output-path-side-effect`, `evals-reference/19-first-pass-redacted-option`,
+  and `evals-reference/35-implement-diagnostics-command`.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.
 - Every Java scenario, including temporary candidate scenarios, must state the Java version to
@@ -157,10 +166,10 @@ benchmark claims, or scoring rules.
 
 Current active suite structure:
 
-- `evals/`: 7 scenarios, 700 checklist points, all natural: `10`, `19`, `35`, `37`, `51`, `55`,
-  `57`. The hosted both-arms run of the shipped text on 2026-10-21 scored them 338 without the
-  skill and 700 with it; the run IDs are in `evals/NUMBERING.md`.
-- `evals-reference/`: 41 scenarios, 2632 checklist points, broad candidate and diagnostic coverage,
+- `evals/`: 4 scenarios, 400 checklist points, all natural: `37`, `51`, `55`, `57`. The hosted
+  both-arms run of the shipped text on 2026-11-02 scored them 183 without the skill and 400 with
+  it; the run IDs are in `evals/NUMBERING.md`.
+- `evals-reference/`: 44 scenarios, 2944 checklist points, broad candidate and diagnostic coverage,
   with `54` as the explicit-invocation coverage; `13` and `48` sit here because their hosted
   baseline scored 100 although the local screen fails them more often than not.
 - `evals-regression/`: 13 scenarios, 786 checklist points, with-context safety coverage.

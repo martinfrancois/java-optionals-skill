@@ -110,3 +110,27 @@ final text (commit `83ea794` of the skill) in `01a15c21-7bb2-73fe-813e-d177ea0f2
 338 without the skill against 700 with it, about 2.1x; every main scenario at 100 with the
 skill on the text that ships. `19` swings between 45 and 80 unaided across runs, which the
 baseline columns of the three runs above show.
+
+## Scenarios whose answer is a skill example (2026-11-02)
+
+`10`, `19`, and `35` moved to `evals-reference/` under the rule in `docs/agents/evals.md`: a
+scenario whose starting code, or the behavior its task specifies, and its expected answer both
+appear as a worked example in the runtime references is not main evidence, identifiers renamed or
+not.
+
+- `10-first-pass-retry-backoff`: the references' `flatMap` example has the same nullable response,
+  the same `Retry-After` header, `parseRetryAfter`, and the better shape
+  `Optional.ofNullable(response).flatMap(...).flatMap(this::parseRetryAfter).orElseGet(...)`, which
+  is the scenario's 60-point item.
+- `19-first-pass-redacted-option`: the task has no starting code, but it specifies the
+  `CommandRedactor` lookup (a `Set` of options matched on `equals` or `startsWith(option + "=")`),
+  and the example's better shape ends in `findAny()`.
+- `35-implement-diagnostics-command`: the selector and output-sink examples rewritten as an
+  implementation task; both better shapes are in the references.
+
+The four that stay, `37`, `51`, `55`, `57`, overlap the references only through Optional API names
+or a one-line prose description of a general rule; each `criteria-meta.json` says which in
+`runtime_reference_overlap_rationale`. In hosted run `01a19cac-5099-75d5-adec-f704024dd23c` they
+scored 183 without the skill against 400 with it, about 2.19x. Main now has no `findAny`, retry
+header, or selector scenario; moving those skill examples to another domain would let the three
+scenarios come back.
