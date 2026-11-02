@@ -312,3 +312,30 @@ hosted runs (50 and 52) without overlapping a worked example in the runtime refe
 
 `09-repeated-reads` came back from `evals/` because it scored 100 without the skill in
 `01a19cda-1b44-71b3-ba4e-50c2b77e0001` (see `evals/NUMBERING.md`). It keeps its main-policy checklist.
+
+## 56 reweighted to the main policy (2026-11-02)
+
+`56-optional-helper-trigger-lifecycle-refactor` is the promotion candidate for main. On both
+hosted runs it scored 100 with the skill and at least 30 points under 100 without it (50 in
+`01a1604b-4e37-71f6-8737-adb2daf08687`, 52 in `01a19ce3-d607-7398-8296-55e01f9ff557`), no worked
+example in the runtime references has its starting code or answer, and main has no scenario
+where a domain helper takes the selected value instead of the Optional. Its checklist now follows
+the main policy, 15 safety (5 artifact, 10 behavior), 80 Optional quality (22, 26, 16, 16), and 5
+maintainability; item names and descriptions are unchanged.
+
+Local screen on the new checklist (DeepSeek V4.1 Flash, Haiku judge, not hosted evidence): 45 and
+48 without the skill in two runs, 90 (81 to 99) with it in three runs. Two skill runs lost 11 and
+17 points on the boundary items: the solver called `ifPresent` inside
+`requireExistingExplicitWorkflow` but kept its `Optional<Path>` parameter, and the judge gave part
+credit. The other point lost twice is on "Preserves validation behavior". On the old checklist the
+local skill arm had scored 95 and 96 (`skill-v2` text), against 100 on both hosted runs, so the
+hosted run decides.
+
+It stays in reference until one targeted hosted run with both arms on this checklist, after the
+credit reset on 2026-12-01:
+
+```bash
+scripts/run_eval_suite.sh reference 56-optional-helper-trigger-lifecycle-refactor -- --label "56 on the main-policy checklist"
+```
+
+A with-skill result under 100 there keeps it in reference for a fix in place.
