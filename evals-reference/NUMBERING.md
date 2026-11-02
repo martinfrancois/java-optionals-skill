@@ -307,3 +307,8 @@ reference scenario that scored 100 with the skill and at least 30 points under 1
 hosted runs (50 and 52) without overlapping a worked example in the runtime references; `15`,
 `33`, `49`, and `50` fail unaided on both runs too, but they are the `CommandRedactor` and
 `WorkspaceSelector` examples with renamed identifiers.
+
+## Former main scenario 09 (2026-11-02)
+
+`09-repeated-reads` came back from `evals/` because it scored 100 without the skill in
+`01a19cda-1b44-71b3-ba4e-50c2b77e0001` (see `evals/NUMBERING.md`). It keeps its main-policy checklist.
