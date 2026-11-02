@@ -14,7 +14,7 @@
     },
     {
       "name": "Binds or maps once",
-      "description": "Uses map plus a helper, or binds the value once after a narrow guard.",
+      "description": "Reads the target value once, either through Optional map or filter (a named helper is optional) or by binding it to a local once after a narrow guard.",
       "max_score": 35
     },
     {
