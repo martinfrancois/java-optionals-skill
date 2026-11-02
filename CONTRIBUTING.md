@@ -270,9 +270,9 @@ Use `metadata.evidence_type` when scenario placement needs to be explicit:
 - `skill_context_dependent`: the scenario requires exact skill-provided text, commands, procedures,
   checklists, headers, or bundled reference text. It must live in `evals-regression/`.
 
-When adding a new scenario, screen it locally first (`scripts/local_screen.sh`, see
-`docs/agents/local-screening.md`), place it from that screen, and confirm the placement from an
-isolated hosted run when credits allow:
+When adding a new scenario, you can screen it locally first (`scripts/local_screen.sh`, see
+`docs/agents/local-screening.md`) and place it from that screen. Confirm the placement from an
+isolated hosted run:
 
 ```bash
 tessl eval view <run-id> --json > /tmp/eval-run.json
