@@ -249,3 +249,61 @@ without the skill and 100 with it.
 - `59-checked-boundary-selection-cleanup` scored 80 unaided and 100 with the skill in the same
   hosted run, a 20-point gap under the main floor. Its hosted baselines are now 53 and 80, and the
   local screen put it at 53 and 55 unaided.
+
+## Reference run on the trimmed presence rule, cut off (2026-11-02)
+
+Both arms, run `01a19ce3-d607-7398-8296-55e01f9ff557`, on the skill text of PR #173 (the
+presence-read rule stated once). It ended as failed when the organization's Tessl credits were
+blocked mid-run. Every with-skill cell that finished had the skill activated and scored 100;
+`53` has no with-skill cell, and `59` and `60` have no baseline cell. Percentages:
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `01-display-name` | 100 | 100 |
+| `02-lazy-upsert` | 100 | 100 |
+| `03-real-collection-stream` | 92 | 100 |
+| `04-keep-findfirst` | 100 | 100 |
+| `05-use-findany` | 0 | 100 |
+| `08-nullable-interop` | 92 | 100 |
+| `10-first-pass-retry-backoff` | 44 | 100 |
+| `11-lazy-cache-writing` | 100 | 100 |
+| `12-selector-optional` | 71 | 100 |
+| `13-output-path-side-effect` | 35 | 100 |
+| `14-review-null-workaround` | 100 | 100 |
+| `15-review-loop-overcorrection` | 23 | 100 |
+| `16-review-checked-helper` | 88 | 100 |
+| `17-first-pass-optional-formatting` | 97 | 100 |
+| `18-first-pass-selector-writing` | 78 | 100 |
+| `19-first-pass-redacted-option` | 77 | 100 |
+| `20-review-legacy-null-boundary` | 90 | 100 |
+| `21-review-optional-dto-overreach` | 95 | 100 |
+| `23-first-pass-output-routing` | 100 | 100 |
+| `25-review-single-optional-stream-loop` | 100 | 100 |
+| `27-review-null-error-workaround` | 100 | 100 |
+| `28-first-pass-card-move-plan` | 80 | 100 |
+| `32-implement-workpad-upsert` | 53 | 100 |
+| `33-implement-command-sanitizer` | 51 | 100 |
+| `34-implement-workspace-resolution` | 100 | 100 |
+| `35-implement-diagnostics-command` | 52 | 100 |
+| `36-implement-card-move-if-configured` | 73 | 100 |
+| `39-diagnostics-feature-cleanup` | 100 | 100 |
+| `40-card-move-feature` | 84 | 100 |
+| `41-setup-defaults-feature` | 100 | 100 |
+| `42-primitive-optional-side-effect` | 100 | 100 |
+| `43-tri-state-optional-boolean` | 95 | 100 |
+| `47-checked-boundary-fake-optional-list-cleanup` | 92 | 100 |
+| `48-workpad-feature-cleanup` | 20 | 100 |
+| `49-workspace-prompt-feature` | 65 | 100 |
+| `50-command-sanitizer-feature` | 55 | 100 |
+| `53-domain-selection-lazy-fallback` | 100 | not run |
+| `54-optional-upsert-side-effect-boundary` | 99 | 100 |
+| `56-optional-helper-trigger-lifecycle-refactor` | 52 | 100 |
+| `58-scoped-fallback-strategy-selection` | 100 | 100 |
+| `59-checked-boundary-selection-cleanup` | not run | 100 |
+| `60-usable-retry-hint-before-fallback` | not run | 100 |
+
+Still owed on this text: `53` with the skill. No placement moved on this run. `56` is the only
+reference scenario that scored 100 with the skill and at least 30 points under 100 unaided on both
+hosted runs (50 and 52) without overlapping a worked example in the runtime references; `15`,
+`33`, `49`, and `50` fail unaided on both runs too, but they are the `CommandRedactor` and
+`WorkspaceSelector` examples with renamed identifiers.
