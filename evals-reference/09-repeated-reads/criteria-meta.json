@@ -4,9 +4,11 @@
     "task_type": "cleanup"
   },
   "categories": {
+    "Creates coherent Java 17 artifact": "safety",
     "Removes repeated get calls": "optional_quality",
     "Binds or maps once": "optional_quality",
+    "No null workaround": "optional_quality",
     "Behavior preserved": "safety",
-    "No null workaround": "optional_quality"
+    "Keeps the change focused": "maintainability"
   }
 }
