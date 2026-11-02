@@ -43,9 +43,8 @@ Use this when editing `README.md`, examples, motivation wording, or user-facing 
   to find possible Optional cleanups, not review a cleanup proposal they already wrote.
 - Structure Getting Started so readers can skim it: install first, then how automatic use works,
   then optional explicit prompts.
-- Once the Tessl plugin is published, make the package install command the primary install path.
-- Write the README as if the GitHub repository is public, even before it's actually public. Don't mention
-  that the repo is private or add private-repo source install instructions.
+- The Tessl plugin is published, so the package install command is the primary install path.
+- The GitHub repository is public. Don't add private-repo source install instructions.
 - Use simple words that non-native Java developers can understand.
 - Avoid avoidable words such as "idiomatic", "rationale", "provenance", "fluent", "semantics",
   "nullable", "present/absent", "first-pass", and "DTO" in user-facing README text.
