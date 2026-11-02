@@ -110,9 +110,11 @@ release-readiness.
   tessl review run --workspace martinfrancois --threshold 100 skills/java-optionals/SKILL.md
   ```
 
-  Tessl caches a review per skill text, and the judge varies by a few points from run to run, so
-  the gates in CI and in the publish script pass `--force`: a text that once scored 97 would
-  otherwise return 97 on every rerun. Use `--force` locally too when a score has to be fresh.
+  No CI workflow runs this review, publish included. Each run costs 10 Tessl credits, and the
+  judge has scored unchanged text anywhere from 94 to 100, so a CI gate would mean paying for
+  re-rolls. Run it by hand whenever the skill text changes. Tessl caches a review per skill text,
+  so a text that once scored 97 returns 97 on every rerun; pass `--force` when a score has to be
+  fresh.
 
 - Pull request titles and commits must use Conventional Commits. Release Please uses them to update
   `CHANGELOG.md`, `.tessl-plugin/plugin.json`, and GitHub releases.

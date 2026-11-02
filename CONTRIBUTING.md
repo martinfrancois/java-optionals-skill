@@ -74,8 +74,6 @@ For suspected vulnerabilities, don't open a public issue. Follow the private rep
 - `scripts/` contains portable validation checks used by CI.
 - `.github/workflows/ci.yml` validates skill metadata, eval criteria, Tessl linting, and the
   publish dry-run when `TESSL_TOKEN` is configured.
-- `.github/workflows/skill-review.yml` runs `tessl review run` on pull requests when
-  `TESSL_TOKEN` is configured.
 - `AI_CONTRIBUTION_POLICY.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` set expectations for AI
   assistance, project conduct, and private vulnerability reporting.
 
@@ -106,6 +104,9 @@ If you change the skill text or reference files, also run:
 ```bash
 tessl review run --workspace martinfrancois --threshold 100 skills/java-optionals/SKILL.md
 ```
+
+CI doesn't run this review. Each run costs 10 Tessl credits, so it runs by hand when the skill
+text changes.
 
 The threshold is intentionally 100 because the current skill passes that bar without weakening its
 Java guidance. Treat the review output as a quality signal and address valid feedback without
