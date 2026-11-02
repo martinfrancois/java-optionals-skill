@@ -3,24 +3,34 @@
   "type": "weighted_checklist",
   "checklist": [
     {
+      "name": "Creates coherent Java 17 artifact",
+      "description": "Creates CardMover.java as complete Java 17-compatible code with the moveIfNeeded method and the Card and ListRef records intact.",
+      "max_score": 5
+    },
+    {
       "name": "Removes repeated get calls",
-      "max_score": 4,
-      "description": "Removes repeated target.get() calls after the guard."
+      "description": "Removes repeated target.get() calls after the guard.",
+      "max_score": 30
     },
     {
       "name": "Binds or maps once",
-      "max_score": 3,
-      "description": "Uses map plus a helper, or binds the value once after a narrow guard."
-    },
-    {
-      "name": "Behavior preserved",
-      "max_score": 3,
-      "description": "Preserves no-op behavior when target is empty or when the card is already in the target list."
+      "description": "Uses map plus a helper, or binds the value once after a narrow guard.",
+      "max_score": 35
     },
     {
       "name": "No null workaround",
-      "max_score": 2,
-      "description": "Does not introduce orElse(null) or null-control-flow."
+      "description": "Does not introduce orElse(null) or null-control-flow.",
+      "max_score": 15
+    },
+    {
+      "name": "Behavior preserved",
+      "description": "Preserves no-op behavior when target is empty or when the card is already in the target list.",
+      "max_score": 10
+    },
+    {
+      "name": "Keeps the change focused",
+      "description": "Keeps the moveIfNeeded signature and both records unchanged and adds no type or field; a small private helper for the move is fine.",
+      "max_score": 5
     }
   ]
 }
