@@ -104,6 +104,20 @@ benchmark claims, or scoring rules.
   `evals-reference/12-selector-optional`, `evals-reference/13-output-path-side-effect`,
   `evals-reference/19-first-pass-redacted-option`, and
   `evals-reference/35-implement-diagnostics-command`.
+- `scripts/validate_eval_criteria.py` checks that rule for `evals/` and `evals-reference/`. It
+  removes `import` and `package` lines from the runtime references and from the scenario's
+  `task.md` and shipped `.java` files. Then it counts the code identifiers both share, leaving out
+  the names in `JAVA_VOCABULARY_IDENTIFIERS` (Java keywords, JDK and Optional API names, and a few
+  generic words such as `message` and `value`), and the 8-word runs of text both share. With 4 or
+  more shared identifiers or 3 or more shared runs, a main scenario fails and a reference scenario
+  gets a warning; a main scenario with 3 identifiers or 1 to 2 runs gets a warning. A recorded
+  `runtime_reference_overlap_rationale` silences both. The identifier count can't tell shared
+  domain nouns from a renamed copy, so read the scenario next to the example before writing the
+  rationale. Reference stays warning-only because those scenarios don't count toward the published
+  lift; the warnings list what needs a rationale or a new example domain before a promotion.
+  Regression scenarios may overlap and aren't checked. Neither is a scenario whose text reads as
+  needing skill context, which the validator already requires to be `skill_context_dependent`
+  and therefore in `evals-regression/`.
 - Runtime skill references must not contain eval inventories, expected answers, score rubrics,
   hosted run IDs, or fixed score claims.
 - Every Java scenario, including temporary candidate scenarios, must state the Java version to
