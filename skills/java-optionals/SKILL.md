@@ -28,7 +28,7 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
    8-compatible code or state the assumption. Don't add Java 9+ Optional APIs, Java 11 `isEmpty()`,
    Java 16 `Stream.toList()`, or Java 21 sequenced collections to older projects.
 1. For ordinary value flow, replace guard/read code with one Optional result. Start nullable input
-   with `Optional.ofNullable(...)`; don't reopen the value with `get()`.
+   with `Optional.ofNullable(...)`.
 
    ```java
    Optional<Cart> cart = carts.find(cartId);
@@ -66,8 +66,7 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
    `stream().filter(...).findAny()` consumed with `map`/`orElse`, not a loop with `break` or a
    null sentinel. Preserve `findFirst()` when an earlier element must win because the source is
    ordered. Use `findAny()` only when every match would do, as with a key that is unique in its
-   collection. Flatten
-   `Stream<Optional<T>>` with `flatMap(Optional::stream)` on Java 9+.
+   collection. Flatten `Stream<Optional<T>>` with `flatMap(Optional::stream)` on Java 9+.
 4. Bind selectors once.
    - Treat `Optional<Boolean>` as three states when absence differs from `false`.
    - Predicate-only presence checks are fine when the value isn't read.
@@ -85,12 +84,8 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
    Optional<Printer> chosen = chosenPrinter(options);   // no IO in the selection
    // Java 11+; use !chosen.isPresent() on Java 8.
    if (chosen.isEmpty()) return promptForPrinter(console);   // the only checked branch
-   // Checked fallback is handled above; read the present value once.
-   return chosen.get();
+   return chosen.get();   // absence is handled above, so get(), not orElseThrow()
    ```
-
-   After such a guard the one read is `get()`; an `orElseThrow()` after the guard is a second
-   presence decision.
 
 7. In a review, keep the scope honest.
    - A proposal that changes a public record, accessor, parameter, or return type (a nullable
@@ -108,4 +103,4 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
      ```
 8. Verify each changed branch. Run focused tests or trace present/absent/fallback cases. Confirm
    return values, exceptions, prompts, side effects, laziness, output, and branch order. Run the
-   marker scan from [hard-stops.md](references/hard-stops.md); fix relevant hits and re-scan.
+   Hard Stops marker scan; fix relevant hits and re-scan.
