@@ -2,7 +2,7 @@
   "metadata": {
     "invocation": "natural",
     "task_type": "implementation",
-    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 52 without the skill, 100 with it; local screen 60 unaided"
+    "reference_selection": "Moved from main on 2026-11-02: the task is the runtime references' selector and output-sink examples rewritten as an implementation task, and both better shapes are in the references, so the skill arm reads the answer. Hosted 44 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c."
   },
   "categories": {
     "Creates requested command": "safety",

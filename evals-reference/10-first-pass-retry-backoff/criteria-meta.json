@@ -1,7 +1,8 @@
 {
   "metadata": {
     "invocation": "natural",
-    "task_type": "implementation"
+    "task_type": "implementation",
+    "reference_selection": "Moved from main on 2026-11-02: the runtime references' flatMap example has the same nullable response, Retry-After header, and parseRetryAfter helper, and its better shape is the 60-point Optional boundary item, so the skill arm reads the answer. Hosted 19 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c."
   },
   "categories": {
     "Compiles and creates requested artifact": "safety",

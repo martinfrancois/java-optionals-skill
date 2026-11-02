@@ -3,7 +3,8 @@
     "invocation": "natural",
     "task_type": "implementation",
     "evidence_type": "ordinary_lift",
-    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/76"
+    "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/76",
+    "runtime_reference_overlap_rationale": "Shares ordinary names such as code, message, selected, and List.of. No example in the references validates a value against an Optional catalog lookup."
   },
   "categories": {
     "Creates coherent Java 25 artifact": "safety",

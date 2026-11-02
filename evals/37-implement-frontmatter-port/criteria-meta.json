@@ -2,7 +2,8 @@
   "metadata": {
     "invocation": "natural",
     "task_type": "implementation",
-    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 60 without the skill, 100 with it; local screen 69 unaided"
+    "main_eval_selection": "promoted after hosted both-arms run 01a15bfa-b287-71d3-b44d-bc199631c480 (2026-10-21): 60 without the skill, 100 with it; local screen 69 unaided",
+    "runtime_reference_overlap_rationale": "One prose line in the references' list of observed failures names frontMatter.isEmpty() followed by repeated frontMatter.get() reads and says the access moved into a helper or Optional boundary. That states the general bind-once rule; no example has code for this lookup or parses a port from a map."
   },
   "categories": {
     "Creates requested lookup": "safety",
