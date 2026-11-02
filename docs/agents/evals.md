@@ -165,10 +165,10 @@ benchmark claims, or scoring rules.
 
 Current active suite structure:
 
-- `evals/`: 6 scenarios, 600 checklist points, all natural: `09`, `37`, `45`, `51`, `55`, `57`.
-  The latest hosted both-arms run, on 2026-11-02, scored them 353 without the skill and 600 with
+- `evals/`: 5 scenarios, 500 checklist points, all natural: `37`, `45`, `51`, `55`, `57`.
+  The latest hosted both-arms run, on 2026-11-02, scored them 253 without the skill and 500 with
   it; the run IDs are in `evals/NUMBERING.md`.
-- `evals-reference/`: 42 scenarios, 2744 checklist points, broad candidate and diagnostic coverage,
+- `evals-reference/`: 43 scenarios, 2844 checklist points, broad candidate and diagnostic coverage,
   with `54` as the explicit-invocation coverage; `13` and `48` sit here because their hosted
   baseline scored 100 although the local screen fails them more often than not.
 - `evals-regression/`: 13 scenarios, 786 checklist points, with-context safety coverage.

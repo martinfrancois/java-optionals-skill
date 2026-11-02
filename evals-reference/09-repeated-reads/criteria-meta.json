@@ -3,7 +3,7 @@
     "invocation": "natural",
     "task_type": "cleanup",
     "evidence_type": "ordinary_lift",
-    "main_eval_selection": "promoted after hosted both-arms run 01a19cac-5099-75d5-adec-f704024dd23c (2026-11-02): 35 without the skill, 100 with it; its bind-once cleanup overlaps 57's bind-once item, and martinfrancois's go-ahead to promote it is the reason it moved",
+    "reference_selection": "Moved from main on 2026-11-02: it scored 100 without the skill in hosted run 01a19cda-1b44-71b3-ba4e-50c2b77e0001, so its gap was 0 points against the 30-point main floor, as 13 and 48 had when they left main. Its hosted baselines on the current checklist are 35 and 100, and the local screen scored it 100 unaided in three runs of three.",
     "runtime_reference_overlap_rationale": "One prose line in the references' list of observed failures names target.isEmpty() followed by repeated target.get() reads and says the value was bound once. That states the general bind-once rule; no example has code for this method or for moving a card."
   },
   "categories": {

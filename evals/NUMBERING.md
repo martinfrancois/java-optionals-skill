@@ -214,3 +214,18 @@ instead of linking `hard-stops.md` a third time. Both arms, run
 
 353 without the skill against 600 with it, about 1.70x. `09` scored 35 and `37` 55 unaided in
 `01a19cac-5099-75d5-adec-f704024dd23c`, so both swing between runs; neither moved on one run.
+
+## 09 moved to reference (2026-11-02)
+
+`09-repeated-reads` scored 100 without the skill in `01a19cda-1b44-71b3-ba4e-50c2b77e0001`, a
+0-point gap. The main floor is a 30-point gap on the hosted run, and `13` and `48` moved to
+`evals-reference/` after one such run (see "Hosted run on the PR #142 text" above), so `09`
+follows them. Its hosted baselines on the current checklist are 35 and 100; the local screen
+(DeepSeek V4.1 Flash, Haiku judge, not hosted evidence) scored it 100 unaided in three runs of
+three, as it had at 93 to 100 in six runs before the promotion. Task, criteria, and capability
+text are unchanged.
+
+`37` also scored 100 unaided in that run, but its hosted baselines are 60, 54, 59, 55, and 100,
+and the local screen scored it 40 to 45 unaided in three runs, so it fails unaided far more often
+than not and stays. The main suite is `37`, `45`, `51`, `55`, `57`: 253 without the skill
+against 500 with it in `01a19cda-1b44-71b3-ba4e-50c2b77e0001`, about 1.98x.
