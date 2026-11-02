@@ -44,3 +44,15 @@ outweigh the local screen, as `evals-reference/NUMBERING.md` sets for `53` and `
 
 `06-checked-io-boundary` scored 100 with context on its changed prompt, which now names the file,
 in run `01a19906-1bca-746f-86b1-43cbf7148eb2`.
+
+## Regression run on the trimmed presence rule, cut off (2026-11-02)
+
+With context only, run `01a19ce4-14ac-775b-ac44-2d370fb9a71b`, on the skill text of PR #173. It
+ended as failed when the organization's Tessl credits were blocked. Twelve of the thirteen
+scenarios scored 100 with the skill activated; `38-implement-setup-options` has no finished cell
+and is still owed on this text.
+
+The composition check from java-functional-style-skill (commit `17ff2e6`) ran the main suite
+with both skills in `01a19ce4-672f-770d-873d-0a9f030d351e` and was cut off the same way. `09`,
+`37`, `51`, `55`, and `57` scored 100; `57` activated only java-optionals, the others both
+skills. `45` has no finished cell and is still owed.
