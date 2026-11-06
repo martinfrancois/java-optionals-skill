@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.3...v1.0.4) (2026-11-06)
+
+
+### Bug Fixes
+
+* **skill:** state the presence-read rule once ([e58f067](https://github.com/martinfrancois/java-optionals-skill/commit/e58f0679509a4ff7e71631d1abf18a42a15d321b))
+
 ## [1.0.3](https://github.com/martinfrancois/java-optionals-skill/compare/v1.0.2...v1.0.3) (2026-11-02)
 
 
