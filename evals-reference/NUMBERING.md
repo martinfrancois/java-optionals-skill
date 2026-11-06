@@ -230,6 +230,21 @@ their expected answer as a worked example (see `evals/NUMBERING.md`). They keep 
 checklists. In hosted run `01a19cac-5099-75d5-adec-f704024dd23c` they scored 19, 80, and 44
 without the skill and 100 with it.
 
+## The `flatMap` example moved to another domain (2026-11-06)
+
+Section 1a of `references/optional-examples.md` was the `Retry-After` chain that sent `10` back
+from main. It now shows an employee's manager and desk phone, with no header, parser, nullable
+start, or computed fallback. The overlap check finds no shared identifiers or runs for `10` or
+`60`, down from 4 identifiers for `10`. Task, criteria, and capability text of `10` are unchanged.
+
+The numbers above were measured on the old text, so `10` stays here until a hosted run on the new
+text. `SKILL.md` still shows a nullable source, `map`, `flatMap(this::parseValue)`, and
+`orElseGet` in a quote domain. That is the same chain shape as the 60-point item of `10`, and the
+overlap check doesn't read `SKILL.md`, so a clean check doesn't settle it.
+
+`19` and `35` keep their overlap. Their examples, `CommandRedactor` and the selector and output
+sink, are long, and `03`, `05`, `12`, `13`, `15`, `18`, `33`, `39`, and `50` share them too.
+
 ## Promotion check of the six main candidates (2026-11-02)
 
 `09` and `45` moved to `evals/` (numbers and runs in `evals/NUMBERING.md`). Four stay here:
