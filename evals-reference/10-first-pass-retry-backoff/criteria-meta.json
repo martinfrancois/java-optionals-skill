@@ -2,7 +2,7 @@
   "metadata": {
     "invocation": "natural",
     "task_type": "implementation",
-    "reference_selection": "Moved from main on 2026-11-02: the runtime references' flatMap example has the same nullable response, Retry-After header, and parseRetryAfter helper, and its better shape is the 60-point Optional boundary item, so the skill arm reads the answer. Hosted 19 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c."
+    "reference_selection": "Moved from main on 2026-11-02 because the runtime references' flatMap example had the same nullable response, Retry-After header, and parseRetryAfter helper. That example moved to another domain on 2026-11-06, so the 19 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c no longer describe this skill text. It stays reference until a hosted run on the new text clears the main floor. SKILL.md still has a generic nullable-input, parse, orElseGet snippet in another domain, which the overlap check does not read."
   },
   "categories": {
     "Compiles and creates requested artifact": "safety",
