@@ -100,8 +100,8 @@ benchmark claims, or scoring rules.
   one-line prose description of a general rule, do not count; state that overlap in plain words in
   `metadata.runtime_reference_overlap_rationale` of the scenario's `criteria-meta.json`. Such
   scenarios stay in `evals-reference/` until the skill's example moves to another domain:
-  `evals-reference/05-use-findany`, `evals-reference/10-first-pass-retry-backoff`,
-  `evals-reference/12-selector-optional`, `evals-reference/13-output-path-side-effect`,
+  `evals-reference/05-use-findany`, `evals-reference/12-selector-optional`,
+  `evals-reference/13-output-path-side-effect`,
   `evals-reference/19-first-pass-redacted-option`, and
   `evals-reference/35-implement-diagnostics-command`.
 - `scripts/validate_eval_criteria.py` checks that rule for `evals/` and `evals-reference/`. It
