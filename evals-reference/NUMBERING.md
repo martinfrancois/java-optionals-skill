@@ -245,6 +245,26 @@ overlap check doesn't read `SKILL.md`, so a clean check doesn't settle it.
 `19` and `35` keep their overlap. Their examples, `CommandRedactor` and the selector and output
 sink, are long, and `03`, `05`, `12`, `13`, `15`, `18`, `33`, `39`, and `50` share them too.
 
+### Hosted run on the new text (2026-11-08)
+
+Both arms, run `01a1ba83-fba7-7367-8c05-a83dcb9cd6b5`, on this branch at `82858dd`. The later
+commits on the branch change only the constant-selection example in `SKILL.md` step 1, not the
+quote snippet or anything else `10` touches.
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `10-first-pass-retry-backoff` | 20 | 100 |
+
+The skill was activated in the with-skill cell. The baseline lost the 60-point item and the
+20-point antipattern item. `scripts/classify_eval_result.py` recommends main: an 80-point gap
+against the 30-point floor. The skill arm wrote `Optional.ofNullable(response)`, `flatMap` to the
+header, `flatMap(this::parseRetryAfter)`, and `orElseGet` to the backoff, the shape of the
+`SKILL.md` quote snippet above. So the skill still gets `10` right without the old example, but
+the run can't show the solver worked the chain out without that snippet. Under the overlap rule in
+`docs/agents/evals.md`, which now counts `SKILL.md` examples, the snippet is `10`'s 60-point
+answer with renamed identifiers. `10` stays here unless martinfrancois decides the snippet is fine
+in a main scenario or it changes, and #183 shows no loss elsewhere on this text.
+
 ## Promotion check of the six main candidates (2026-11-02)
 
 `09` and `45` moved to `evals/` (numbers and runs in `evals/NUMBERING.md`). Four stay here:
