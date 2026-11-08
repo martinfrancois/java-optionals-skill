@@ -273,5 +273,14 @@ martinfrancois chose this rewrite over moving `51` to reference, so `51` stays i
 criteria, and capability text are unchanged.
 
 One overlap remains. Any code example of this rule ends in `map(ignored -> A).orElse(B)`, which is
-`51`'s answer whatever the names. A prose-only rule is the step left if that still counts. The
-runs above measured the old text; #183 tracks the hosted runs on the new one.
+`51`'s answer whatever the names. The side-effect sentence names logging, close to `51`'s audit
+call, but it is a one-line prose rule, which `docs/agents/evals.md` exempts. If martinfrancois
+decides the `map(...).orElse(...)` example still counts as `51`'s answer, the next step is a
+prose-only rule in `SKILL.md`. The runs above measured the old text; #183 tracks the hosted runs
+on the new one.
+
+`docs/agents/evals.md` now counts `SKILL.md` examples in the overlap rule, so a hand comparison
+with its examples covered the other main scenarios. `37` shares the `map`, `flatMap` to a parser
+chain of step 2, but its task specifies a `server_port` lookup in a front-matter map that no
+example shows. `45`, `55`, and `57` match only prose rules: bind once, `ifPresentOrElse` at a
+side-effect boundary, and the empty guard of step 6, whose prompt boundary none of them has.
