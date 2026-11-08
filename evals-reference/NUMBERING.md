@@ -347,3 +347,9 @@ scripts/run_eval_suite.sh reference 56-optional-helper-trigger-lifecycle-refacto
 ```
 
 A with-skill result under 100 there keeps it in reference for a fix in place.
+
+## 56 moved to main (2026-11-08)
+
+The targeted run above happened on 2026-11-08, earlier than the credit reset it waited for:
+`01a1ba83-cf72-76dd-b786-56091b3bc4f7`, 42 without the skill and 100 with it, skill activated.
+`56` moved to `evals/`; `evals/NUMBERING.md` has the main totals.

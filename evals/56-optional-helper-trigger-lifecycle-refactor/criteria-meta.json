@@ -4,7 +4,7 @@
     "task_type": "cleanup",
     "evidence_type": "ordinary_lift",
     "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/67",
-    "reference_selection": "Main promotion candidate: hosted 50 and 52 without the skill and 100 with it in 01a1604b-4e37-71f6-8737-adb2daf08687 and 01a19ce3-d607-7398-8296-55e01f9ff557. Reweighted to the main policy on 2026-11-02; it needs one targeted hosted run with both arms on this checklist before it moves.",
+    "main_eval_selection": "promoted after hosted both-arms run 01a1ba83-cf72-76dd-b786-56091b3bc4f7 (2026-11-08) on the main-policy checklist: 42 without the skill, 100 with it; earlier hosted runs on the old checklist scored 50 and 52 without it and 100 with it",
     "runtime_reference_overlap_rationale": "Shares ordinary names such as Path, workflow, board, IOException, and Files with the selector example, which also has an Optional<Path> workflow. No example has this lifecycle preflight, passes the selected Path to a validation helper, or has these messages."
   },
   "categories": {
