@@ -229,3 +229,31 @@ text are unchanged.
 and the local screen scored it 40 to 45 unaided in three runs, so it fails unaided far more often
 than not and stays. The main suite is `37`, `45`, `51`, `55`, `57`: 253 without the skill
 against 500 with it in `01a19cda-1b44-71b3-ba4e-50c2b77e0001`, about 1.98x.
+
+## 56 joined main (2026-11-08)
+
+`56-optional-helper-trigger-lifecycle-refactor` ran once on its main-policy checklist with both
+arms, run `01a1ba83-cf72-76dd-b786-56091b3bc4f7`, on the skill text of `main` at `a809475`
+(unchanged since the presence-read rule was stated once). The with-skill cell had the skill
+activated.
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `56-optional-helper-trigger-lifecycle-refactor` | 42 | 100 |
+
+`scripts/classify_eval_result.py` recommends main: a 58-point gap against the 30-point floor. Its
+earlier hosted runs, on the old checklist, scored 50 and 52 without the skill and 100 with it. The
+overlap check passes it in main on its recorded rationale. The composition check from
+java-functional-style-skill `a44d37f` scored it 100 with both skills activated, run
+`01a1ba8f-5aca-7269-bf3c-220c4ffce139`. The local screen had put the skill arm at 74 to 99 over
+seven runs (see #176), docking a helper that keeps its `Optional<Path>` parameter and calls
+`ifPresent` inside. The hosted with-skill solution has that same shape, with the selected `Path`
+passed on to `validateWorkerWorkflowPath`, and the hosted judge gave it full marks on both boundary
+items. The local judge was stricter than the hosted one here, so the skill text stays as it is.
+
+The main suite is `37`, `45`, `51`, `55`, `56`, `57`. Adding `56` to the 253 and 500 of
+`01a19cda-1b44-71b3-ba4e-50c2b77e0001` gives 295 without the skill against 600 with it, about 2.03x,
+a sum of two runs rather than one run's result. That is just above the 2x floor, and one publish run
+can land under it two ways: `37` swings between 54 and 100 unaided, and a `56` skill arm that loses
+more than 10 points for the same helper shape, as the local judge did, takes the suite to 2x or
+below.
