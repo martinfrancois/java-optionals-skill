@@ -308,6 +308,14 @@ hosted runs (50 and 52) without overlapping a worked example in the runtime refe
 `33`, `49`, and `50` fail unaided on both runs too, but they are the `CommandRedactor` and
 `WorkspaceSelector` examples with renamed identifiers.
 
+## Reference 53 on the trimmed presence rule (2026-11-08)
+
+`53-domain-selection-lazy-fallback`, the cell the cut-off run above left owed, ran with both arms
+in `01a1ba83-9dd1-7232-8322-001e662e2aed` on `main` at `a809475`, whose skill text is the PR #173
+text. It scored 100 without the skill and 100 with it, skill activated. Every reference scenario
+now has a with-skill cell at 100 on this text. `53` stays here, as the 2026-10-21 notes above
+decided after its earlier clean hosted runs.
+
 ## Former main scenario 09 (2026-11-02)
 
 `09-repeated-reads` came back from `evals/` because it scored 100 without the skill in

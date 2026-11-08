@@ -56,3 +56,20 @@ The composition check from java-functional-style-skill (commit `17ff2e6`) ran th
 with both skills in `01a19ce4-672f-770d-873d-0a9f030d351e` and was cut off the same way. `09`,
 `37`, `51`, `55`, and `57` scored 100; `57` activated only java-optionals, the others both
 skills. `45` has no finished cell and is still owed.
+
+## Owed cells on the trimmed presence rule (2026-11-08)
+
+The two cells the cut-off runs above left owed ran on `main` at `a809475`, whose skill text is the
+PR #173 text:
+
+- `38-implement-setup-options`, context only, `01a1ba83-c14d-7253-b74a-0a6201dc8047`: 100 with
+  the skill activated. Every regression scenario now has a cell at 100 on this text.
+- Composition `45-workflow-validation-cleanup`, from java-functional-style-skill `a44d37f`, both
+  skills activated: 99 in `01a1ba83-da00-753d-b2a6-adddb3b50a35`, then 100 in the isolated rerun
+  `01a1ba88-afce-707f-b985-953470dbd523`. The 99 lost one point on "Uses Optional as validation
+  boundary": a generic helper returned the missing warning from an `isEmpty()` guard, then built
+  the mismatch warning with `filter(...).map(...)` instead of one chain; it never called `get()`.
+  The composition rule in `docs/agents/ownership-boundaries.md` reruns a single miss once in
+  isolation and changes the wording only when the miss repeats; it didn't, so the skill text
+  stays. With `09` gone to reference, `37`, `45`, `51`, `55`, and `57` each have a composition
+  cell at 100.
