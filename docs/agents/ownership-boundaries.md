@@ -43,6 +43,10 @@ Tessl blocks hosted runs; going past the monthly credit allowance is no reason t
 companion repository owns the runner and runs the check before its releases; this repository runs
 it when its own runtime changes. Local validation alone doesn't satisfy this check.
 
+When a scenario misses 100 with both skills activated, read the lost criterion's reasoning and
+rerun that scenario once in isolation. Change this package's wording only if the miss repeats;
+record both runs either way.
+
 ## References
 
 - [Skill Behavior](skill-behavior.md)
