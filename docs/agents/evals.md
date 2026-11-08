@@ -95,12 +95,14 @@ benchmark claims, or scoring rules.
   main eval policy. It stays reference: its latest hosted baseline scored 80, a gap under the
   30-point floor.
 - A scenario is not main evidence when its starting code, or the behavior its task specifies, and
-  its expected answer both appear as a worked example in the runtime references, with the same
-  identifiers or renamed ones: the skill arm reads the answer. Shared Optional API names, or a
-  one-line prose description of a general rule, do not count; state that overlap in plain words in
-  `metadata.runtime_reference_overlap_rationale` of the scenario's `criteria-meta.json`. Such
-  scenarios stay in `evals-reference/` until the skill's example moves to another domain:
-  `evals-reference/05-use-findany`, `evals-reference/12-selector-optional`,
+  its expected answer both appear as a worked example in the runtime references or in `SKILL.md`,
+  with the same identifiers or renamed ones: the skill arm reads the answer. Shared Optional API
+  names, or a one-line prose description of a general rule, do not count; state that overlap in
+  plain words in `metadata.runtime_reference_overlap_rationale` of the scenario's
+  `criteria-meta.json`. Such scenarios stay in `evals-reference/` until the skill's example
+  moves to another domain:
+  `evals-reference/05-use-findany`, `evals-reference/10-first-pass-retry-backoff` (its answer is
+  the `SKILL.md` step 2 chain), `evals-reference/12-selector-optional`,
   `evals-reference/13-output-path-side-effect`,
   `evals-reference/19-first-pass-redacted-option`, and
   `evals-reference/35-implement-diagnostics-command`.
@@ -115,6 +117,7 @@ benchmark claims, or scoring rules.
   domain nouns from a renamed copy, so read the scenario next to the example before writing the
   rationale. Reference stays warning-only because those scenarios don't count toward the published
   lift; the warnings list what needs a rationale or a new example domain before a promotion.
+  The check doesn't read `SKILL.md`, so compare its examples with each main scenario by hand.
   Regression scenarios may overlap and aren't checked. Neither is a scenario whose text reads as
   needing skill context, which the validator already requires to be `skill_context_dependent`
   and therefore in `evals-regression/`.
