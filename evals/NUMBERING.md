@@ -257,3 +257,21 @@ a sum of two runs rather than one run's result. That is just above the 2x floor,
 can land under it two ways: `37` swings between 54 and 100 unaided, and a `56` skill arm that loses
 more than 10 points for the same helper shape, as the local judge did, takes the suite to 2x or
 below.
+
+## The constant-selection example moved to another domain (2026-11-08)
+
+`SKILL.md` workflow step 1 showed `promoCode.isPresent() ? Shipping.EXPRESS : Shipping.STANDARD`
+becoming `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`, then the rule that a
+present branch that also does something before returning its value stays a plain `if`. That was
+`51`'s starting ternary and its 35-point answer with renamed identifiers. The overlap check reads
+only `references/`, not `SKILL.md`, so it never flagged this.
+
+The example now shows an `if`/`else` that assigns one of two `Duration` constants, `PROXY_TIMEOUT`
+or `DIRECT_TIMEOUT`, from `proxy.isPresent()`. The side-effect rule now says "also does other
+work" instead of "before returning its value", because the example assigns instead of returning.
+martinfrancois chose this rewrite over moving `51` to reference, so `51` stays in main. Its task,
+criteria, and capability text are unchanged.
+
+One overlap remains. Any code example of this rule ends in `map(ignored -> A).orElse(B)`, which is
+`51`'s answer whatever the names. A prose-only rule is the step left if that still counts. The
+runs above measured the old text; #183 tracks the hosted runs on the new one.
