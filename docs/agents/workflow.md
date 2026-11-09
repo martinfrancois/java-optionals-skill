@@ -113,7 +113,7 @@ release-readiness.
   ```
 
   No CI workflow runs this review, publish included. Each run costs 10 Tessl credits, and the
-  judge has scored unchanged text anywhere from 94 to 100, so a CI gate would mean paying for
+  judge has scored unchanged text anywhere from 91 to 100, so a CI gate would mean paying for
   re-rolls. Run it by hand whenever the skill text changes. Tessl caches a review per skill text,
   so a text that once scored 97 returns 97 on every rerun; pass `--force` when a score has to be
   fresh.
