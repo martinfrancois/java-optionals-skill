@@ -300,3 +300,30 @@ with its examples covered the other main scenarios. `37` shares the `map`, `flat
 chain of step 2, but its task specifies a `server_port` lookup in a front-matter map that no
 example shows. `45`, `55`, and `57` match only prose rules: bind once, `ifPresentOrElse` at a
 side-effect boundary, and the empty guard of step 6, whose prompt boundary none of them has.
+
+## Main on the prose constant-selection rule (2026-11-09)
+
+The hosted checks of #183 ran on the final text of #181 (`SKILL.md` step 1 in prose, section 1a
+of the examples in the employee domain). The skill was activated in every with-skill cell.
+
+The skill review with `--threshold 100` scored 97 and 91 in two forced runs on this text whose
+IDs weren't saved, then 100 in `01a1bea3-213c-7085-8b16-26ce85065c2c` and 95 in
+`01a1bea5-2c74-7779-bf2b-545bdb7c2f5c`. A forced review of the released 1.0.4 text, which its
+publish scored 100, rolled 97 the same day. One text scoring 91 and 100 is judge spread.
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `37-implement-frontmatter-port` | 75 | 100 |
+| `45-workflow-validation-cleanup` | 47 | 100 |
+| `51-presence-selects-enum-value` | 39 | 100 |
+| `55-side-effecting-ifpresentorelse-lookup` | 35 | 100 |
+| `56-optional-helper-trigger-lifecycle-refactor` | 42 | 100 |
+| `57-catalog-validation-bound-once` | 50 | 100 |
+
+Run `01a1be6f-57e2-76dd-9fea-a9917e1ef0aa`: 288 without the skill against 600 with it, about 2.08x.
+The 1.0.4 publish run `01a1be54-4f72-73a4-b2dd-3e87ebef0520` had scored 295 against 600 on the
+released text. `37` scored 75 unaided this time. Its hosted baselines are now 60, 54, 59, 55, 100,
+and 75, so it still fails unaided more often than not and stays, as decided above. The composition
+check from java-functional-style-skill `a44d37f` scored all six 100 in
+`01a1be6f-db00-7447-ae94-af3cbd3f3be2`; `37` activated only java-optionals there, and its isolated
+rerun `01a1be81-04cb-7460-b3a1-0dad4305bf50` scored 100 with both skills activated.

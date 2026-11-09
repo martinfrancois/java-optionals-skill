@@ -388,3 +388,26 @@ A with-skill result under 100 there keeps it in reference for a fix in place.
 The targeted run above happened on 2026-11-08, earlier than the credit reset it waited for:
 `01a1ba83-cf72-76dd-b786-56091b3bc4f7`, 42 without the skill and 100 with it, skill activated.
 `56` moved to `evals/`; `evals/NUMBERING.md` has the main totals.
+
+## Reference on the prose constant-selection rule (2026-11-09)
+
+Every reference scenario ran with both arms on the final text of #181, run
+`01a1be6f-96ec-72a9-8101-0f79234779ba`, skill activated in every with-skill cell. Forty of the
+42 scored 100 with the skill. The two misses:
+
+- `54-optional-upsert-side-effect-boundary` scored 63, keeping two pipelines over the same
+  `Optional`. Its isolated rerun, `01a1be79-037a-7223-a682-6d3e02dbb4ae`, scored 100 in both runs.
+- `33-implement-command-sanitizer` scored 83, then 83 and 100 in the rerun above, 86, 100, and 100
+  in `01a1be90-f4fc-71b3-aef3-acdfaad4e2ee`, and 100, 48, 100, 100, and 96 in
+  `01a1beac-cfc9-77ef-bcbe-03e070544b98`: 100 in six of eleven runs. The 83s and the 86 used
+  `findFirst()` where any match is equivalent, losing most of "Uses findAny for equivalent matches"
+  and part of "Uses real collection Optional lookup"; the first 83 of the rerun also lost two points
+  on "Avoids overcomplicated loop control". The 48 used `Set.contains` and no `Optional` at all, and
+  the 96 lost three points on "Uses Optional result directly". On the released 1.0.4 text it scored
+  88, 100, and 100 in `01a1be82-b088-75dc-a754-e21f6e38d68e` and 100, 78, 100, 100, and 100 in
+  `01a1beac-cfb6-7797-9d5d-91f1df793440`: 100 in six of eight. The 78 used `findFirst()` for one
+  match path and `Set.contains` for the other, and the 88 used `findAny()` for one match path and
+  `Set.contains` for the other, losing points on the same two items. The `findFirst()` miss predates
+  #181. The no-`Optional` 48 appeared once, on this text only; eleven and eight runs can't tell
+  whether #181 makes it likelier, and nothing in the #181 diff touches lookups or `findAny`. #188
+  tracks `33`.
