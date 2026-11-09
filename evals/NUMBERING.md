@@ -272,12 +272,28 @@ work" instead of "before returning its value", because the example assigns inste
 martinfrancois chose this rewrite over moving `51` to reference, so `51` stays in main. Its task,
 criteria, and capability text are unchanged.
 
-One overlap remains. Any code example of this rule ends in `map(ignored -> A).orElse(B)`, which is
+One overlap remained. Any code example of this rule ends in `map(ignored -> A).orElse(B)`, which is
 `51`'s answer whatever the names. The side-effect sentence names logging, close to `51`'s audit
-call, but it is a one-line prose rule, which `docs/agents/evals.md` exempts. If martinfrancois
-decides the `map(...).orElse(...)` example still counts as `51`'s answer, the next step is a
-prose-only rule in `SKILL.md`. The runs above measured the old text; #183 tracks the hosted runs
-on the new one.
+call, but it is a one-line prose rule, which `docs/agents/evals.md` exempts. The runs above measured
+the old text; #183 tracks the hosted runs on the new one.
+
+## 51 with a code example and with a prose rule (2026-11-09)
+
+The overlap rule did not say whether the `Duration` example still counted as `51`'s answer, so `51`
+ran with the skill only, eight times on each text, on the branch of #181 before its rebase onto
+1.0.4. The two texts differed only in step 1. The skill was activated in every run.
+
+| `SKILL.md` step 1 | Runs | Scores | Total |
+| --- | --- | --- | --- |
+| `Duration` code example | `01a1be5a-5750-77d1-9b6e-e1c2577c2c42` (3), `01a1be5f-fddd-747f-bcaa-ad68a5e16088` (5) | 100 in all | 800 of 800 |
+| Prose rule only | `01a1be59-e75f-7312-bb98-7c3a1b1e24bb` (3), `01a1be5f-f087-720e-a834-84b0dfa6a174` (5) | 100 in seven, 98 in one | 798 of 800 |
+
+The 98 lost two points on "Avoids Optional antipatterns" for a private `choiceFor` helper that picks
+the enum. Every answer item scored full on both texts. The rule martinfrancois set for this case
+keeps the code example only if `51` scores no higher with it, and 800 is higher than 798, so
+`SKILL.md` now states the rule in prose: map any present value to the first constant and take the
+second with `orElse`. The difference is one run in eight, so it is thin evidence either way; the
+main run of #183 shows whether `51` holds 100 on the prose text.
 
 `docs/agents/evals.md` now counts `SKILL.md` examples in the overlap rule, so a hand comparison
 with its examples covered the other main scenarios. `37` shares the `map`, `flatMap` to a parser
