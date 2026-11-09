@@ -106,6 +106,14 @@ benchmark claims, or scoring rules.
   `evals-reference/13-output-path-side-effect`,
   `evals-reference/19-first-pass-redacted-option`, and
   `evals-reference/35-implement-diagnostics-command`.
+- When a rule has only one code shape, any code example of it shows the answer of a main scenario
+  that tests the rule, even in another domain, and the overlap rule above may not say whether that
+  counts. When it doesn't, measure it: run the scenario with the skill on the code-example text and
+  on a prose-only variant, several runs each, and keep the code example only if the scenario scores
+  no higher with it. For `51` (#183), eight runs each scored 800 of 800 with the `Duration` example
+  (`01a1be5a-5750-77d1-9b6e-e1c2577c2c42`, `01a1be5f-fddd-747f-bcaa-ad68a5e16088`) and 798 of 800
+  with prose (`01a1be59-e75f-7312-bb98-7c3a1b1e24bb`, `01a1be5f-f087-720e-a834-84b0dfa6a174`), so
+  `SKILL.md` states the constant-selection rule in prose.
 - `scripts/validate_eval_criteria.py` checks that rule for `evals/` and `evals-reference/`. It
   removes `import` and `package` lines from the runtime references and from the scenario's
   `task.md` and shipped `.java` files. Then it counts the code identifiers both share, leaving out
