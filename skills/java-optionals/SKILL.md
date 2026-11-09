@@ -41,11 +41,10 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
    return cart.map(this::summarize).orElseGet(() -> createSummary(cartId));
    ```
 
-   The same rule covers a presence check that only picks one of two constants: an `if`/`else`
-   on `proxy.isPresent()` that assigns `PROXY_TIMEOUT` or `DIRECT_TIMEOUT` becomes
-   `Duration timeout = proxy.map(p -> PROXY_TIMEOUT).orElse(DIRECT_TIMEOUT);`. When the present
-   branch also does other work, such as logging or connecting, keep the plain
-   `if (proxy.isPresent())` branch; neither `map` nor `ifPresent` is clearer there.
+   The same rule covers a presence check that only picks one of two constants: map any present
+   value to the first constant and take the second with `orElse`. When the present branch also
+   does other work, such as logging or connecting, keep the plain `if` branch; neither `map` nor
+   `ifPresent` is clearer there.
    One Optional, one terminal. Decide present or absent once, and give helpers the value, never
    the `Optional`: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
 
