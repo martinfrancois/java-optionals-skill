@@ -2,7 +2,7 @@
   "metadata": {
     "invocation": "natural",
     "task_type": "implementation",
-    "reference_selection": "Moved from main on 2026-11-02: the runtime references' flatMap example has the same nullable response, Retry-After header, and parseRetryAfter helper, and its better shape is the 60-point Optional boundary item, so the skill arm reads the answer. Hosted 19 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c."
+    "reference_selection": "Moved from main on 2026-11-02 because the runtime references' flatMap example had the same nullable response, Retry-After header, and parseRetryAfter helper. That example moved to another domain on 2026-11-06, so the 19 without the skill and 100 with it in 01a19cac-5099-75d5-adec-f704024dd23c no longer describe this skill text. On the new text, 01a1ba83-fba7-7367-8c05-a83dcb9cd6b5 (2026-11-08) scored 20 without the skill and 100 with it, which clears the main floor. It stays reference: the SKILL.md quote snippet (nullable input, map, flatMap to a parser, orElseGet) is its 60-point answer with renamed identifiers, which the overlap rule counts, unless martinfrancois decides otherwise or the snippet changes, and #183 has to show no loss elsewhere first."
   },
   "categories": {
     "Compiles and creates requested artifact": "safety",

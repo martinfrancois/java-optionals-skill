@@ -4,7 +4,7 @@
     "task_type": "cleanup",
     "evidence_type": "ordinary_lift",
     "issue": "https://github.com/martinfrancois/java-optionals-skill/issues/74",
-    "runtime_reference_overlap_rationale": "Shares words with the examples, not code: board, existing, and selected come from the audit message \"existing board selected\", and options is a parameter name the gift-wrap and workspace examples also use. The gift-wrap example checks presence too, but the enum constant it returns depends on the Optional<Boolean> value; no example picks an enum constant from presence alone or keeps an audit branch."
+    "runtime_reference_overlap_rationale": "Shares words with the examples, not code: board, existing, and selected come from the audit message \"existing board selected\", and options is a parameter name the gift-wrap and workspace examples also use. The gift-wrap example checks presence too, but the enum constant it returns depends on the Optional<Boolean> value; no example picks an enum constant from presence alone or keeps an audit branch. SKILL.md workflow step 1 states the same rule in prose only, with no code example, because any code example of it has the shape of this answer."
   },
   "categories": {
     "Creates coherent Java 17 artifact": "safety",

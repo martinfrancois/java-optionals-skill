@@ -257,3 +257,73 @@ a sum of two runs rather than one run's result. That is just above the 2x floor,
 can land under it two ways: `37` swings between 54 and 100 unaided, and a `56` skill arm that loses
 more than 10 points for the same helper shape, as the local judge did, takes the suite to 2x or
 below.
+
+## The constant-selection example moved to another domain (2026-11-08)
+
+`SKILL.md` workflow step 1 showed `promoCode.isPresent() ? Shipping.EXPRESS : Shipping.STANDARD`
+becoming `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`, then the rule that a
+present branch that also does something before returning its value stays a plain `if`. That was
+`51`'s starting ternary and its 35-point answer with renamed identifiers. The overlap check reads
+only `references/`, not `SKILL.md`, so it never flagged this.
+
+The example now shows an `if`/`else` that assigns one of two `Duration` constants, `PROXY_TIMEOUT`
+or `DIRECT_TIMEOUT`, from `proxy.isPresent()`. The side-effect rule now says "also does other
+work" instead of "before returning its value", because the example assigns instead of returning.
+martinfrancois chose this rewrite over moving `51` to reference, so `51` stays in main. Its task,
+criteria, and capability text are unchanged.
+
+One overlap remained. Any code example of this rule ends in `map(ignored -> A).orElse(B)`, which is
+`51`'s answer whatever the names. The side-effect sentence names logging, close to `51`'s audit
+call, but it is a one-line prose rule, which `docs/agents/evals.md` exempts. The runs above measured
+the old text; #183 tracks the hosted runs on the new one.
+
+## 51 with a code example and with a prose rule (2026-11-09)
+
+The overlap rule did not say whether the `Duration` example still counted as `51`'s answer, so `51`
+ran with the skill only, eight times on each text, on the branch of #181 before its rebase onto
+1.0.4. The two texts differed only in step 1. The skill was activated in every run.
+
+| `SKILL.md` step 1 | Runs | Scores | Total |
+| --- | --- | --- | --- |
+| `Duration` code example | `01a1be5a-5750-77d1-9b6e-e1c2577c2c42` (3), `01a1be5f-fddd-747f-bcaa-ad68a5e16088` (5) | 100 in all | 800 of 800 |
+| Prose rule only | `01a1be59-e75f-7312-bb98-7c3a1b1e24bb` (3), `01a1be5f-f087-720e-a834-84b0dfa6a174` (5) | 100 in seven, 98 in one | 798 of 800 |
+
+The 98 lost two points on "Avoids Optional antipatterns" for a private `choiceFor` helper that picks
+the enum. Every answer item scored full on both texts. The rule martinfrancois set for this case
+keeps the code example only if `51` scores no higher with it, and 800 is higher than 798, so
+`SKILL.md` now states the rule in prose: map any present value to the first constant and take the
+second with `orElse`. The difference is one run in eight, so it is thin evidence either way; the
+main run of #183 shows whether `51` holds 100 on the prose text.
+
+`docs/agents/evals.md` now counts `SKILL.md` examples in the overlap rule, so a hand comparison
+with its examples covered the other main scenarios. `37` shares the `map`, `flatMap` to a parser
+chain of step 2, but its task specifies a `server_port` lookup in a front-matter map that no
+example shows. `45`, `55`, and `57` match only prose rules: bind once, `ifPresentOrElse` at a
+side-effect boundary, and the empty guard of step 6, whose prompt boundary none of them has.
+
+## Main on the prose constant-selection rule (2026-11-09)
+
+The hosted checks of #183 ran on the final text of #181 (`SKILL.md` step 1 in prose, section 1a
+of the examples in the employee domain). The skill was activated in every with-skill cell.
+
+The skill review with `--threshold 100` scored 97 and 91 in two forced runs on this text whose
+IDs weren't saved, then 100 in `01a1bea3-213c-7085-8b16-26ce85065c2c` and 95 in
+`01a1bea5-2c74-7779-bf2b-545bdb7c2f5c`. A forced review of the released 1.0.4 text, which its
+publish scored 100, rolled 97 the same day. One text scoring 91 and 100 is judge spread.
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `37-implement-frontmatter-port` | 75 | 100 |
+| `45-workflow-validation-cleanup` | 47 | 100 |
+| `51-presence-selects-enum-value` | 39 | 100 |
+| `55-side-effecting-ifpresentorelse-lookup` | 35 | 100 |
+| `56-optional-helper-trigger-lifecycle-refactor` | 42 | 100 |
+| `57-catalog-validation-bound-once` | 50 | 100 |
+
+Run `01a1be6f-57e2-76dd-9fea-a9917e1ef0aa`: 288 without the skill against 600 with it, about 2.08x.
+The 1.0.4 publish run `01a1be54-4f72-73a4-b2dd-3e87ebef0520` had scored 295 against 600 on the
+released text. `37` scored 75 unaided this time. Its hosted baselines are now 60, 54, 59, 55, 100,
+and 75, so it still fails unaided more often than not and stays, as decided above. The composition
+check from java-functional-style-skill `a44d37f` scored all six 100 in
+`01a1be6f-db00-7447-ae94-af3cbd3f3be2`; `37` activated only java-optionals there, and its isolated
+rerun `01a1be81-04cb-7460-b3a1-0dad4305bf50` scored 100 with both skills activated.
