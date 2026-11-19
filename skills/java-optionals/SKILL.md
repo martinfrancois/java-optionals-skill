@@ -41,11 +41,10 @@ loop, an `orElse(null)` branch, or a generic unwrapping helper.
    return cart.map(this::summarize).orElseGet(() -> createSummary(cartId));
    ```
 
-   The same rule covers a presence check that only picks one of two constants:
-   `promoCode.isPresent() ? Shipping.EXPRESS : Shipping.STANDARD` becomes
-   `promoCode.map(code -> Shipping.EXPRESS).orElse(Shipping.STANDARD)`. When the present branch
-   also does something (logs, sends, writes) before returning its value, keep it a plain
-   `if (promoCode.isPresent())` branch; neither `map` nor `ifPresent` is clearer there.
+   The same rule covers a presence check that only picks one of two constants: map any present
+   value to the first constant and take the second with `orElse`. When the present branch also
+   does other work, such as logging or connecting, keep the plain `if` branch; neither `map` nor
+   `ifPresent` is clearer there.
    One Optional, one terminal. Decide present or absent once, and give helpers the value, never
    the `Optional`: `attachment.map(Attachment::bytes).ifPresent(this::rejectOversize)`.
 
