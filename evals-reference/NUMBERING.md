@@ -230,6 +230,41 @@ their expected answer as a worked example (see `evals/NUMBERING.md`). They keep 
 checklists. In hosted run `01a19cac-5099-75d5-adec-f704024dd23c` they scored 19, 80, and 44
 without the skill and 100 with it.
 
+## The `flatMap` example moved to another domain (2026-11-06)
+
+Section 1a of `references/optional-examples.md` was the `Retry-After` chain that sent `10` back
+from main. It now shows an employee's manager and desk phone, with no header, parser, nullable
+start, or computed fallback. The overlap check finds no shared identifiers or runs for `10` or
+`60`, down from 4 identifiers for `10`. Task, criteria, and capability text of `10` are unchanged.
+
+The numbers above were measured on the old text, so `10` stays here until a hosted run on the new
+text. `SKILL.md` still shows a nullable source, `map`, `flatMap(this::parseValue)`, and
+`orElseGet` in a quote domain. That is the same chain shape as the 60-point item of `10`, and the
+overlap check doesn't read `SKILL.md`, so a clean check doesn't settle it.
+
+`19` and `35` keep their overlap. Their examples, `CommandRedactor` and the selector and output
+sink, are long, and `03`, `05`, `12`, `13`, `15`, `18`, `33`, `39`, and `50` share them too.
+
+### Hosted run on the new text (2026-11-08)
+
+Both arms, run `01a1ba83-fba7-7367-8c05-a83dcb9cd6b5`, on this branch at `82858dd`. The later
+commits on the branch change only the constant-selection example in `SKILL.md` step 1, not the
+quote snippet or anything else `10` touches.
+
+| Scenario | Baseline | With skill |
+| --- | --- | --- |
+| `10-first-pass-retry-backoff` | 20 | 100 |
+
+The skill was activated in the with-skill cell. The baseline lost the 60-point item and the
+20-point antipattern item. `scripts/classify_eval_result.py` recommends main: an 80-point gap
+against the 30-point floor. The skill arm wrote `Optional.ofNullable(response)`, `flatMap` to the
+header, `flatMap(this::parseRetryAfter)`, and `orElseGet` to the backoff, the shape of the
+`SKILL.md` quote snippet above. So the skill still gets `10` right without the old example, but
+the run can't show the solver worked the chain out without that snippet. Under the overlap rule in
+`docs/agents/evals.md`, which now counts `SKILL.md` examples, the snippet is `10`'s 60-point
+answer with renamed identifiers. `10` stays here unless martinfrancois decides the snippet is fine
+in a main scenario or it changes, and #183 shows no loss elsewhere on this text.
+
 ## Promotion check of the six main candidates (2026-11-02)
 
 `09` and `45` moved to `evals/` (numbers and runs in `evals/NUMBERING.md`). Four stay here:
@@ -353,3 +388,26 @@ A with-skill result under 100 there keeps it in reference for a fix in place.
 The targeted run above happened on 2026-11-08, earlier than the credit reset it waited for:
 `01a1ba83-cf72-76dd-b786-56091b3bc4f7`, 42 without the skill and 100 with it, skill activated.
 `56` moved to `evals/`; `evals/NUMBERING.md` has the main totals.
+
+## Reference on the prose constant-selection rule (2026-11-09)
+
+Every reference scenario ran with both arms on the final text of #181, run
+`01a1be6f-96ec-72a9-8101-0f79234779ba`, skill activated in every with-skill cell. Forty of the
+42 scored 100 with the skill. The two misses:
+
+- `54-optional-upsert-side-effect-boundary` scored 63, keeping two pipelines over the same
+  `Optional`. Its isolated rerun, `01a1be79-037a-7223-a682-6d3e02dbb4ae`, scored 100 in both runs.
+- `33-implement-command-sanitizer` scored 83, then 83 and 100 in the rerun above, 86, 100, and 100
+  in `01a1be90-f4fc-71b3-aef3-acdfaad4e2ee`, and 100, 48, 100, 100, and 96 in
+  `01a1beac-cfc9-77ef-bcbe-03e070544b98`: 100 in six of eleven runs. The 83s and the 86 used
+  `findFirst()` where any match is equivalent, losing most of "Uses findAny for equivalent matches"
+  and part of "Uses real collection Optional lookup"; the first 83 of the rerun also lost two points
+  on "Avoids overcomplicated loop control". The 48 used `Set.contains` and no `Optional` at all, and
+  the 96 lost three points on "Uses Optional result directly". On the released 1.0.4 text it scored
+  88, 100, and 100 in `01a1be82-b088-75dc-a754-e21f6e38d68e` and 100, 78, 100, 100, and 100 in
+  `01a1beac-cfb6-7797-9d5d-91f1df793440`: 100 in six of eight. The 78 used `findFirst()` for one
+  match path and `Set.contains` for the other, and the 88 used `findAny()` for one match path and
+  `Set.contains` for the other, losing points on the same two items. The `findFirst()` miss predates
+  #181. The no-`Optional` 48 appeared once, on this text only; eleven and eight runs can't tell
+  whether #181 makes it likelier, and nothing in the #181 diff touches lookups or `findAny`. #188
+  tracks `33`.

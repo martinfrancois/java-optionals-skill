@@ -136,22 +136,20 @@ lazy.
 Bad:
 
 ```java
-return Optional.ofNullable(response)
-        .map(r -> r.headers().firstValue("Retry-After").orElse(null))
-        .flatMap(this::parseRetryAfter)
-        .orElseGet(this::fallbackDelay);
+return employee.manager()
+        .map(manager -> manager.deskPhone().orElse(null))
+        .orElse(RECEPTION_PHONE);
 ```
 
 Better:
 
 ```java
-return Optional.ofNullable(response)
-        .flatMap(r -> r.headers().firstValue("Retry-After"))
-        .flatMap(this::parseRetryAfter)
-        .orElseGet(this::fallbackDelay);
+return employee.manager()
+        .flatMap(Employee::deskPhone)
+        .orElse(RECEPTION_PHONE);
 ```
 
-Why good: `firstValue` already returns an `Optional<String>`, so `flatMap` keeps absence in the
+Why good: `deskPhone` already returns an `Optional<String>`, so `flatMap` keeps absence in the
 Optional flow without a temporary `null`.
 
 ### 2. Real Collection Stream Shouldn't Become A Labeled Loop

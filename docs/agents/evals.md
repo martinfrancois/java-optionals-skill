@@ -95,15 +95,25 @@ benchmark claims, or scoring rules.
   main eval policy. It stays reference: its latest hosted baseline scored 80, a gap under the
   30-point floor.
 - A scenario is not main evidence when its starting code, or the behavior its task specifies, and
-  its expected answer both appear as a worked example in the runtime references, with the same
-  identifiers or renamed ones: the skill arm reads the answer. Shared Optional API names, or a
-  one-line prose description of a general rule, do not count; state that overlap in plain words in
-  `metadata.runtime_reference_overlap_rationale` of the scenario's `criteria-meta.json`. Such
-  scenarios stay in `evals-reference/` until the skill's example moves to another domain:
-  `evals-reference/05-use-findany`, `evals-reference/10-first-pass-retry-backoff`,
-  `evals-reference/12-selector-optional`, `evals-reference/13-output-path-side-effect`,
+  its expected answer both appear as a worked example in the runtime references or in `SKILL.md`,
+  with the same identifiers or renamed ones: the skill arm reads the answer. Shared Optional API
+  names, or a one-line prose description of a general rule, do not count; state that overlap in
+  plain words in `metadata.runtime_reference_overlap_rationale` of the scenario's
+  `criteria-meta.json`. Such scenarios stay in `evals-reference/` until the skill's example
+  moves to another domain:
+  `evals-reference/05-use-findany`, `evals-reference/10-first-pass-retry-backoff` (its answer is
+  the `SKILL.md` step 2 chain), `evals-reference/12-selector-optional`,
+  `evals-reference/13-output-path-side-effect`,
   `evals-reference/19-first-pass-redacted-option`, and
   `evals-reference/35-implement-diagnostics-command`.
+- When a rule has only one code shape, any code example of it shows the answer of a main scenario
+  that tests the rule, even in another domain, and the overlap rule above may not say whether that
+  counts. When it doesn't, measure it: run the scenario with the skill on the code-example text and
+  on a prose-only variant, several runs each, and keep the code example only if the scenario scores
+  no higher with it. For `51` (#183), eight runs each scored 800 of 800 with the `Duration` example
+  (`01a1be5a-5750-77d1-9b6e-e1c2577c2c42`, `01a1be5f-fddd-747f-bcaa-ad68a5e16088`) and 798 of 800
+  with prose (`01a1be59-e75f-7312-bb98-7c3a1b1e24bb`, `01a1be5f-f087-720e-a834-84b0dfa6a174`), so
+  `SKILL.md` states the constant-selection rule in prose.
 - `scripts/validate_eval_criteria.py` checks that rule for `evals/` and `evals-reference/`. It
   removes `import` and `package` lines from the runtime references and from the scenario's
   `task.md` and shipped `.java` files. Then it counts the code identifiers both share, leaving out
@@ -115,6 +125,7 @@ benchmark claims, or scoring rules.
   domain nouns from a renamed copy, so read the scenario next to the example before writing the
   rationale. Reference stays warning-only because those scenarios don't count toward the published
   lift; the warnings list what needs a rationale or a new example domain before a promotion.
+  The check doesn't read `SKILL.md`, so compare its examples with each main scenario by hand.
   Regression scenarios may overlap and aren't checked. Neither is a scenario whose text reads as
   needing skill context, which the validator already requires to be `skill_context_dependent`
   and therefore in `evals-regression/`.
@@ -180,8 +191,8 @@ benchmark claims, or scoring rules.
 Current active suite structure:
 
 - `evals/`: 6 scenarios, 600 checklist points, all natural: `37`, `45`, `51`, `55`, `56`, `57`.
-  Their hosted both-arms results add up to 295 without the skill and 600 with it, from two runs:
-  `56` on 2026-11-08, the other five on 2026-11-02; the run IDs are in `evals/NUMBERING.md`.
+  Their latest hosted both-arms run scored 288 without the skill and 600 with it, about 2.08x, on
+  2026-11-09; the run ID is in `evals/NUMBERING.md`.
 - `evals-reference/`: 42 scenarios, 2744 checklist points, broad candidate and diagnostic coverage,
   with `54` as the explicit-invocation coverage; `13` and `48` sit here because their hosted
   baseline scored 100 although the local screen fails them more often than not.

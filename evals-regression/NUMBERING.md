@@ -73,3 +73,8 @@ PR #173 text:
   isolation and changes the wording only when the miss repeats; it didn't, so the skill text
   stays. With `09` gone to reference, `37`, `45`, `51`, `55`, and `57` each have a composition
   cell at 100.
+
+## Regression on the prose constant-selection rule (2026-11-09)
+
+All 13 regression scenarios ran with the skill only on the final text of #181, run
+`01a1be6f-b43a-7277-a9b9-9fbcf5c7412c`, and scored 100 with the skill activated.
